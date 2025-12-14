@@ -1,7 +1,9 @@
+[← Back to Main README](../README.md)
+
 # User Mute/Ignore List Implementation Summary
 
 ## Overview
-Implemented a comprehensive user mute/ignore system for Fairfield Nostr (Phase 2.5) that allows users to hide content from specific users across the application.
+Implemented a comprehensive user mute/ignore system for Minimoonoir Nostr (Phase 2.5) that allows users to hide content from specific users across the application.
 
 ## Implementation Status: COMPLETE
 

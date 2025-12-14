@@ -1,5 +1,5 @@
 /**
- * Cryptographic utilities for Fairfield Nostr
+ * Cryptographic utilities for Minimoonoir
  * Provides low-level crypto operations for key management
  */
 

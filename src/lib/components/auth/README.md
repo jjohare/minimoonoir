@@ -1,6 +1,8 @@
 # Authentication Components
 
-Complete Svelte authentication flow for Fairfield Nostr with Tailwind CSS and DaisyUI styling.
+[Back to Main README](../../../../README.md)
+
+Complete Svelte authentication flow for Minimoonoir with Tailwind CSS and DaisyUI styling.
 
 ## Components
 

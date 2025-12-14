@@ -1,5 +1,5 @@
 /**
- * NIP-29 Group Operations for Fairfield Nostr
+ * NIP-29 Group Operations for Minimoonoir
  *
  * Implements group chat functionality including:
  * - Join requests and approvals

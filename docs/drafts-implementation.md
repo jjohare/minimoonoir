@@ -1,7 +1,9 @@
+[← Back to Main README](../README.md)
+
 # Message Drafts Auto-Save Implementation (Phase 3.2)
 
 ## Overview
-Complete implementation of auto-save drafts for both channel messages and direct messages in Fairfield Nostr.
+Complete implementation of auto-save drafts for both channel messages and direct messages in Minimoonoir Nostr.
 
 ## Implementation Details
 

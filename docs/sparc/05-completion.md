@@ -1,4 +1,6 @@
-# Fairfield Nostr - SPARC Completion
+[← Back to Main README](../../README.md)
+
+# Minimoonoir Nostr - SPARC Completion
 
 > **Project:** Private Chatroom System for Residential Retreat & Course Booking
 > **Version:** 0.1.0-draft
@@ -9,7 +11,7 @@
 
 ## 1. Completion Overview
 
-This document defines the deployment, verification, and handoff criteria for Fairfield Nostr. It serves as the final SPARC phase checklist ensuring production readiness.
+This document defines the deployment, verification, and handoff criteria for Minimoonoir Nostr. It serves as the final SPARC phase checklist ensuring production readiness.
 
 ```mermaid
 flowchart LR
@@ -141,8 +143,8 @@ flowchart TB
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/jjohare/fairfield-nostr.git
-cd fairfield-nostr
+git clone https://github.com/jjohare/minimoonoir-nostr.git
+cd minimoonoir-nostr
 
 # 2. Configure environment
 cp .env.example .env
@@ -154,16 +156,16 @@ docker compose up -d
 
 # 4. Verify services
 docker compose ps
-curl -I https://chat.fairfield.example
-curl -I https://relay.fairfield.example
+curl -I https://chat.minimoonoir.example
+curl -I https://relay.minimoonoir.example
 ```
 
 ### 3.4 DNS Configuration
 
 ```
 # DNS Records Required
-chat.fairfield.example    A     <server-ip>
-relay.fairfield.example   A     <server-ip>
+chat.minimoonoir.example    A     <server-ip>
+relay.minimoonoir.example   A     <server-ip>
 ```
 
 ---
@@ -177,21 +179,21 @@ relay.fairfield.example   A     <server-ip>
 # ─────────────────────────────────────────────────────────
 
 # Relay Configuration
-RELAY_URL=wss://relay.fairfield.example
-RELAY_NAME="Fairfield Private Relay"
-RELAY_DESCRIPTION="Private relay for Fairfield community"
-RELAY_CONTACT=admin@fairfield.example
+RELAY_URL=wss://relay.minimoonoir.example
+RELAY_NAME="Minimoonoir Private Relay"
+RELAY_DESCRIPTION="Private relay for Minimoonoir community"
+RELAY_CONTACT=admin@minimoonoir.example
 
 # Admin Configuration
 ADMIN_PUBKEY=npub1...  # Hex or npub format
-ADMIN_DISPLAY_NAME="Fairfield Admin"
+ADMIN_DISPLAY_NAME="Minimoonoir Admin"
 
 # PWA Configuration
-PUBLIC_APP_NAME="Fairfield Chat"
-PUBLIC_APP_URL=https://chat.fairfield.example
+PUBLIC_APP_NAME="Minimoonoir Chat"
+PUBLIC_APP_URL=https://chat.minimoonoir.example
 
 # Backup Configuration (optional)
-BACKUP_S3_BUCKET=fairfield-backups
+BACKUP_S3_BUCKET=minimoonoir-backups
 BACKUP_S3_REGION=us-east-1
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
@@ -200,12 +202,12 @@ AWS_SECRET_ACCESS_KEY=...
 ### 4.2 Relay Configuration (strfry.conf)
 
 ```toml
-# strfry configuration for Fairfield
+# strfry configuration for Minimoonoir
 relay {
-    name = "Fairfield Private Relay"
+    name = "Minimoonoir Private Relay"
     description = "Closed community relay - no federation"
     pubkey = "<admin-hex-pubkey>"
-    contact = "admin@fairfield.example"
+    contact = "admin@minimoonoir.example"
 }
 
 # Restrict to authenticated users only
@@ -350,11 +352,11 @@ flowchart LR
 
 ```bash
 #!/bin/bash
-# /opt/fairfield/backup.sh
+# /opt/minimoonoir/backup.sh
 
 set -euo pipefail
 
-BACKUP_DIR="/var/backups/fairfield"
+BACKUP_DIR="/var/backups/minimoonoir"
 S3_BUCKET="${BACKUP_S3_BUCKET}"
 DATE=$(date +%Y%m%d_%H%M%S)
 
@@ -363,22 +365,22 @@ docker compose stop relay
 
 # Create backup
 mkdir -p "$BACKUP_DIR"
-tar -czf "$BACKUP_DIR/fairfield-$DATE.tar.gz" \
-    /var/lib/docker/volumes/fairfield_relay-data \
-    /opt/fairfield/.env \
-    /opt/fairfield/strfry.conf
+tar -czf "$BACKUP_DIR/minimoonoir-$DATE.tar.gz" \
+    /var/lib/docker/volumes/minimoonoir_relay-data \
+    /opt/minimoonoir/.env \
+    /opt/minimoonoir/strfry.conf
 
 # Restart relay
 docker compose start relay
 
 # Upload to S3
-aws s3 cp "$BACKUP_DIR/fairfield-$DATE.tar.gz" \
+aws s3 cp "$BACKUP_DIR/minimoonoir-$DATE.tar.gz" \
     "s3://$S3_BUCKET/backups/"
 
 # Cleanup old local backups (keep 7 days)
 find "$BACKUP_DIR" -type f -mtime +7 -delete
 
-echo "Backup completed: fairfield-$DATE.tar.gz"
+echo "Backup completed: minimoonoir-$DATE.tar.gz"
 ```
 
 ### 6.3 Recovery Procedure
@@ -396,14 +398,14 @@ docker compose down
 tar -xzf "$BACKUP_FILE" -C /
 
 # 3. Restore permissions
-chown -R 1000:1000 /var/lib/docker/volumes/fairfield_relay-data
+chown -R 1000:1000 /var/lib/docker/volumes/minimoonoir_relay-data
 
 # 4. Start services
 docker compose up -d
 
 # 5. Verify
 docker compose ps
-curl -I https://relay.fairfield.example
+curl -I https://relay.minimoonoir.example
 ```
 
 ---
@@ -506,7 +508,7 @@ flowchart TB
     }
 }
 
-chat.fairfield.example {
+chat.minimoonoir.example {
     import security_headers
     reverse_proxy pwa:3000
 }
@@ -519,7 +521,7 @@ chat.fairfield.example {
 ### 9.1 End-User Guide Outline
 
 ```markdown
-# Fairfield Chat - User Guide
+# Minimoonoir Chat - User Guide
 
 ## Getting Started
 1. Creating Your Account
@@ -548,7 +550,7 @@ chat.fairfield.example {
 ### 9.2 Admin Guide Outline
 
 ```markdown
-# Fairfield Chat - Admin Guide
+# Minimoonoir Chat - Admin Guide
 
 ## Daily Operations
 1. Reviewing Join Requests
@@ -688,18 +690,18 @@ docker compose logs -f relay  # View relay logs
 docker compose restart pwa    # Restart PWA only
 
 # Backup & Restore
-/opt/fairfield/backup.sh                    # Run backup
-/opt/fairfield/restore.sh backup-file.tar.gz # Restore
+/opt/minimoonoir/backup.sh                    # Run backup
+/opt/minimoonoir/restore.sh backup-file.tar.gz # Restore
 
 # Health Checks
-curl https://chat.fairfield.example/health
-curl https://relay.fairfield.example
+curl https://chat.minimoonoir.example/health
+curl https://relay.minimoonoir.example
 
 # Database Inspection (debugging only)
-docker exec -it fairfield-relay strfry scan
+docker exec -it minimoonoir-relay strfry scan
 
 # SSL Certificate Renewal (Caddy auto-handles)
-docker exec -it fairfield-caddy caddy reload
+docker exec -it minimoonoir-caddy caddy reload
 ```
 
 ---

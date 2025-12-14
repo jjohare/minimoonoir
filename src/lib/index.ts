@@ -1,5 +1,5 @@
 /**
- * Fairfield Nostr Library
+ * Minimoonoir Library
  * Main exports for the application
  */
 

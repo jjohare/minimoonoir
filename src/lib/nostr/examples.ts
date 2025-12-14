@@ -246,7 +246,7 @@ export async function exampleCompleteWorkflow(privateKey: string): Promise<void>
     await connectRelay(RELAY_URL, privateKey);
 
     // Publish a note
-    await examplePublishNote('Hello from Fairfield Nostr!');
+    await examplePublishNote('Hello from Minimoonoir!');
 
     // Subscribe to own events
     const user = await getCurrentUser();

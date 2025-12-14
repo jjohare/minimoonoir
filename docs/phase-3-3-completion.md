@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # Phase 3.3: Channel Statistics Dashboard - Completion Report
 
 ## Implementation Overview
 
-Successfully implemented a comprehensive channel statistics dashboard for the Fairfield Nostr application with real-time analytics, visualizations, and admin reporting capabilities.
+Successfully implemented a comprehensive channel statistics dashboard for the Minimoonoir Nostr application with real-time analytics, visualizations, and admin reporting capabilities.
 
 ## Files Created
 

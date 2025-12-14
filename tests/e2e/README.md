@@ -1,6 +1,8 @@
-# E2E Tests for Fairfield Nostr
+# E2E Tests for Minimoonoir
 
-Comprehensive end-to-end tests using Playwright for testing the Fairfield Nostr chat application.
+[Back to Main README](../../README.md)
+
+Comprehensive end-to-end tests using Playwright for testing the Minimoonoir chat application.
 
 ## Test Structure
 

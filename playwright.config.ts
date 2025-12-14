@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright E2E Test Configuration for Fairfield Nostr
+ * Playwright E2E Test Configuration for Minimoonoir
  *
  * @see https://playwright.dev/docs/test-configuration
  */

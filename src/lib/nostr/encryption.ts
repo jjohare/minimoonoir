@@ -1,5 +1,5 @@
 /**
- * NIP-44 E2E Encryption Module for Fairfield Nostr
+ * NIP-44 E2E Encryption Module for Minimoonoir
  *
  * Implements end-to-end encryption for private group channels using NIP-44 v2.
  * Messages are encrypted individually for each channel member using ECDH shared secrets.

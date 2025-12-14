@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # phpBB Comprehensive Feature Analysis (December 2025)
 
 ## Executive Summary
 
-This document provides a comprehensive analysis of phpBB forum software features (version 3.3.15, released April 2025) for comparison with the Fairfield Nostr community messaging platform. phpBB is a mature, open-source bulletin board system built on PHP/Symfony framework with extensive customization capabilities.
+This document provides a comprehensive analysis of phpBB forum software features (version 3.3.15, released April 2025) for comparison with the Minimoonoir Nostr community messaging platform. phpBB is a mature, open-source bulletin board system built on PHP/Symfony framework with extensive customization capabilities.
 
 ---
 
@@ -691,9 +693,9 @@ This document provides a comprehensive analysis of phpBB forum software features
 
 ---
 
-## 17. Comparison Summary: phpBB vs Fairfield Nostr
+## 17. Comparison Summary: phpBB vs Minimoonoir Nostr
 
-### 17.1 Features phpBB Has That Fairfield Nostr Lacks
+### 17.1 Features phpBB Has That Minimoonoir Nostr Lacks
 1. **Forum Hierarchy**: Categories → Forums → Topics → Posts structure
 2. **Thread Management**: Move, merge, split, lock topics
 3. **User Groups**: Complex group membership and permissions
@@ -720,7 +722,7 @@ This document provides a comprehensive analysis of phpBB forum software features
 24. **Word Censoring**: Automatic profanity filtering
 25. **Flood Control**: Rate limiting on posts/PMs
 
-### 17.2 Features Fairfield Nostr Has That phpBB Lacks
+### 17.2 Features Minimoonoir Nostr Has That phpBB Lacks
 1. **Decentralization**: Censorship-resistant, no central authority
 2. **Cryptographic Identity**: Nostr keys (npub/nsec) instead of passwords
 3. **BIP-39 Mnemonic**: Seed phrase key recovery
@@ -738,7 +740,7 @@ This document provides a comprehensive analysis of phpBB forum software features
 15. **Open Protocol**: Based on open standards (NIPs)
 
 ### 17.3 Comparable Features
-| Feature | phpBB | Fairfield Nostr |
+| Feature | phpBB | Minimoonoir Nostr |
 |---------|-------|-----------------|
 | **Private Messages** | Full PM system with folders, search | NIP-17/59 encrypted DMs |
 | **User Profiles** | Extensive profiles, avatars, signatures | Nickname, avatar via NIP-01 |
@@ -751,7 +753,7 @@ This document provides a comprehensive analysis of phpBB forum software features
 
 ---
 
-## 18. Key Insights for Fairfield Nostr Development
+## 18. Key Insights for Minimoonoir Nostr Development
 
 ### 18.1 Critical Missing Features to Consider
 1. **Search Functionality**: phpBB has robust search; Nostr lacks this

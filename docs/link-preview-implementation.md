@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # Link Preview Implementation (Phase 2.4)
 
 ## Overview
 
-Comprehensive link preview and media embed system for Fairfield Nostr, featuring automatic URL detection, OpenGraph metadata fetching, rich media embeds, and user preferences.
+Comprehensive link preview and media embed system for Minimoonoir Nostr, featuring automatic URL detection, OpenGraph metadata fetching, rich media embeds, and user preferences.
 
 ## Components
 

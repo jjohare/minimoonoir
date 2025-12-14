@@ -1,8 +1,11 @@
-# Fairfield Nostr - SPARC Architecture
+[← Back to Main README](../../README.md)
+
+# Minimoonoir - SPARC Architecture
 
 > **Phase:** Architecture Design
 > **Version:** 0.1.0-draft
 > **Date:** 2024-12-11
+> **[Back to Main README](../../README.md)**
 
 ---
 
@@ -172,8 +175,8 @@ graph TB
 # strfry.conf
 relay:
   info:
-    name: "Fairfield Private Relay"
-    description: "Closed relay for Fairfield community"
+    name: "Minimoonoir Private Relay"
+    description: "Private relay for Minimoonoir community"
     supported_nips: [1, 2, 9, 11, 29, 42, 44, 59]
 
   # NIP-42 Authentication Required
@@ -243,7 +246,7 @@ interface VisibilityTag {
 ### 3.3 IndexedDB Schema (Client-side Cache)
 
 ```typescript
-interface FairfieldDB {
+interface MinimoonoirDB {
   // Cached messages for offline access
   messages: {
     id: string;           // Event ID
@@ -447,13 +450,13 @@ flowchart LR
 
 *Problem: No guarantee other relays honor deletion*
 
-**Fairfield (Closed Relay)**
+**Minimoonoir (Closed Relay)**
 
 ```mermaid
 flowchart TB
-    User -->|msg| FairfieldRelay["Fairfield Relay (ONLY)"]
-    User -->|delete| FairfieldRelay
-    FairfieldRelay -->|"Event removed"| LMDB[(LMDB)]
+    User -->|msg| MinimoonoirRelay["Minimoonoir Relay (ONLY)"]
+    User -->|delete| MinimoonoirRelay
+    MinimoonoirRelay -->|"Event removed"| LMDB[(LMDB)]
 ```
 
 *Guarantee: We control the only relay, deletion is real*

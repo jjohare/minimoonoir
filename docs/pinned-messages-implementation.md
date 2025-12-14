@@ -1,7 +1,9 @@
+[← Back to Main README](../README.md)
+
 # Pinned Messages Implementation (Phase 1.5)
 
 ## Overview
-Implemented pinned messages support for Fairfield Nostr, allowing admins to pin up to 5 important messages per channel.
+Implemented pinned messages support for Minimoonoir Nostr, allowing admins to pin up to 5 important messages per channel.
 
 ## Files Created
 

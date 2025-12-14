@@ -1,7 +1,9 @@
+[← Back to Main README](../README.md)
+
 # Channel Message Search Implementation - Phase 1.4
 
 ## Overview
-Implemented comprehensive search and filtering functionality for channel messages in the Fairfield Nostr application.
+Implemented comprehensive search and filtering functionality for channel messages in the Minimoonoir Nostr application.
 
 ## Files Created
 

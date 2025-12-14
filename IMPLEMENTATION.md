@@ -108,7 +108,7 @@ VITE_NDK_DEBUG=false                   # Optional
 
 ### Constants
 ```typescript
-APP_NAME = 'Fairfield Nostr'
+APP_NAME = 'Minimoonoir'
 APP_VERSION = '0.1.0'
 ```
 

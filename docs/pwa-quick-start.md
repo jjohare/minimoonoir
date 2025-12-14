@@ -1,3 +1,5 @@
+[← Back to Main README](../README.md)
+
 # PWA Quick Start Guide
 
 ## Installation Complete
@@ -95,7 +97,7 @@ Create these files in `static/`:
 Optional additional sizes:
 - 72, 96, 128, 144, 152, 384 px
 
-Use Fairfield branding with colors:
+Use Minimoonoir branding with colors:
 - Theme: #16213e
 - Background: #1a1a2e
 

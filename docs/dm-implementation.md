@@ -1,8 +1,10 @@
 # NIP-17/NIP-59 Gift-Wrapped DM Implementation
 
+[Back to Main README](../README.md)
+
 ## Overview
 
-Complete implementation of privacy-preserving direct messages for Fairfield Nostr using:
+Complete implementation of privacy-preserving direct messages for Minimoonoir using:
 
 - **NIP-17**: Private Direct Messages (sealed rumors)
 - **NIP-59**: Gift Wraps (metadata protection)

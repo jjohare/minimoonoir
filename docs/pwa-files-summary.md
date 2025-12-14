@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # PWA Implementation - Files Created
 
 ## Summary
 
-Complete Progressive Web App implementation for Fairfield Nostr with offline support, background sync, and installability.
+Complete Progressive Web App implementation for Minimoonoir Nostr with offline support, background sync, and installability.
 
 ## Files Created
 

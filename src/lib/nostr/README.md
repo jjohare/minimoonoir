@@ -1,5 +1,7 @@
 # NDK Relay Connection System
 
+[Back to Main README](../../../README.md)
+
 Complete implementation of Nostr relay connection with NIP-42 AUTH support.
 
 ## Features
@@ -171,7 +173,7 @@ import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
 
 // Automatic cache initialization
 const cache = new NDKCacheAdapterDexie({
-  dbName: 'fairfield-nostr-cache',
+  dbName: 'minimoonoir-cache',
   expirationTime: 3600 * 24 * 7 // 7 days
 });
 ```
@@ -200,7 +202,7 @@ connectionState.subscribe(status => {
 
 ## Examples
 
-See `/home/devuser/workspace/fairfield-nostr/src/lib/nostr/examples.ts` for complete examples:
+See `src/lib/nostr/examples.ts` for complete examples:
 
 - Basic connection
 - Publishing notes
@@ -234,4 +236,4 @@ src/lib/
 
 ## License
 
-Part of Fairfield Nostr project.
+Part of Minimoonoir project - MIT License.

@@ -1,7 +1,7 @@
 {
-	"name": "Fairfield Nostr",
-	"short_name": "Fairfield",
-	"description": "Secure Nostr messaging application for Fairfield University students",
+	"name": "Minimoonoir",
+	"short_name": "Minimoonoir",
+	"description": "Privacy-first Nostr messaging platform with encrypted DMs and calendar events",
 	"start_url": "/",
 	"scope": "/",
 	"display": "standalone",

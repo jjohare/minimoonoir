@@ -1,4 +1,6 @@
-# Fairfield Nostr - SPARC Refinement & Technology Selection
+[← Back to Main README](../../README.md)
+
+# Minimoonoir Nostr - SPARC Refinement & Technology Selection
 
 > **Phase:** Refinement (Technology Decisions + TDD Planning)
 > **Version:** 0.1.0-draft
@@ -170,7 +172,7 @@ graph TB
 
 ```json
 {
-  "name": "fairfield-nostr",
+  "name": "minimoonoir-nostr",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -213,7 +215,7 @@ graph TB
 ## 3. Project Structure
 
 ```
-fairfield-nostr/
+minimoonoir-nostr/
 ├── docs/
 │   └── sparc/                    # SPARC documentation
 │
@@ -381,9 +383,9 @@ flowchart TD
 
 ```json
 {
-  "name": "Fairfield Chat",
-  "short_name": "Fairfield",
-  "description": "Private community chat for Fairfield retreat",
+  "name": "Minimoonoir Chat",
+  "short_name": "Minimoonoir",
+  "description": "Private community chat for Minimoonoir retreat",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",
@@ -417,8 +419,8 @@ export default {
       strategies: 'generateSW',
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Fairfield Chat',
-        short_name: 'Fairfield',
+        name: 'Minimoonoir Chat',
+        short_name: 'Minimoonoir',
         theme_color: '#16213e',
       },
       workbox: {
@@ -540,7 +542,7 @@ test.describe('User Signup', () => {
 
 ```mermaid
 gantt
-    title Fairfield Nostr Implementation
+    title Minimoonoir Nostr Implementation
     dateFormat  YYYY-MM-DD
     section Phase 1: Foundation
     Project setup & tooling     :p1a, 2024-01-01, 3d
@@ -594,7 +596,7 @@ version: '3.8'
 services:
   strfry:
     image: dockurr/strfry:latest
-    container_name: fairfield-relay
+    container_name: minimoonoir-relay
     ports:
       - "7777:7777"
     volumes:
@@ -605,7 +607,7 @@ services:
 
   caddy:
     image: caddy:2-alpine
-    container_name: fairfield-proxy
+    container_name: minimoonoir-proxy
     ports:
       - "80:80"
       - "443:443"
@@ -628,7 +630,7 @@ volumes:
 ```caddyfile
 # relay/Caddyfile
 
-chat.fairfield.example {
+chat.minimoonoir.example {
     # Serve PWA static files
     root * /srv/www
     file_server

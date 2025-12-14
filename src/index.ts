@@ -1,5 +1,5 @@
 /**
- * Fairfield Nostr - NIP-06 Key Management
+ * Minimoonoir - NIP-06 Key Management
  */
 
 export * from './lib/nostr/index.js';

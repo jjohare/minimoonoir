@@ -1,7 +1,7 @@
 /**
  * Vitest Test Setup
  *
- * Configuration and utilities for Fairfield Nostr test suite.
+ * Configuration and utilities for Minimoonoir test suite.
  * This file runs before all tests to set up the testing environment.
  */
 

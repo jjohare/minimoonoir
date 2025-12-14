@@ -2,7 +2,9 @@
 
 ## Overview
 
-Fairfield Nostr implements a complete Progressive Web App with offline support, background sync, and installability.
+Minimoonoir implements a complete Progressive Web App with offline support, background sync, and installability.
+
+[Back to Main README](../README.md)
 
 ## Architecture
 
@@ -150,7 +152,7 @@ import {
 
 PWA manifest configured with:
 
-- **Name**: "Fairfield Nostr"
+- **Name**: "Minimoonoir"
 - **Display**: Standalone (fullscreen app experience)
 - **Theme Color**: #16213e
 - **Background Color**: #1a1a2e
@@ -171,7 +173,7 @@ Create the following icon files in `static/`:
 - `icon-384.png` (384x384)
 - `icon-512.png` (512x512) - Required for PWA
 
-Recommended: Use Fairfield University branding with theme colors.
+Recommended: Use consistent branding with theme colors.
 
 ## Integration Example
 
@@ -198,7 +200,7 @@ Recommended: Use Fairfield University branding with theme colors.
 <!-- Install prompt -->
 {#if $canInstall}
   <div class="install-banner">
-    <p>Install Fairfield Nostr for offline access</p>
+    <p>Install Minimoonoir for offline access</p>
     <button on:click={triggerInstall}>Install</button>
   </div>
 {/if}

@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # Quote/Reply Threading Implementation
 
 ## Overview
 
-This document describes the quote/reply threading implementation for Fairfield Nostr (Phase 2.2).
+This document describes the quote/reply threading implementation for Minimoonoir Nostr (Phase 2.2).
 
 ## Components Created
 

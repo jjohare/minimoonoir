@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const DEPLOYED_URL = 'https://jjohare.github.io/fairfield-nostr';
 
-test.describe('Deployed Site - Fairfield Nostr PWA', () => {
+test.describe('Deployed Site - Minimoonoir PWA', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to deployed site
     await page.goto(DEPLOYED_URL, { waitUntil: 'networkidle' });

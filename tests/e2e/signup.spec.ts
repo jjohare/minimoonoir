@@ -22,7 +22,7 @@ test.describe('User Signup Flow', () => {
     await page.goto('/');
 
     // Check page title
-    await expect(page).toHaveTitle(/Fairfield Nostr/i);
+    await expect(page).toHaveTitle(/Minimoonoir/i);
 
     // Check main heading exists
     const heading = page.getByRole('heading', { level: 1 });

@@ -1,15 +1,18 @@
-# Fairfield Nostr - SPARC Specification
+[← Back to Main README](../../README.md)
+
+# Minimoonoir - SPARC Specification
 
 > **Project:** Private Chatroom System for Residential Retreat & Course Booking
 > **Version:** 0.1.0-draft
 > **Date:** 2024-12-11
 > **Status:** Discovery Phase
+> **[Back to Main README](../../README.md)**
 
 ---
 
 ## 1. Executive Summary
 
-Fairfield Nostr is a closed, self-hosted chat system built on Nostr protocol for a residential retreat community. It provides:
+Minimoonoir is a closed, self-hosted chat system built on Nostr protocol for a residential retreat community. It provides:
 
 - **Cohort-segregated channels** (Business vs Moomaa-tribe)
 - **Admin-gated membership** with request-to-join workflow

@@ -1,8 +1,10 @@
+[← Back to Main README](../README.md)
+
 # Message Export Feature - Implementation Documentation
 
 ## Overview
 
-Phase 3.4 implementation of message history export functionality for Fairfield Nostr. Users can export their message history in JSON, CSV, or plain text formats with filtering options.
+Phase 3.4 implementation of message history export functionality for Minimoonoir Nostr. Users can export their message history in JSON, CSV, or plain text formats with filtering options.
 
 ## Features Implemented
 
@@ -129,7 +131,7 @@ Optional metadata columns: Encrypted, Deleted, Kind, Signature
 
 ```
 ================================================================================
-Fairfield Nostr Message Export
+Minimoonoir Nostr Message Export
 Export Date: 2025-12-13T15:20:00.000Z
 Total Messages: 100
 ================================================================================
@@ -317,4 +319,4 @@ Memory usage scales linearly with message count.
 
 ## Conclusion
 
-Phase 3.4 complete. Users can now export their Fairfield Nostr message history in multiple formats with comprehensive filtering options. The implementation handles large datasets efficiently and integrates seamlessly with existing application architecture.
+Phase 3.4 complete. Users can now export their Minimoonoir Nostr message history in multiple formats with comprehensive filtering options. The implementation handles large datasets efficiently and integrates seamlessly with existing application architecture.

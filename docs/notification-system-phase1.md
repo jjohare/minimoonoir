@@ -1,7 +1,9 @@
+[← Back to Main README](../README.md)
+
 # Notification System - Phase 1.1 Implementation
 
 ## Overview
-In-app notification system for Fairfield Nostr that alerts users to new messages, DMs, and mentions.
+In-app notification system for Minimoonoir Nostr that alerts users to new messages, DMs, and mentions.
 
 ## Implemented Features
 

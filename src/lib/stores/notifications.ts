@@ -128,7 +128,7 @@ function createNotificationStore() {
       // Show browser notification if supported and permission granted
       if (browser && 'Notification' in window && Notification.permission === 'granted') {
         try {
-          new Notification('Fairfield Nostr', {
+          new Notification('Minimoonoir', {
             body: message,
             icon: '/favicon.png',
             tag: notification.id
