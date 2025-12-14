@@ -15,6 +15,9 @@
   import MarkAllRead from '$lib/components/forum/MarkAllRead.svelte';
   import ModeratorTeam from '$lib/components/forum/ModeratorTeam.svelte';
 
+  // UI components
+  import { SkeletonLoader, EmptyState } from '$lib/components/ui';
+
   let channels: CreatedChannel[] = [];
   let loading = true;
   let error: string | null = null;
@@ -82,19 +85,19 @@
       </div>
 
       {#if loading}
-        <div class="flex justify-center items-center min-h-[400px]">
-          <div class="loading loading-spinner loading-lg text-primary"></div>
+        <div class="space-y-3">
+          <SkeletonLoader variant="channel" count={5} />
         </div>
       {:else if error}
         <div class="alert alert-error">
           <span>{error}</span>
         </div>
       {:else if channels.length === 0}
-        <div class="card bg-base-200">
-          <div class="card-body items-center text-center">
-            <p class="text-base-content/70">No channels found. Create one to get started!</p>
-          </div>
-        </div>
+        <EmptyState
+          icon="💬"
+          title="No channels yet"
+          description="Create or join a channel to start chatting with the community"
+        />
       {:else}
         <div class="space-y-3">
           {#each channels as channel (channel.id)}

@@ -200,3 +200,15 @@ export async function getUserCohorts(pubkey: string): Promise<CohortName[]> {
   const status = await verifyWhitelistStatus(pubkey);
   return status.cohorts;
 }
+
+/**
+ * Quick check if user is approved (whitelisted or admin)
+ * Used by auth flows to determine if pending approval is needed
+ */
+export async function checkWhitelistStatus(pubkey: string): Promise<{ isApproved: boolean; isAdmin: boolean }> {
+  const status = await verifyWhitelistStatus(pubkey);
+  return {
+    isApproved: status.isWhitelisted,
+    isAdmin: status.isAdmin
+  };
+}
