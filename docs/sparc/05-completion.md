@@ -103,11 +103,11 @@ flowchart TB
 
 | Component | Minimum Spec | Recommended |
 |-----------|--------------|-------------|
-| **VPS/Cloud** | 1 vCPU, 1GB RAM | 2 vCPU, 2GB RAM |
-| **Storage** | 10GB SSD | 20GB SSD |
-| **OS** | Ubuntu 22.04 LTS | Ubuntu 24.04 LTS |
-| **Docker** | 24.x | Latest stable |
-| **Domain** | Required (TLS) | Subdomain for relay |
+| **Frontend Hosting** | Cloudflare Pages | Static site hosting with CDN |
+| **Backend Runtime** | Cloudflare Workers | Serverless relay implementation |
+| **Database** | Cloudflare D1 / Durable Objects | Event storage and state |
+| **Storage** | Cloudflare R2 | Backups and static assets |
+| **Domain** | Required (TLS) | Custom domain or *.pages.dev |
 
 ### 3.2 Deployment Architecture
 
@@ -118,24 +118,23 @@ flowchart TB
         EC[External Nostr Clients]
     end
 
-    subgraph Server["VPS / Cloud Instance"]
-        subgraph Caddy["Caddy Reverse Proxy :443"]
-            R1[chat.fairfield.example]
-            R2[relay.fairfield.example]
+    subgraph Cloudflare["Cloudflare Edge"]
+        subgraph Pages["Cloudflare Pages"]
+            PWA[SvelteKit PWA]
         end
 
-        subgraph Docker["Docker Network"]
-            PWA[SvelteKit PWA :3000]
-            Relay[strfry + relay29 :7777]
-            DB[(LMDB Storage)]
+        subgraph Workers["Cloudflare Workers"]
+            Relay[Relay Worker]
+        end
+
+        subgraph DO["Durable Objects"]
+            DB[(Event Storage)]
         end
     end
 
-    U -->|HTTPS| R1
-    U -->|WSS| R2
-    EC -->|WSS| R2
-    R1 --> PWA
-    R2 --> Relay
+    U -->|HTTPS| PWA
+    U -->|WSS| Relay
+    EC -->|WSS| Relay
     Relay --> DB
 ```
 
@@ -147,25 +146,98 @@ git clone https://github.com/jjohare/minimoonoir-nostr.git
 cd minimoonoir-nostr
 
 # 2. Configure environment
-cp .env.example .env
-nano .env  # Set RELAY_URL, ADMIN_PUBKEY, etc.
+cp .env.example .env.production
+nano .env.production  # Set VITE_ADMIN_PUBKEY, etc.
 
-# 3. Build and deploy
-docker compose build
-docker compose up -d
+# 3. Deploy frontend to Cloudflare Pages
+npm run build
+npx wrangler pages deploy build
 
-# 4. Verify services
-docker compose ps
-curl -I https://chat.minimoonoir.example
-curl -I https://relay.minimoonoir.example
+# 4. Deploy relay to Cloudflare Workers
+cd relay
+npx wrangler deploy
+
+# 5. Verify services
+curl -I https://chat.minimoonoir.pages.dev
+curl -I https://relay.minimoonoir.workers.dev
+```
+# 1. Clone repository
+git clone https://github.com/jjohare/minimoonoir-nostr.git
+cd minimoonoir-nostr
+
+# 2. Configure environment
+cp .env.example .env.production
+# Edit .env.production - Set VITE_ADMIN_PUBKEY, VITE_RELAY_URL, etc.
+
+# 3. Build frontend
+npm install
+npm run build
+
+# 4. Deploy frontend to Cloudflare Pages
+npx wrangler pages deploy build --project-name=minimoonoir-chat
+
+# 5. Deploy relay to Cloudflare Workers
+cd relay
+npm install
+npx wrangler deploy
+
+# 6. Configure Durable Objects (first time only)
+npx wrangler d1 create minimoonoir-relay-db
+npx wrangler d1 execute minimoonoir-relay-db --file=./schema.sql
+
+# 7. Verify deployments
+curl -I https://minimoonoir-chat.pages.dev
+curl https://relay.minimoonoir.workers.dev/health
 ```
 
-### 3.4 DNS Configuration
+### 3.4 Cloudflare Configuration
 
+**Initial Setup:**
+```bash
+# Install Wrangler CLI globally
+npm install -g wrangler
+
+# Authenticate with Cloudflare
+wrangler login
+
+# Create Pages project
+wrangler pages create minimoonoir-chat
+
+# Create Workers project
+wrangler init relay
+
+# Create R2 bucket for backups
+wrangler r2 bucket create minimoonoir-backups
+
+# Configure environment variables
+wrangler pages secret put VITE_ADMIN_PUBKEY --project-name=minimoonoir-chat
+wrangler secret put ADMIN_PUBKEY --name relay
 ```
-# DNS Records Required
-chat.minimoonoir.example    A     <server-ip>
-relay.minimoonoir.example   A     <server-ip>
+
+**wrangler.toml Configuration:**
+```toml
+# relay/wrangler.toml
+name = "minimoonoir-relay"
+main = "src/index.ts"
+compatibility_date = "2024-12-13"
+
+[durable_objects]
+bindings = [
+  { name = "RELAY_STATE", class_name = "RelayState" }
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "minimoonoir-relay-db"
+database_id = "<your-d1-database-id>"
+
+[[r2_buckets]]
+binding = "BACKUP_BUCKET"
+bucket_name = "minimoonoir-backups"
+
+[vars]
+RELAY_NAME = "Minimoonoir Private Relay"
+RELAY_DESCRIPTION = "Private relay for Minimoonoir community"
 ```
 
 ---
@@ -199,28 +271,33 @@ AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 ```
 
-### 4.2 Relay Configuration (strfry.conf)
+### 4.2 Relay Configuration (Cloudflare Workers)
 
-```toml
-# strfry configuration for Minimoonoir
-relay {
-    name = "Minimoonoir Private Relay"
-    description = "Closed community relay - no federation"
-    pubkey = "<admin-hex-pubkey>"
-    contact = "admin@minimoonoir.example"
-}
+```typescript
+// relay/workers/config.ts
+export const relayConfig = {
+  info: {
+    name: "Minimoonoir Private Relay",
+    description: "Closed community relay - no federation",
+    pubkey: process.env.ADMIN_PUBKEY,
+    contact: "admin@minimoonoir.example",
+  },
 
-# Restrict to authenticated users only
-[filter]
-accept = ["authenticated"]
+  // Restrict to authenticated users only
+  filter: {
+    accept: ["authenticated"],
+  },
 
-# Enable NIP-09 deletion
-[nip09]
-enabled = true
+  // Enable NIP-09 deletion
+  nip09: {
+    enabled: true,
+  },
 
-# Disable federation
-[federation]
-enabled = false
+  // Disable federation
+  federation: {
+    enabled: false,
+  },
+};
 ```
 
 ---
@@ -315,8 +392,8 @@ sequenceDiagram
 | Time to Interactive | <3s | Lighthouse | `lighthouse --only-categories=performance` |
 | Message Latency | <500ms | Custom | `npm run test:latency` |
 | Concurrent Connections | 12+ | Artillery | `artillery run load-test.yml` |
-| Memory Usage (Relay) | <256MB | Docker stats | `docker stats strfry` |
-| Storage Growth | <1GB/2yr | du | `du -sh /var/lib/strfry` |
+| Memory Usage (Relay) | <128MB | Cloudflare Dashboard | Workers Analytics |
+| Storage Growth | <1GB/2yr | Durable Objects | DO Storage metrics |
 
 ---
 
@@ -326,56 +403,39 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    subgraph Daily["Daily Incremental"]
-        D1[LMDB Snapshot]
+    subgraph Daily["Daily Snapshots"]
+        D1[Durable Objects State]
         D2[Config Files]
     end
 
-    subgraph Weekly["Weekly Full"]
-        W1[Full DB Dump]
-        W2[Docker Volumes]
+    subgraph Storage["R2 Storage"]
+        R2[R2 Bucket]
     end
 
-    subgraph Storage["Cloud Storage"]
-        S3[S3 Bucket]
-    end
+    D1 --> R2
+    D2 --> R2
 
-    D1 --> S3
-    D2 --> S3
-    W1 --> S3
-    W2 --> S3
-
-    S3 --> Retain[90-day retention]
+    R2 --> Retain[90-day retention]
 ```
 
-### 6.2 Backup Script
+### 6.2 Backup Script (Cloudflare Workers)
 
-```bash
-#!/bin/bash
-# /opt/minimoonoir/backup.sh
+```typescript
+// relay/workers/backup.ts
 
-set -euo pipefail
+export async function performBackup(env: Env): Promise<void> {
+  const timestamp = new Date().toISOString();
 
-BACKUP_DIR="/var/backups/minimoonoir"
-S3_BUCKET="${BACKUP_S3_BUCKET}"
-DATE=$(date +%Y%m%d_%H%M%S)
+  // Get Durable Object state
+  const id = env.RELAY_STATE.idFromName('relay');
+  const stub = env.RELAY_STATE.get(id);
+  const state = await stub.exportState();
 
-# Stop relay for consistent snapshot
-docker compose stop relay
+  // Save to R2
+  const key = `backups/relay-${timestamp}.json`;
+  await env.RELAY_BACKUP.put(key, JSON.stringify(state));
 
-# Create backup
-mkdir -p "$BACKUP_DIR"
-tar -czf "$BACKUP_DIR/minimoonoir-$DATE.tar.gz" \
-    /var/lib/docker/volumes/minimoonoir_relay-data \
-    /opt/minimoonoir/.env \
-    /opt/minimoonoir/strfry.conf
-
-# Restart relay
-docker compose start relay
-
-# Upload to S3
-aws s3 cp "$BACKUP_DIR/minimoonoir-$DATE.tar.gz" \
-    "s3://$S3_BUCKET/backups/"
+  console.log(`Backup created: ${key}`);
 
 # Cleanup old local backups (keep 7 days)
 find "$BACKUP_DIR" -type f -mtime +7 -delete
@@ -385,52 +445,74 @@ echo "Backup completed: minimoonoir-$DATE.tar.gz"
 
 ### 6.3 Recovery Procedure
 
-```bash
-#!/bin/bash
-# Recovery from backup
+```typescript
+// Recovery from backup
 
-BACKUP_FILE="$1"
+export async function restoreBackup(env: Env, backupKey: string): Promise<void> {
+  // 1. Fetch backup from R2
+  const backup = await env.RELAY_BACKUP.get(backupKey);
+  if (!backup) {
+    throw new Error(`Backup not found: ${backupKey}`);
+  }
 
-# 1. Stop services
-docker compose down
+  const state = await backup.json();
 
-# 2. Extract backup
-tar -xzf "$BACKUP_FILE" -C /
+  // 2. Get Durable Object
+  const id = env.RELAY_STATE.idFromName('relay');
+  const stub = env.RELAY_STATE.get(id);
 
-# 3. Restore permissions
-chown -R 1000:1000 /var/lib/docker/volumes/minimoonoir_relay-data
+  // 3. Restore state
+  await stub.importState(state);
 
-# 4. Start services
-docker compose up -d
+  // 4. Verify
+  console.log(`Successfully restored from: ${backupKey}`);
+}
 
-# 5. Verify
-docker compose ps
-curl -I https://relay.minimoonoir.example
+// List available backups
+export async function listBackups(env: Env): Promise<string[]> {
+  const list = await env.RELAY_BACKUP.list({ prefix: 'backups/' });
+  return list.objects.map(obj => obj.key);
+}
 ```
 
 ---
 
 ## 7. Monitoring & Alerting
 
-### 7.1 Health Checks
+### 7.1 Health Checks (Cloudflare Workers)
 
-```yaml
-# docker-compose.yml health checks
-services:
-  relay:
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7777/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+```typescript
+// relay/workers/health.ts
 
-  pwa:
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+export async function handleHealthCheck(env: Env): Promise<Response> {
+  const checks = {
+    relay: await checkRelay(env),
+    durableObjects: await checkDurableObjects(env),
+    r2: await checkR2(env),
+  };
+
+  const allHealthy = Object.values(checks).every(c => c.healthy);
+
+  return new Response(JSON.stringify({
+    status: allHealthy ? 'healthy' : 'degraded',
+    checks,
+    timestamp: new Date().toISOString(),
+  }), {
+    status: allHealthy ? 200 : 503,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+async function checkRelay(env: Env): Promise<{ healthy: boolean }> {
+  const id = env.RELAY_STATE.idFromName('relay');
+  const stub = env.RELAY_STATE.get(id);
+  try {
+    await stub.fetch(new Request('http://internal/health'));
+    return { healthy: true };
+  } catch {
+    return { healthy: false };
+  }
+}
 ```
 
 ### 7.2 Monitoring Stack (Optional)
@@ -459,9 +541,9 @@ flowchart TB
 
 | Metric | Alert Threshold | Severity |
 |--------|-----------------|----------|
-| Relay WebSocket connections | >20 | Warning |
-| Relay memory usage | >512MB | Warning |
-| Relay disk usage | >80% | Critical |
+| Worker CPU Time | >50ms avg | Warning | Workers Analytics |
+| Worker Error Rate | >1% | Critical | Workers Analytics |
+| D1 Storage | >80% quota | Critical | D1 Analytics |
 | PWA response time | >2s | Warning |
 | SSL certificate expiry | <14 days | Critical |
 | Backup age | >48 hours | Critical |
@@ -683,25 +765,25 @@ gantt
 ## Appendix A: Quick Reference Commands
 
 ```bash
-# Service Management
-docker compose up -d          # Start all services
-docker compose down           # Stop all services
-docker compose logs -f relay  # View relay logs
-docker compose restart pwa    # Restart PWA only
+# Service Management (Cloudflare)
+wrangler pages deploy build           # Deploy frontend
+wrangler deploy                        # Deploy relay worker
+wrangler tail                          # View real-time logs
 
 # Backup & Restore
-/opt/minimoonoir/backup.sh                    # Run backup
-/opt/minimoonoir/restore.sh backup-file.tar.gz # Restore
+curl -X POST https://relay.minimoonoir.workers.dev/backup      # Trigger backup
+curl https://relay.minimoonoir.workers.dev/backups             # List backups
+curl -X POST https://relay.minimoonoir.workers.dev/restore/... # Restore
 
 # Health Checks
-curl https://chat.minimoonoir.example/health
-curl https://relay.minimoonoir.example
+curl https://chat.minimoonoir.pages.dev/health
+curl https://relay.minimoonoir.workers.dev/health
 
-# Database Inspection (debugging only)
-docker exec -it minimoonoir-relay strfry scan
+# Database Inspection (Cloudflare Dashboard)
+# View Durable Objects state in Cloudflare Dashboard > Workers > Durable Objects
 
-# SSL Certificate Renewal (Caddy auto-handles)
-docker exec -it minimoonoir-caddy caddy reload
+# Metrics
+# View in Cloudflare Dashboard > Analytics
 ```
 
 ---
@@ -710,7 +792,7 @@ docker exec -it minimoonoir-caddy caddy reload
 
 | Symptom | Likely Cause | Resolution |
 |---------|--------------|------------|
-| "Connection refused" on WSS | Relay not running | `docker compose up -d relay` |
+| "Connection refused" on WSS | Worker not deployed | `wrangler deploy` |
 | Messages not appearing | WebSocket disconnected | Refresh page, check relay logs |
 | "AUTH required" error | User not authenticated | Re-authenticate, check localStorage |
 | Mnemonic not generating | Entropy source issue | Try different browser |
