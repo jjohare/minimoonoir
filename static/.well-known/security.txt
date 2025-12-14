@@ -1,0 +1,11 @@
+# Security Policy for Minimoonoir
+# https://securitytxt.org/
+
+Contact: https://github.com/jjohare/minimoonoir/security/advisories/new
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://jjohare.github.io/minimoonoir/.well-known/security.txt
+
+# Security Issues
+# Please report security vulnerabilities via GitHub Security Advisories
+# Do not create public issues for security vulnerabilities

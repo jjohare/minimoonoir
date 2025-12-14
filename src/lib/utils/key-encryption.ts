@@ -3,7 +3,9 @@
  * Encrypts private keys before localStorage storage using Web Crypto API
  */
 
-const PBKDF2_ITERATIONS = 100000;
+// OWASP 2023 recommends 600k+ iterations for PBKDF2-SHA256
+// https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+const PBKDF2_ITERATIONS = 600000;
 const SALT_LENGTH = 16;
 const IV_LENGTH = 12;
 const KEY_LENGTH = 256;
