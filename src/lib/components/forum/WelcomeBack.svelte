@@ -4,9 +4,11 @@
   import { browser } from '$app/environment';
 
   let lastVisit: Date | null = null;
-  let displayName = '';
 
   const LAST_VISIT_KEY = 'minimoomaa_last_visit';
+
+  // Use authStore nickname directly (reactive)
+  $: displayName = $authStore.nickname || '';
 
   onMount(() => {
     if (!browser) return;
@@ -19,18 +21,6 @@
 
     // Update last visit time
     localStorage.setItem(LAST_VISIT_KEY, Date.now().toString());
-
-    // Get display name from profile if available
-    const profileKey = `nostr_profile_${$authStore.publicKey}`;
-    const profile = localStorage.getItem(profileKey);
-    if (profile) {
-      try {
-        const parsed = JSON.parse(profile);
-        displayName = parsed.name || parsed.display_name || '';
-      } catch {
-        // Ignore parse errors
-      }
-    }
   });
 
   function formatLastVisit(date: Date): string {

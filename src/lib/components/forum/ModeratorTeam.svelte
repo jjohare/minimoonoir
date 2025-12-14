@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { getAvatarUrl } from '$lib/utils/identicon';
+  import { profileCache } from '$lib/stores/profiles';
 
   // For now, moderators are derived from admin pubkeys
   // In a full implementation, this would be fetched from relay
@@ -9,16 +11,41 @@
     role: string;
   }> = [];
 
-  // Default moderator (admin)
-  const defaultMods = [
-    {
-      pubkey: '55f6d852c8ecbf022be81be356b62fdeef09c900deaf2bd262dc6759427c2eb2',
-      displayName: 'Admin',
-      role: 'Administrator',
-    },
-  ];
+  // Admin pubkey from env
+  const adminPubkey = import.meta.env.VITE_ADMIN_PUBKEY || '';
 
-  $: displayMods = moderators.length > 0 ? moderators : defaultMods;
+  interface ModDisplay {
+    pubkey: string;
+    displayName: string;
+    role: string;
+    avatar: string;
+  }
+
+  let displayMods: ModDisplay[] = [];
+
+  onMount(async () => {
+    if (moderators.length > 0) {
+      // Prefetch provided moderator profiles
+      await profileCache.prefetchProfiles(moderators.map(m => m.pubkey));
+      displayMods = moderators.map(m => {
+        const cached = profileCache.getCachedSync(m.pubkey);
+        return {
+          ...m,
+          displayName: cached?.displayName || m.displayName,
+          avatar: cached?.avatar || getAvatarUrl(m.pubkey, 80),
+        };
+      });
+    } else if (adminPubkey) {
+      // Use admin as default moderator
+      const profile = await profileCache.getProfile(adminPubkey);
+      displayMods = [{
+        pubkey: adminPubkey,
+        displayName: profile?.displayName || 'Admin',
+        role: 'Administrator',
+        avatar: profile?.avatar || getAvatarUrl(adminPubkey, 80),
+      }];
+    }
+  });
 </script>
 
 <div class="card bg-base-200 shadow-lg">
@@ -31,7 +58,7 @@
           <div class="avatar">
             <div class="w-10 rounded-full">
               <img
-                src={getAvatarUrl(mod.pubkey, 80)}
+                src={mod.avatar}
                 alt={mod.displayName}
               />
             </div>

@@ -3,6 +3,7 @@
   import { ndk, connectNDK } from '$lib/nostr/ndk';
   import { browser } from '$app/environment';
   import { getAvatarUrl } from '$lib/utils/identicon';
+  import { profileCache } from '$lib/stores/profiles';
 
   interface Poster {
     pubkey: string;
@@ -48,21 +49,28 @@
         }
       }
 
-      // Convert to sorted arrays
-      const formatPosters = (counts: Map<string, number>): Poster[] => {
-        return Array.from(counts.entries())
+      // Convert to sorted arrays and fetch profiles
+      const formatPosters = async (counts: Map<string, number>): Promise<Poster[]> => {
+        const sorted = Array.from(counts.entries())
           .sort((a, b) => b[1] - a[1])
-          .slice(0, 10)
-          .map(([pubkey, postCount]) => ({
+          .slice(0, 10);
+
+        // Prefetch all profiles
+        await profileCache.prefetchProfiles(sorted.map(([pk]) => pk));
+
+        return sorted.map(([pubkey, postCount]) => {
+          const cached = profileCache.getCachedSync(pubkey);
+          return {
             pubkey,
-            displayName: pubkey.substring(0, 8) + '...',
+            displayName: cached?.displayName || pubkey.substring(0, 8) + '...',
             postCount,
-            avatar: getAvatarUrl(pubkey, 48),
-          }));
+            avatar: cached?.avatar || getAvatarUrl(pubkey, 48),
+          };
+        });
       };
 
-      topPostersToday = formatPosters(postCountsToday);
-      topPostersAllTime = formatPosters(postCountsAllTime);
+      topPostersToday = await formatPosters(postCountsToday);
+      topPostersAllTime = await formatPosters(postCountsAllTime);
 
     } catch (e) {
       console.error('Failed to fetch top posters:', e);
