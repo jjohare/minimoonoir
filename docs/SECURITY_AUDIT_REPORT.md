@@ -29,10 +29,12 @@ This comprehensive security audit evaluated the Minimoonoir Nostr PWA across aut
 
 **Issue**:
 ```bash
-VITE_ADMIN_PUBKEY=REDACTED_PUBKEY
-ADMIN_PROVKEY=REDACTED_NSEC
-ADMIN_KEY="REDACTED_MNEMONIC"
+VITE_ADMIN_PUBKEY=<REDACTED - keys have been rotated>
+ADMIN_PRIVKEY=<REDACTED - keys have been rotated>
+ADMIN_KEY="<REDACTED - keys have been rotated>"
 ```
+
+**Status**: ✅ RESOLVED - Keys rotated on 2025-12-14
 
 **Risk**: Complete compromise of admin account. These credentials provide:
 - Full administrative access to the application

@@ -8,9 +8,13 @@ import { Page, expect } from '@playwright/test';
 /**
  * Test user credentials from .env
  */
+/**
+ * Admin credentials - MUST be provided via environment variables
+ * Never hardcode actual credentials in test files
+ */
 export const ADMIN_CREDENTIALS = {
-  pubkey: process.env.VITE_ADMIN_PUBKEY || 'REDACTED_PUBKEY',
-  mnemonic: process.env.ADMIN_KEY || 'REDACTED_MNEMONIC'
+  pubkey: process.env.VITE_ADMIN_PUBKEY || (() => { throw new Error('VITE_ADMIN_PUBKEY environment variable required for admin tests'); })(),
+  mnemonic: process.env.ADMIN_KEY || (() => { throw new Error('ADMIN_KEY environment variable required for admin tests'); })()
 };
 
 /**

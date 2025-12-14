@@ -517,7 +517,8 @@ test.describe('Admin - Permissions', () => {
     await loginAsAdmin(page);
 
     const adminPubkey = await getCurrentUserPubkey(page);
-    const expectedPubkey = process.env.VITE_ADMIN_PUBKEY || 'REDACTED_PUBKEY';
+    const expectedPubkey = process.env.VITE_ADMIN_PUBKEY;
+    expect(expectedPubkey).toBeTruthy(); // Ensure env var is set
 
     expect(adminPubkey).toBe(expectedPubkey);
   });
