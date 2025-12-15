@@ -2,6 +2,7 @@ import { WebSocket } from 'ws';
 import { Database, NostrEvent } from './db';
 import { Whitelist } from './whitelist';
 import crypto from 'crypto';
+import { schnorr } from '@noble/secp256k1';
 
 export class NostrHandlers {
   private db: Database;
@@ -60,6 +61,12 @@ export class NostrHandlers {
     // Verify event ID
     if (!this.verifyEventId(event)) {
       this.sendOK(ws, event.id, false, 'invalid: event id verification failed');
+      return;
+    }
+
+    // Verify Schnorr signature
+    if (!await this.verifySignature(event)) {
+      this.sendOK(ws, event.id, false, 'invalid: signature verification failed');
       return;
     }
 
@@ -128,6 +135,34 @@ export class NostrHandlers {
 
     const hash = crypto.createHash('sha256').update(serialized).digest('hex');
     return hash === event.id;
+  }
+
+  private async verifySignature(event: NostrEvent): Promise<boolean> {
+    try {
+      // Convert hex strings to Uint8Array as required by @noble/secp256k1
+      // event.id is the message hash (32 bytes)
+      // event.sig is the Schnorr signature (64 bytes)
+      // event.pubkey is the public key (32 bytes)
+      const messageHash = this.hexToBytes(event.id);
+      const signature = this.hexToBytes(event.sig);
+      const publicKey = this.hexToBytes(event.pubkey);
+
+      // Verify Schnorr signature according to NIP-01
+      const isValid = await schnorr.verify(signature, messageHash, publicKey);
+      return isValid;
+    } catch (error) {
+      console.error('Signature verification error:', error);
+      return false;
+    }
+  }
+
+  private hexToBytes(hex: string): Uint8Array {
+    // Convert hex string to Uint8Array
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes;
   }
 
   private broadcastEvent(event: NostrEvent): void {

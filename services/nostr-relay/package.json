@@ -9,6 +9,7 @@
     "dev": "ts-node src/server.ts"
   },
   "dependencies": {
+    "@noble/secp256k1": "^3.0.0",
     "dotenv": "^16.3.1",
     "sql.js": "^1.10.3",
     "ws": "^8.14.2"
