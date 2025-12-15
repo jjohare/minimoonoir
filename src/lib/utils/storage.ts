@@ -1,6 +1,120 @@
 /**
  * Secure localStorage utilities for Nostr key management
+ * Includes fallback to in-memory storage for private browsing
  */
+
+/**
+ * In-memory storage fallback for when localStorage is unavailable
+ */
+class MemoryStorage implements Storage {
+  private data = new Map<string, string>();
+
+  get length(): number {
+    return this.data.size;
+  }
+
+  clear(): void {
+    this.data.clear();
+  }
+
+  getItem(key: string): string | null {
+    return this.data.get(key) ?? null;
+  }
+
+  key(index: number): string | null {
+    const keys = Array.from(this.data.keys());
+    return keys[index] ?? null;
+  }
+
+  removeItem(key: string): void {
+    this.data.delete(key);
+  }
+
+  setItem(key: string, value: string): void {
+    this.data.set(key, value);
+  }
+}
+
+// Fallback storage instance
+const memoryStorage = new MemoryStorage();
+let usingFallback = false;
+
+/**
+ * Check if localStorage is available
+ */
+function isLocalStorageAvailable(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const testKey = '__storage_test__';
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Get appropriate storage with automatic fallback
+ */
+function getStorage(): Storage {
+  if (typeof window === 'undefined') {
+    return memoryStorage;
+  }
+
+  if (usingFallback) {
+    return memoryStorage;
+  }
+
+  if (!isLocalStorageAvailable()) {
+    usingFallback = true;
+    console.warn('localStorage unavailable, using in-memory fallback. Data will not persist.');
+    return memoryStorage;
+  }
+
+  return localStorage;
+}
+
+/**
+ * Safe storage wrapper with automatic fallback
+ */
+export const safeStorage = {
+  getItem(key: string): string | null {
+    try {
+      return getStorage().getItem(key);
+    } catch {
+      return memoryStorage.getItem(key);
+    }
+  },
+
+  setItem(key: string, value: string): boolean {
+    try {
+      getStorage().setItem(key, value);
+      return true;
+    } catch (error) {
+      console.warn(`Storage quota exceeded or unavailable for ${key}, using fallback`);
+      if (!usingFallback) {
+        usingFallback = true;
+      }
+      memoryStorage.setItem(key, value);
+      return true;
+    }
+  },
+
+  removeItem(key: string): void {
+    try {
+      getStorage().removeItem(key);
+      memoryStorage.removeItem(key);
+    } catch {
+      memoryStorage.removeItem(key);
+    }
+  },
+
+  get isUsingFallback(): boolean {
+    return usingFallback || !isLocalStorageAvailable();
+  }
+};
 
 const STORAGE_KEYS = {
   PUBKEY: 'minimoonoir_nostr_pubkey',

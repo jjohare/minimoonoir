@@ -3,6 +3,7 @@ import { ndkStore } from './ndk';
 import { authStore } from './auth';
 import type { NDKUser, NDKUserProfile } from '@nostr-dev-kit/ndk';
 import { browser } from '$app/environment';
+import { AsyncThrottle } from '$lib/utils/asyncHelpers';
 
 /**
  * Profile cache entry
@@ -28,6 +29,10 @@ interface ProfileCacheState {
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const MAX_CACHE_SIZE = 500;
+const MAX_CONCURRENT_FETCHES = 5;
+
+// Throttle concurrent profile fetches to prevent overwhelming relays
+const profileFetchThrottle = new AsyncThrottle<NDKUserProfile | null>(MAX_CONCURRENT_FETCHES);
 
 function createProfileCache() {
   const { subscribe, update, set } = writable<ProfileCacheState>({
@@ -69,17 +74,19 @@ function createProfileCache() {
       return state;
     });
 
-    // Fetch from NDK
+    // Fetch from NDK with throttling
     try {
       const ndk = ndkStore.get();
       if (!ndk) {
         throw new Error('NDK not initialized');
       }
 
-      const user: NDKUser = ndk.getUser({ pubkey });
-      await user.fetchProfile();
-
-      const profile = user.profile;
+      // Throttle concurrent fetches to prevent overwhelming relays
+      const profile = await profileFetchThrottle.execute(async () => {
+        const user: NDKUser = ndk.getUser({ pubkey });
+        await user.fetchProfile();
+        return user.profile || null;
+      });
 
       // For current user, prefer local nickname from authStore over relay data
       const auth = get(authStore);

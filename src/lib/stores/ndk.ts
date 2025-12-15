@@ -152,7 +152,7 @@ export async function publishChannelMessage(
   ndk: NDK,
   channelId: string,
   content: string,
-  signer: any
+  signer: import('@nostr-dev-kit/ndk').NDKSigner
 ): Promise<boolean> {
   try {
     const event = new NDKEvent(ndk);
@@ -175,7 +175,7 @@ export async function publishDirectMessage(
   ndk: NDK,
   recipientPubkey: string,
   content: string,
-  signer: any
+  signer: import('@nostr-dev-kit/ndk').NDKSigner
 ): Promise<boolean> {
   try {
     const event = new NDKEvent(ndk);

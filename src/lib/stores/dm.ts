@@ -234,7 +234,7 @@ function createDMStore() {
         await ndk.connect();
 
         const ndkRelay = {
-          publish: async (event: any) => {
+          publish: async (event: Event) => {
             const NDKEvent = (await import('@nostr-dev-kit/ndk')).NDKEvent;
             const ndkEvent = new NDKEvent(ndk, event);
             await ndkEvent.publish();
@@ -351,7 +351,7 @@ function createDMStore() {
 
       const subscription = ndk.subscribe(filter, { closeOnEose: false });
 
-      subscription.on('event', (ndkEvent: any) => {
+      subscription.on('event', (ndkEvent: import('@nostr-dev-kit/ndk').NDKEvent) => {
         const event: Event = {
           id: ndkEvent.id,
           kind: ndkEvent.kind!,
