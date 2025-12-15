@@ -1,4 +1,17 @@
 <script lang="ts">
+  /**
+   * AuthFlow - Multi-step authentication flow for signup and login
+   *
+   * Flow steps:
+   * 1. Signup - Generate new keys with mnemonic
+   * 2. MnemonicDisplay - Show mnemonic with copy option (first display)
+   * 3. KeyBackup - Show mnemonic again with npub (second display)
+   * 4. PendingApproval - Wait for admin whitelist approval
+   *
+   * NOTE: Mnemonic is intentionally shown twice (in MnemonicDisplay and KeyBackup)
+   * for the private server. This high-friction design ensures users properly backup
+   * their recovery phrase. For public deployments, consider consolidating to one step.
+   */
   import { authStore } from '$lib/stores/auth';
   import { saveKeysToStorage } from '$lib/nostr/keys';
   import Signup from './Signup.svelte';

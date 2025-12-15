@@ -1,11 +1,12 @@
 <script lang="ts">
 	import '../app.css';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { fade } from 'svelte/transition';
 	import { authStore, isAuthenticated } from '$lib/stores/auth';
+	import { sessionStore } from '$lib/stores/session';
 	import { initializePWA } from '$lib/utils/pwa-init';
 	import {
 		canInstall,
@@ -20,6 +21,7 @@
 	import { initSearch } from '$lib/init/searchInit';
 	import Toast from '$lib/components/ui/Toast.svelte';
 	import ConfirmDialog from '$lib/components/ui/ConfirmDialog.svelte';
+	import SessionTimeoutWarning from '$lib/components/ui/SessionTimeoutWarning.svelte';
 	import Navigation from '$lib/components/ui/Navigation.svelte';
 	import MyProfileModal from '$lib/components/user/MyProfileModal.svelte';
 
@@ -28,8 +30,21 @@
 	let showInstallBanner = false;
 	let showUpdateBanner = false;
 	let showProfileModal = false;
+	let sessionCleanup: (() => void) | null = null;
 
 	$: showNav = $page.url.pathname !== `${base}/` && $page.url.pathname !== base && $page.url.pathname !== `${base}/signup` && $page.url.pathname !== `${base}/login` && $page.url.pathname !== `${base}/pending`;
+
+	// Start session monitoring when authenticated
+	$: if (browser && $isAuthenticated && !sessionCleanup) {
+		sessionCleanup = sessionStore.start(() => {
+			// Session timed out - logout
+			authStore.logout();
+		});
+	} else if (browser && !$isAuthenticated && sessionCleanup) {
+		sessionCleanup();
+		sessionCleanup = null;
+		sessionStore.stop();
+	}
 
 	canInstall.subscribe(value => {
 		showInstallBanner = value;
@@ -60,6 +75,13 @@
 
 			// Initialize search index (async, don't block app startup)
 			initSearch();
+		}
+	});
+
+	onDestroy(() => {
+		if (sessionCleanup) {
+			sessionCleanup();
+			sessionCleanup = null;
 		}
 	});
 
@@ -161,6 +183,7 @@
 
 <Toast />
 <ConfirmDialog />
+<SessionTimeoutWarning />
 
 <style>
 	:global(body) {
