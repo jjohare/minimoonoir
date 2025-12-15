@@ -6,6 +6,8 @@ import { NDKEvent, type NDKFilter } from '@nostr-dev-kit/ndk';
 import { ndk, connectNDK, hasSigner } from './ndk';
 import { browser } from '$app/environment';
 import type { ChannelSection } from '$lib/types/channel';
+import { validateContent, validateChannelName } from '$lib/utils/validation';
+import { checkRateLimit, RateLimitError } from '$lib/utils/rateLimit';
 
 // NIP-28 Event Kinds for Public Chat
 export const CHANNEL_KINDS = {
@@ -54,6 +56,21 @@ export async function createChannel(options: ChannelCreateOptions): Promise<Crea
 
 	if (!hasSigner()) {
 		throw new Error('No signer configured. Please login first.');
+	}
+
+	// Validate channel name
+	const nameValidation = validateChannelName(options.name);
+	if (!nameValidation.valid) {
+		throw new Error(`Invalid channel name: ${nameValidation.errors.join(', ')}`);
+	}
+
+	// Check rate limit for channel creation
+	const rateLimit = checkRateLimit('channelCreate');
+	if (!rateLimit.allowed) {
+		throw new RateLimitError(
+			`Channel creation rate limit exceeded. Try again in ${rateLimit.retryAfter} seconds.`,
+			rateLimit.retryAfter
+		);
 	}
 
 	// Ensure connected
@@ -144,6 +161,21 @@ export async function sendChannelMessage(
 
 	if (!hasSigner()) {
 		throw new Error('No signer configured. Please login first.');
+	}
+
+	// Validate message content
+	const contentValidation = validateContent(content);
+	if (!contentValidation.valid) {
+		throw new Error(`Invalid message: ${contentValidation.errors.join(', ')}`);
+	}
+
+	// Check rate limit for message sending
+	const rateLimit = checkRateLimit('message');
+	if (!rateLimit.allowed) {
+		throw new RateLimitError(
+			`Message rate limit exceeded. Try again in ${rateLimit.retryAfter} seconds.`,
+			rateLimit.retryAfter
+		);
 	}
 
 	await connectNDK();

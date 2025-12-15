@@ -15,6 +15,8 @@ import {
   getPublicKey,
   finalizeEvent
 } from 'nostr-tools';
+import { validateContent, isValidPubkey } from '$lib/utils/validation';
+import { checkRateLimit, RateLimitError } from '$lib/utils/rateLimit';
 
 /** Kind for sealed rumor (NIP-17) */
 const KIND_SEALED_RUMOR = 14;
@@ -74,6 +76,26 @@ export async function sendDM(
   senderPrivkey: Uint8Array,
   relay: Relay
 ): Promise<void> {
+  // Validate recipient pubkey
+  if (!isValidPubkey(recipientPubkey)) {
+    throw new Error('Invalid recipient public key');
+  }
+
+  // Validate message content
+  const contentValidation = validateContent(content);
+  if (!contentValidation.valid) {
+    throw new Error(`Invalid message: ${contentValidation.errors.join(', ')}`);
+  }
+
+  // Check rate limit for DM sending
+  const rateLimit = checkRateLimit('dm');
+  if (!rateLimit.allowed) {
+    throw new RateLimitError(
+      `DM rate limit exceeded. Try again in ${rateLimit.retryAfter} seconds.`,
+      rateLimit.retryAfter
+    );
+  }
+
   const senderPubkey = getPublicKey(senderPrivkey);
   const currentTimestamp = Math.floor(Date.now() / 1000);
 
