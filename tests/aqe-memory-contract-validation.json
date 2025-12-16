@@ -1,5 +1,5 @@
 {
-  "validation_id": "fairfield-nostr-gcp-2025-12-15",
+  "validation_id": "Nostr-BBS-nostr-gcp-2025-12-15",
   "timestamp": "2025-12-15T16:00:00Z",
   "agent": "qe-api-contract-validator",
   "environment": "production-gcp",
@@ -41,7 +41,7 @@
         "http_code": 200,
         "response_time_cold_ms": 9116,
         "response_time_warm_ms": 259,
-        "test_input": "This is a test message for semantic embedding validation using the Fairfield Nostr API",
+        "test_input": "This is a test message for semantic embedding validation using the Nostr-BBS Nostr API",
 
         "contract_validations": {
           "has_embeddings_field": true,
@@ -197,16 +197,16 @@
   },
 
   "test_artifacts": [
-    "/home/devuser/workspace/fairfield-nostr/tests/validate-embeddings.js",
-    "/home/devuser/workspace/fairfield-nostr/tests/test-nostr-websocket.js",
-    "/home/devuser/workspace/fairfield-nostr/tests/test-nostr-websocket.mjs",
-    "/home/devuser/workspace/fairfield-nostr/tests/test-nostr-simple.mjs",
-    "/home/devuser/workspace/fairfield-nostr/tests/test-nostr-playwright.mjs",
-    "/home/devuser/workspace/fairfield-nostr/tests/api-contract-validation-report.md"
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/validate-embeddings.js",
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/test-nostr-websocket.js",
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/test-nostr-websocket.mjs",
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/test-nostr-simple.mjs",
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/test-nostr-playwright.mjs",
+    "/home/devuser/workspace/Nostr-BBS-nostr/tests/api-contract-validation-report.md"
   ],
 
-  "memory_namespace": "aqe/api-contracts/fairfield-nostr-gcp",
+  "memory_namespace": "aqe/api-contracts/Nostr-BBS-nostr-gcp",
   "validation_framework": "Agentic QE Fleet v2.4.0",
   "validated_by": "qe-api-contract-validator",
-  "report_path": "/home/devuser/workspace/fairfield-nostr/tests/api-contract-validation-report.md"
+  "report_path": "/home/devuser/workspace/Nostr-BBS-nostr/tests/api-contract-validation-report.md"
 }

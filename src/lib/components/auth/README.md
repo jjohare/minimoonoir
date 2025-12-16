@@ -2,7 +2,7 @@
 
 [Back to Main README](../../../../README.md)
 
-Complete Svelte authentication flow for Minimoonoir with Tailwind CSS and DaisyUI styling.
+Complete Svelte authentication flow for Nostr-BBS with Tailwind CSS and DaisyUI styling.
 
 ## Components
 
@@ -84,13 +84,13 @@ Waiting screen for admin approval.
 ```svelte
 <script>
   import { Signup, MnemonicDisplay, Login, KeyBackup, PendingApproval } from '$lib/components/auth';
-  
+
   let publicKey = '';
   let privateKey = '';
   let mnemonic = '';
 </script>
 
-<Signup 
+<Signup
   on:next={(e) => {
     mnemonic = e.detail.mnemonic;
     publicKey = e.detail.publicKey;

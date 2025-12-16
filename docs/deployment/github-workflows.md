@@ -43,8 +43,8 @@ Deploys the Python-based embedding API to GCP Cloud Run.
 - **Service**: `embedding-api`
 - **Platform**: GCP Cloud Run
 - **Region**: `us-central1` (configurable)
-- **Artifact Registry**: `minimoonoir` repository
-- **Image**: `{region}-docker.pkg.dev/{project}/minimoonoir/embedding-api:{sha|latest}`
+- **Artifact Registry**: `Nostr-BBS` repository
+- **Image**: `{region}-docker.pkg.dev/{project}/Nostr-BBS/embedding-api:{sha|latest}`
 
 **Configuration:**
 - Memory: 2Gi
@@ -68,11 +68,11 @@ Generates note embeddings and uploads to Google Cloud Storage.
 2. Fetch new notes from Nostr relay
 3. Generate embeddings using `sentence-transformers/all-MiniLM-L6-v2`
 4. Build HNSW index
-5. Upload to GCS bucket `minimoonoir-vectors`
+5. Upload to GCS bucket `Nostr-BBS-vectors`
 
 **GCS Structure:**
 ```
-gs://minimoonoir-vectors/
+gs://Nostr-BBS-vectors/
   ├── v{version}/
   │   ├── index.bin
   │   ├── embeddings.npz
@@ -197,10 +197,10 @@ gcloud artifacts repositories create nosflare \
   --description="Nosflare Nostr relay images"
 
 # For embedding API
-gcloud artifacts repositories create minimoonoir \
+gcloud artifacts repositories create Nostr-BBS \
   --repository-format=docker \
   --location=us-central1 \
-  --description="Minimoonoir embedding API images"
+  --description="Nostr-BBS embedding API images"
 ```
 
 ### Cloud Storage Bucket
@@ -208,12 +208,12 @@ gcloud artifacts repositories create minimoonoir \
 Create bucket for embeddings:
 
 ```bash
-gcloud storage buckets create gs://minimoonoir-vectors \
+gcloud storage buckets create gs://Nostr-BBS-vectors \
   --location=us-central1 \
   --uniform-bucket-level-access
 
 # Make bucket publicly readable (for embedding access)
-gcloud storage buckets add-iam-policy-binding gs://minimoonoir-vectors \
+gcloud storage buckets add-iam-policy-binding gs://Nostr-BBS-vectors \
   --member=allUsers \
   --role=roles/storage.objectViewer
 ```
@@ -348,7 +348,7 @@ curl -I https://nosflare-relay-xxx.run.app/
 curl https://embedding-api-xxx.run.app/health
 
 # Check embeddings in GCS
-curl https://storage.googleapis.com/minimoonoir-vectors/latest/manifest.json
+curl https://storage.googleapis.com/Nostr-BBS-vectors/latest/manifest.json
 ```
 
 ## Cost Optimization

@@ -68,7 +68,7 @@ steps:
       - '--set-env-vars'
       - 'NODE_ENV=production'
       - '--set-env-vars'
-      - 'RELAY_NAME=Fairfield Nostr Relay'
+      - 'RELAY_NAME=Nostr-BBS Nostr Relay'
       - '--set-env-vars'
       - 'RELAY_DESCRIPTION=Private community Nostr relay'
       # Cloud SQL connection
@@ -84,7 +84,7 @@ steps:
       - 'nostr-relay@$PROJECT_ID.iam.gserviceaccount.com'
       # Labels for cost tracking
       - '--labels'
-      - 'app=nostr-relay,env=production,cost-center=fairfield'
+      - 'app=nostr-relay,env=production,cost-center=Nostr-BBS'
     id: 'deploy-cloud-run'
     waitFor: ['push-image']
 

@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 
 const ADMIN_MNEMONIC = 'trim deny glow firm panic salute wife endorse hunt then require decorate';
 const SCREENSHOT_DIR = '/tmp/ui-test-screenshots-live';
-const BASE_URL = 'https://jjohare.github.io/minimoonoir';
+const BASE_URL = 'https://jjohare.github.io/Nostr-BBS';
 
-test.describe('Fairfield Nostr UI/UX Testing', () => {
+test.describe('Nostr-BBS Nostr UI/UX Testing', () => {
   test.beforeAll(async () => {
     // Screenshots will be saved to SCREENSHOT_DIR
     // Directory will be created automatically if needed

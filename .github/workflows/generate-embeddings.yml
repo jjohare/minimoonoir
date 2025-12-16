@@ -25,7 +25,7 @@ env:
   PYTHON_VERSION: '3.11'
   EMBEDDING_MODEL: 'sentence-transformers/all-MiniLM-L6-v2'
   EMBEDDING_DIM: 384
-  GCS_BUCKET_NAME: 'minimoonoir-vectors'
+  GCS_BUCKET_NAME: 'Nostr-BBS-vectors'
 
 jobs:
   generate-embeddings:

@@ -1,4 +1,4 @@
-# Minimoonoir
+# Nostr-BBS
 
 A privacy-first community messaging platform built on the Nostr protocol. Features NIP-52 calendar events, NIP-28 public chat channels, NIP-17/59 encrypted direct messages, and cohort-based access control. Fully serverless architecture with SvelteKit PWA on GitHub Pages and Google Cloud Platform backend.
 
@@ -29,8 +29,8 @@ A privacy-first community messaging platform built on the Nostr protocol. Featur
 
 ```bash
 # Clone the repository
-git clone https://github.com/jjohare/minimoonoir.git
-cd minimoonoir
+git clone https://github.com/jjohare/Nostr-BBS.git
+cd Nostr-BBS
 
 # Install dependencies
 npm install
@@ -162,7 +162,7 @@ graph TB
 
 ## Semantic Vector Search
 
-Minimoonoir includes AI-powered semantic search that understands meaning, not just keywords. Search for "schedule tomorrow's meeting" and find messages about "planning the session for Friday" - the system understands context and intent.
+Nostr-BBS includes AI-powered semantic search that understands meaning, not just keywords. Search for "schedule tomorrow's meeting" and find messages about "planning the session for Friday" - the system understands context and intent.
 
 ### Architecture Overview
 
@@ -269,7 +269,7 @@ HNSW Index:
 
 Storage:
   platform: Google Cloud Storage
-  bucket: fairfield-nostr-embeddings
+  bucket: Nostr-BBS-nostr-embeddings
   structure:
     - latest/manifest.json
     - latest/index.bin
@@ -719,7 +719,7 @@ sequenceDiagram
 ## Project Structure
 
 ```
-fairfield-nostr/
+Nostr-BBS-nostr/
 ├── src/
 │   ├── lib/
 │   │   ├── components/      # Svelte components
@@ -802,7 +802,7 @@ VITE_ADMIN_PUBKEY=<hex-pubkey>              # Admin public key (64-char hex)
 VITE_NDK_DEBUG=false                         # Enable NDK debug logging
 
 # Semantic Search (Cloud Storage public URL)
-VITE_GCS_EMBEDDINGS_URL=https://storage.googleapis.com/fairfield-nostr-embeddings
+VITE_GCS_EMBEDDINGS_URL=https://storage.googleapis.com/Nostr-BBS-nostr-embeddings
 
 # Cloud Run API
 VITE_EMBEDDING_API_URL=https://embedding-api-617806532906.us-central1.run.app
@@ -810,7 +810,7 @@ VITE_EMBEDDING_API_URL=https://embedding-api-617806532906.us-central1.run.app
 # GCP Configuration (for deployment)
 GCP_PROJECT_ID=<your-project-id>
 GCP_REGION=us-central1
-GCS_BUCKET_NAME=fairfield-nostr-embeddings
+GCS_BUCKET_NAME=Nostr-BBS-nostr-embeddings
 ```
 
 ### GitHub Configuration (for CI/CD)
@@ -848,8 +848,8 @@ PWA settings in `static/manifest.json`:
 
 ```json
 {
-  "name": "Minimoonoir",
-  "short_name": "Minimoonoir",
+  "name": "Nostr-BBS",
+  "short_name": "Nostr-BBS",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1a",
@@ -959,8 +959,8 @@ gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
 
 # Create Cloud Storage bucket (first time only)
-gsutil mb -l us-central1 gs://fairfield-nostr-embeddings
-gsutil iam ch allUsers:objectViewer gs://fairfield-nostr-embeddings
+gsutil mb -l us-central1 gs://Nostr-BBS-nostr-embeddings
+gsutil iam ch allUsers:objectViewer gs://Nostr-BBS-nostr-embeddings
 
 # Build and deploy to Cloud Run
 cd embedding-service/
@@ -983,7 +983,7 @@ gcloud run deploy embedding-api \
 # Set environment variables for Cloud Run
 gcloud run services update embedding-api \
   --region us-central1 \
-  --set-env-vars GCS_BUCKET_NAME=fairfield-nostr-embeddings
+  --set-env-vars GCS_BUCKET_NAME=Nostr-BBS-nostr-embeddings
 ```
 
 See also:
@@ -1257,5 +1257,5 @@ Special thanks to the Nostr community for the NIP specifications:
 ## Support
 
 - Documentation: See [docs/](docs/) directory
-- Issues: [GitHub Issues](https://github.com/jjohare/minimoonoir/issues)
-- Discussions: [GitHub Discussions](https://github.com/jjohare/minimoonoir/discussions)
+- Issues: [GitHub Issues](https://github.com/jjohare/Nostr-BBS/issues)
+- Discussions: [GitHub Discussions](https://github.com/jjohare/Nostr-BBS/discussions)

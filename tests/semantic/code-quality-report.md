@@ -36,7 +36,7 @@
 ## CRITICAL ISSUES (Must Fix Before Release)
 
 ### 1. Memory Leak: Blob URLs Not Revoked ❌ BLOCKER
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/hnsw-search.ts:66`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/hnsw-search.ts:66`
 
 **Issue:**
 ```typescript
@@ -97,7 +97,7 @@ test('loadIndex revokes old blob URLs', async () => {
 ---
 
 ### 2. Type Safety: Unsafe `any` Type for Navigator Connection ❌ CRITICAL
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:41`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:41`
 
 **Issue:**
 ```typescript
@@ -148,7 +148,7 @@ export function shouldSync(): boolean {
 ---
 
 ### 3. Uncaught Promise Rejection in setTimeout ❌ CRITICAL
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:198`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:198`
 
 **Issue:**
 ```typescript
@@ -204,7 +204,7 @@ export async function initEmbeddingSync(
 ---
 
 ### 4. No ArrayBuffer Size Validation ❌ CRITICAL
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:120`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:120`
 
 **Issue:**
 ```typescript
@@ -266,7 +266,7 @@ async function downloadIndex(manifest: EmbeddingManifest): Promise<boolean> {
 ---
 
 ### 5. Placeholder Embedding Implementation ❌ BLOCKER
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/hnsw-search.ts:113-126`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/hnsw-search.ts:113-126`
 
 **Issue:**
 ```typescript
@@ -328,7 +328,7 @@ async function embedQuery(query: string): Promise<number[]> {
 ---
 
 ### 6. Silent Catch Blocks Swallow Errors ❌ CRITICAL
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:95`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:95`
 
 **Issue:**
 ```typescript
@@ -361,7 +361,7 @@ export async function getLocalSyncState(): Promise<SyncState | null> {
 ## HIGH PRIORITY WARNINGS
 
 ### 7. Race Condition: Concurrent Index Loads ⚠️ HIGH
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/hnsw-search.ts:45-80`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/hnsw-search.ts:45-80`
 
 **Issue:**
 ```typescript
@@ -406,7 +406,7 @@ export async function loadIndex(): Promise<boolean> {
 ---
 
 ### 8. NPZ Parser Not Implemented ⚠️ HIGH
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/hnsw-search.ts:87-106`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/hnsw-search.ts:87-106`
 
 **Issue:**
 ```typescript
@@ -472,7 +472,7 @@ async function parseNpzMapping(data: Uint8Array): Promise<Map<number, string>> {
 ---
 
 ### 9. No IndexedDB Quota Handling ⚠️ HIGH
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:128-138`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:128-138`
 
 **Issue:**
 ```typescript
@@ -525,7 +525,7 @@ async function downloadIndex(manifest: EmbeddingManifest): Promise<boolean> {
 ---
 
 ### 10. Timeout Handling Too Aggressive ⚠️ MEDIUM
-**File:** `/home/devuser/workspace/fairfield-nostr/scripts/embeddings/fetch_notes.py:51`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/scripts/embeddings/fetch_notes.py:51`
 
 **Issue:**
 ```python
@@ -608,11 +608,11 @@ export async function searchSimilar(
 ---
 
 ### 12. Environment Variable Not Typed ⚠️ MEDIUM
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:9`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:9`
 
 **Issue:**
 ```typescript
-const R2_BASE_URL = import.meta.env.VITE_R2_EMBEDDINGS_URL || 'https://pub-minimoonoir.r2.dev';
+const R2_BASE_URL = import.meta.env.VITE_R2_EMBEDDINGS_URL || 'https://pub-Nostr-BBS.r2.dev';
 // ❌ No type checking for env var
 ```
 
@@ -633,7 +633,7 @@ function getR2BaseUrl(): string {
 
   if (!url) {
     console.warn('VITE_R2_EMBEDDINGS_URL not set, using default');
-    return 'https://pub-minimoonoir.r2.dev';
+    return 'https://pub-Nostr-BBS.r2.dev';
   }
 
   // Validate URL format
@@ -651,7 +651,7 @@ const R2_BASE_URL = getR2BaseUrl();
 ---
 
 ### 13. No Debounce Cleanup on Component Unmount ⚠️ MEDIUM
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/SemanticSearch.svelte:26`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/SemanticSearch.svelte:26`
 
 **Issue:**
 ```typescript
@@ -689,7 +689,7 @@ onDestroy(() => {
 ## SECURITY CONCERNS
 
 ### 14. No CORS Validation ⚠️ SECURITY
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/embeddings-sync.ts:72`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/embeddings-sync.ts:72`
 
 **Issue:**
 ```typescript
@@ -720,7 +720,7 @@ if (!contentType?.includes('application/json')) {
 ---
 
 ### 15. XSS Risk in Note ID Display ⚠️ SECURITY
-**File:** `/home/devuser/workspace/fairfield-nostr/src/lib/semantic/SemanticSearch.svelte:168`
+**File:** `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/semantic/SemanticSearch.svelte:168`
 
 **Issue:**
 ```svelte

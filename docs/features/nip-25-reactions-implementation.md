@@ -4,7 +4,7 @@
 
 ## Overview
 
-Complete implementation of NIP-25 (Reactions) for Minimoonoir Nostr, enabling users to react to messages with emojis and standard +/- reactions.
+Complete implementation of NIP-25 (Reactions) for Nostr-BBS Nostr, enabling users to react to messages with emojis and standard +/- reactions.
 
 ## Implementation Status: COMPLETE
 

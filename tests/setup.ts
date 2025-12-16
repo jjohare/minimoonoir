@@ -1,7 +1,7 @@
 /**
  * Vitest Test Setup
  *
- * Configuration and utilities for Minimoonoir test suite.
+ * Configuration and utilities for Nostr-BBS test suite.
  * This file runs before all tests to set up the testing environment.
  */
 

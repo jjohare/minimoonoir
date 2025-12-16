@@ -4,7 +4,7 @@ Upload embedding index files to Google Cloud Storage.
 Creates public bucket structure for frontend sync.
 
 Usage:
-    python upload_to_gcs.py --bucket minimoonoir-vectors --source output/
+    python upload_to_gcs.py --bucket Nostr-BBS-vectors --source output/
 
 Environment:
     GOOGLE_APPLICATION_CREDENTIALS - Path to service account key JSON
@@ -99,7 +99,7 @@ def upload_to_gcs(bucket_name: str, source_dir: Path, prefix: str = ""):
 
 def main():
     parser = argparse.ArgumentParser(description='Upload embeddings to Google Cloud Storage')
-    parser.add_argument('--bucket', default='minimoonoir-vectors', help='GCS bucket name')
+    parser.add_argument('--bucket', default='Nostr-BBS-vectors', help='GCS bucket name')
     parser.add_argument('--source', default='output', help='Source directory with index files')
     parser.add_argument('--prefix', default='', help='Key prefix (e.g., v1, v2)')
 

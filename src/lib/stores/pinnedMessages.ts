@@ -4,7 +4,7 @@ import { ndk } from '$lib/nostr/ndk';
 import { NDKEvent, type NDKFilter } from '@nostr-dev-kit/ndk';
 import { browser } from '$app/environment';
 
-const STORAGE_KEY = 'minimoonoir-pinned-messages';
+const STORAGE_KEY = 'Nostr-BBS-pinned-messages';
 const MAX_PINNED_PER_CHANNEL = 5;
 const PIN_LIST_KIND = 30001; // NIP-51 Categorized Bookmark List
 

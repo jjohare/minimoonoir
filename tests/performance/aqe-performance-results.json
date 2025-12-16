@@ -1,5 +1,5 @@
 {
-  "testSuite": "Minimoonoir GCP Deployment Performance",
+  "testSuite": "Nostr-BBS GCP Deployment Performance",
   "timestamp": "2025-12-15T16:06:52Z",
   "agent": "qe-performance-tester",
   "framework": "artillery",
@@ -119,7 +119,7 @@
   },
 
   "cloudStorage": {
-    "url": "https://storage.googleapis.com/minimoonoir-vectors",
+    "url": "https://storage.googleapis.com/Nostr-BBS-vectors",
     "status": "PENDING",
     "note": "Test execution pending completion"
   },
@@ -233,7 +233,7 @@
   },
 
   "industryBenchmark": {
-    "minimoonoir": {
+    "Nostr-BBS": {
       "p95Latency": 685,
       "costPer1MRequests": 0,
       "model": "all-MiniLM-L6-v2"
@@ -261,10 +261,10 @@
   },
 
   "artifacts": {
-    "jsonReport": "/home/devuser/workspace/fairfield-nostr/tests/performance/results/embedding-api-20251215_160652.json",
-    "htmlReport": "/home/devuser/workspace/fairfield-nostr/tests/performance/results/embedding-api-20251215_160652.html",
-    "performanceReport": "/home/devuser/workspace/fairfield-nostr/tests/performance/PERFORMANCE_REPORT.md",
-    "testRunner": "/home/devuser/workspace/fairfield-nostr/tests/performance/run-all-tests.sh"
+    "jsonReport": "/home/devuser/workspace/Nostr-BBS-nostr/tests/performance/results/embedding-api-20251215_160652.json",
+    "htmlReport": "/home/devuser/workspace/Nostr-BBS-nostr/tests/performance/results/embedding-api-20251215_160652.html",
+    "performanceReport": "/home/devuser/workspace/Nostr-BBS-nostr/tests/performance/PERFORMANCE_REPORT.md",
+    "testRunner": "/home/devuser/workspace/Nostr-BBS-nostr/tests/performance/run-all-tests.sh"
   },
 
   "metadata": {

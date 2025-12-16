@@ -305,7 +305,7 @@ export async function fetchAllChannels(relay: NDKRelay): Promise<void> {
           cohorts: cohortTag?.[1]?.split(',') || [],
           visibility: (visibilityTag?.[1] as any) || 'public',
           encrypted: encryptedTag?.[1] === 'true',
-          section: (sectionTag?.[1] as ChannelSection) || 'fairfield-guests',
+          section: (sectionTag?.[1] as ChannelSection) || 'Nostr-BBS-guests',
           createdAt: event.created_at,
           memberCount: 0,
           creatorPubkey: event.pubkey,

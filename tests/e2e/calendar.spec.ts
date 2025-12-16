@@ -2,8 +2,8 @@
  * E2E Tests: Calendar Access Control
  *
  * Tests calendar visibility based on section membership:
- * - Fairfield Guests: Full access to all calendar events
- * - MiniMooNoir members: Full access to all calendar events
+ * - Nostr-BBS Guests: Full access to all calendar events
+ * - Nostr-BBS members: Full access to all calendar events
  * - DreamLab members: Can only see availability (dates booked)
  * - DreamLab with cohort match: Can see event details for their cohort
  */
@@ -20,13 +20,13 @@ import {
   showsOnlyAvailability
 } from './fixtures/test-helpers';
 
-test.describe('Calendar Access - Fairfield Guests', () => {
+test.describe('Calendar Access - Nostr-BBS Guests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('Fairfield Guests user can view calendar', async ({ page }) => {
+  test('Nostr-BBS Guests user can view calendar', async ({ page }) => {
     await signupNewUser(page);
 
     // Navigate to calendar/events page
@@ -37,7 +37,7 @@ test.describe('Calendar Access - Fairfield Guests', () => {
     expect(hasCalendar).toBe(true);
   });
 
-  test('Fairfield Guests can see all event details', async ({ page }) => {
+  test('Nostr-BBS Guests can see all event details', async ({ page }) => {
     await signupNewUser(page);
 
     await navigateToCalendar(page);
@@ -66,11 +66,11 @@ test.describe('Calendar Access - Fairfield Guests', () => {
       }
     }
 
-    // Test passes - Fairfield Guests have full calendar access
+    // Test passes - Nostr-BBS Guests have full calendar access
     expect(true).toBe(true);
   });
 
-  test('Fairfield Guests can see event locations', async ({ page }) => {
+  test('Nostr-BBS Guests can see event locations', async ({ page }) => {
     await signupNewUser(page);
 
     await navigateToCalendar(page);
@@ -88,7 +88,7 @@ test.describe('Calendar Access - Fairfield Guests', () => {
     expect(hasLocationField || hasLocationData >= 0).toBe(true);
   });
 
-  test('Fairfield Guests can see event descriptions', async ({ page }) => {
+  test('Nostr-BBS Guests can see event descriptions', async ({ page }) => {
     await signupNewUser(page);
 
     await navigateToCalendar(page);
@@ -103,18 +103,18 @@ test.describe('Calendar Access - Fairfield Guests', () => {
   });
 });
 
-test.describe('Calendar Access - MiniMooNoir Members', () => {
+test.describe('Calendar Access - Nostr-BBS Members', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('MiniMooNoir member can view calendar after approval', async ({ page, context }) => {
-    // Create user and get approved for MiniMooNoir
+  test('Nostr-BBS member can view calendar after approval', async ({ page, context }) => {
+    // Create user and get approved for Nostr-BBS
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Admin approves
     const adminPage = await context.newPage();
@@ -133,12 +133,12 @@ test.describe('Calendar Access - MiniMooNoir Members', () => {
     expect(hasCalendar).toBe(true);
   });
 
-  test('MiniMooNoir member can see all event details', async ({ page, context }) => {
+  test('Nostr-BBS member can see all event details', async ({ page, context }) => {
     // Get user approved
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     const adminPage = await context.newPage();
     await loginAsAdmin(adminPage);
@@ -171,12 +171,12 @@ test.describe('Calendar Access - MiniMooNoir Members', () => {
     expect(true).toBe(true);
   });
 
-  test('MiniMooNoir member has same access as Fairfield Guests', async ({ page, context }) => {
-    // Get approved for MiniMooNoir
+  test('Nostr-BBS member has same access as Nostr-BBS Guests', async ({ page, context }) => {
+    // Get approved for Nostr-BBS
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     const adminPage = await context.newPage();
     await loginAsAdmin(adminPage);
@@ -227,7 +227,7 @@ test.describe('Calendar Access - DreamLab Members (Availability Only)', () => {
   });
 
   test('DreamLab member sees availability but not event details', async ({ page, context }) => {
-    // Get approved for DreamLab only (not MiniMooNoir)
+    // Get approved for DreamLab only (not Nostr-BBS)
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
@@ -432,12 +432,12 @@ test.describe('Calendar Access - Edge Cases', () => {
   });
 
   test('user with multiple section approvals has highest access level', async ({ page, context }) => {
-    // User approved for both DreamLab and MiniMooNoir
+    // User approved for both DreamLab and Nostr-BBS
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
     await requestSectionAccess(page, 'dreamlab');
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     const adminPage = await context.newPage();
     await loginAsAdmin(adminPage);
@@ -453,7 +453,7 @@ test.describe('Calendar Access - Edge Cases', () => {
 
     await navigateToCalendar(page);
 
-    // Should have full access (MiniMooNoir grants full, overrides DreamLab limited)
+    // Should have full access (Nostr-BBS grants full, overrides DreamLab limited)
     const eventCount = await page.locator('[data-event], .event, .calendar-event').count();
 
     if (eventCount > 0) {
@@ -478,9 +478,9 @@ test.describe('Calendar Access - Edge Cases', () => {
 
     await page.goto('/chat');
 
-    // Fairfield Guests should show "View Calendar" button
-    const fairfieldCard = page.locator('text=/fairfield guests/i').locator('..');
-    const calendarButton = fairfieldCard.getByRole('button', { name: /calendar|view calendar/i });
+    // Nostr-BBS Guests should show "View Calendar" button
+    const Nostr-BBSCard = page.locator('text=/Nostr-BBS guests/i').locator('..');
+    const calendarButton = Nostr-BBSCard.getByRole('button', { name: /calendar|view calendar/i });
 
     await expect(calendarButton).toBeVisible({ timeout: 3000 });
   });

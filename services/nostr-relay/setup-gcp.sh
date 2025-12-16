@@ -162,7 +162,7 @@ echo "🔗 Setting up Workload Identity Federation..."
 POOL_NAME="github-pool"
 PROVIDER_NAME="github-provider"
 REPO_OWNER="${GITHUB_REPO_OWNER:-your-github-username}"
-REPO_NAME="${GITHUB_REPO_NAME:-fairfield-nostr}"
+REPO_NAME="${GITHUB_REPO_NAME:-Nostr-BBS-nostr}"
 
 if ! gcloud iam workload-identity-pools describe "$POOL_NAME" --location=global &>/dev/null; then
   gcloud iam workload-identity-pools create "$POOL_NAME" \

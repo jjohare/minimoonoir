@@ -1,4 +1,4 @@
-# Minimoonoir Test Suite Summary
+# Nostr-BBS Test Suite Summary
 
 [Back to Main README](../README.md)
 
@@ -9,7 +9,7 @@
 1. **tests/setup.ts** - Vitest configuration and test utilities
 2. **tests/unit/keys.test.ts** - Key generation and NIP-06 derivation (21 PASSING tests)
 3. **tests/unit/encryption.test.ts** - NIP-44 encryption (9/19 tests passing)
-4. **tests/unit/dm.test.ts** - Gift-wrapped DMs (14/25 tests passing)  
+4. **tests/unit/dm.test.ts** - Gift-wrapped DMs (14/25 tests passing)
 5. **tests/unit/groups.test.ts** - Group management (40 PASSING tests)
 
 ## Test Results Summary
@@ -166,8 +166,8 @@ Gift-wrapped DM tests (NIP-17/NIP-59):
 ## Known Issues & Solutions
 
 ### 1. `bytesToUtf8` not defined
-**Affected:** encryption.test.ts, dm.test.ts  
-**Cause:** @noble/hashes v2 API change  
+**Affected:** encryption.test.ts, dm.test.ts
+**Cause:** @noble/hashes v2 API change
 **Solution:**
 ```typescript
 // Option 1: Use bytesToString
@@ -184,15 +184,15 @@ function utf8ToBytes(str: string): Uint8Array {
 ```
 
 ### 2. DM Seal/Unseal Logic
-**Affected:** dm.test.ts unwrapping tests  
-**Cause:** Simplified implementation needs proper NIP-59 seal structure  
+**Affected:** dm.test.ts unwrapping tests
+**Cause:** Simplified implementation needs proper NIP-59 seal structure
 **Solution:** Implement proper seal event structure with nested encryption
 
 ## Performance Benchmarks
 
 All performance tests passing:
 - Key generation: < 5ms per operation
-- Group operations: < 1ms per operation  
+- Group operations: < 1ms per operation
 - Batch operations: 100 operations < 100ms
 
 ## Test Utilities Created
@@ -252,4 +252,3 @@ npm test -- --watch
 - `/vitest.config.ts` - Updated configuration
 
 **Total:** 105 comprehensive unit tests covering crypto primitives
-

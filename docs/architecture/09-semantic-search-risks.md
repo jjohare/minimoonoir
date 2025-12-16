@@ -1,6 +1,6 @@
 # Semantic Vector Search - Integration Risk Assessment
 
-**Project:** fairfield-nostr
+**Project:** Nostr-BBS-nostr
 **Feature:** Semantic Vector Search with HNSW
 **Assessment Date:** 2025-12-14
 **Evaluator:** Integration Risk Evaluator Agent
@@ -630,7 +630,7 @@ jobs:
         id: check
         run: |
           # Query D1 for messages without embeddings
-          NEW_COUNT=$(wrangler d1 execute minimoonoir \
+          NEW_COUNT=$(wrangler d1 execute Nostr-BBS \
             --command "SELECT COUNT(*) FROM messages WHERE embedding_generated = 0")
 
           if [ "$NEW_COUNT" -gt "0" ]; then
@@ -677,12 +677,12 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           wrangler r2 object put \
-            minimoonoir-embeddings/embeddings-$(date +%Y%m%d).json \
+            Nostr-BBS-embeddings/embeddings-$(date +%Y%m%d).json \
             --file embeddings.json
 
       - name: Update D1 metadata
         run: |
-          wrangler d1 execute minimoonoir \
+          wrangler d1 execute Nostr-BBS \
             --command "UPDATE messages SET embedding_generated = 1 WHERE id IN (SELECT id FROM ...)"
 ```
 
@@ -1405,7 +1405,7 @@ export class HybridEmbeddingStrategy {
 ### 5.2 R2 Bucket Access Control
 
 **Current Setup:**
-- Cloudflare R2 bucket: `minimoonoir-embeddings`
+- Cloudflare R2 bucket: `Nostr-BBS-embeddings`
 - Access: Public read (for PWA)
 - Write: GitHub Actions only
 
@@ -1537,16 +1537,16 @@ function getEmbeddingFilename(channelId: string): string {
 **Implementation:**
 ```yaml
 # wrangler.toml for R2 proxy worker
-name = "minimoonoir-r2-proxy"
+name = "Nostr-BBS-r2-proxy"
 main = "workers/r2-proxy.ts"
 
 [[r2_buckets]]
 binding = "EMBEDDINGS"
-bucket_name = "minimoonoir-embeddings"
+bucket_name = "Nostr-BBS-embeddings"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "minimoonoir"
+database_name = "Nostr-BBS"
 database_id = "..."
 
 [vars]
@@ -2290,7 +2290,7 @@ describe('Vector Search Security', () => {
    - Measure load time and performance
 
 2. ✅ **R2 Bucket Setup**
-   - Create minimoonoir-embeddings bucket
+   - Create Nostr-BBS-embeddings bucket
    - Configure CORS for PWA domain
    - Test upload/download
 

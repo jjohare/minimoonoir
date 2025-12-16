@@ -1,5 +1,5 @@
 /**
- * Minimoonoir Library
+ * Nostr-BBS Library
  * Main exports for the application
  */
 

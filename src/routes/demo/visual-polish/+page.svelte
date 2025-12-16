@@ -34,7 +34,7 @@
 </script>
 
 <svelte:head>
-  <title>Visual Polish Showcase - Fairfield Nostr</title>
+  <title>Visual Polish Showcase - Nostr-BBS Nostr</title>
 </svelte:head>
 
 <div class="min-h-screen bg-base-200">

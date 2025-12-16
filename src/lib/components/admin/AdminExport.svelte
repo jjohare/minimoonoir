@@ -50,7 +50,7 @@
       };
 
       const content = JSON.stringify(backup, null, 2);
-      const filename = generateTimestampedFilename('minimoonoir-database-backup', 'json');
+      const filename = generateTimestampedFilename('Nostr-BBS-database-backup', 'json');
       downloadFile(content, filename, 'application/json');
       toast.success('Database backup completed successfully');
     } catch (error) {

@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir - SPARC Specification
+# Nostr-BBS - SPARC Specification
 
 > **Project:** Private Chatroom System for Residential Retreat & Course Booking
 > **Version:** 0.1.0-draft
@@ -12,7 +12,7 @@
 
 ## 1. Executive Summary
 
-Minimoonoir is a closed, self-hosted chat system built on Nostr protocol for a residential retreat community. It provides:
+Nostr-BBS is a closed, self-hosted chat system built on Nostr protocol for a residential retreat community. It provides:
 
 - **Cohort-segregated channels** (Business vs Moomaa-tribe)
 - **Admin-gated membership** with request-to-join workflow

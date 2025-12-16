@@ -1,4 +1,4 @@
-# Minimoonoir GCP Deployment Performance Report
+# Nostr-BBS GCP Deployment Performance Report
 
 **Test Date:** 2025-12-15
 **Test Duration:** 130 seconds (Cold Start: 10s, Warm-up: 30s, Sustained Load: 60s, Spike: 30s)
@@ -135,7 +135,7 @@ Observed latency increases with input text length, as expected for transformer-b
 ## Test 2: Cloud Storage Access Performance
 
 ### Target
-- **URL:** https://storage.googleapis.com/minimoonoir-vectors
+- **URL:** https://storage.googleapis.com/Nostr-BBS-vectors
 - **Resources:** `manifest.json`, `index.bin`
 
 ### Test Results
@@ -289,13 +289,13 @@ Observed latency increases with input text length, as expected for transformer-b
 
 | Service | P95 Latency | Cost (per 1M reqs) | Embedding Model |
 |---------|-------------|---------------------|-----------------|
-| **Minimoonoir (GCP Cloud Run)** | **685ms** | **$0-50** | **all-MiniLM-L6-v2** |
+| **Nostr-BBS (GCP Cloud Run)** | **685ms** | **$0-50** | **all-MiniLM-L6-v2** |
 | OpenAI Embeddings API | 200-400ms | $100 | text-embedding-ada-002 |
 | Cohere Embed v3 | 150-300ms | $100 | cohere-embed-v3 |
 | Hugging Face Inference API | 500-1000ms | $0-200 | Various models |
 | AWS SageMaker | 300-600ms | $150-300 | Custom models |
 
-**Assessment:** Minimoonoir offers **competitive latency** at **significantly lower cost** due to serverless architecture and free tier utilization.
+**Assessment:** Nostr-BBS offers **competitive latency** at **significantly lower cost** due to serverless architecture and free tier utilization.
 
 ---
 
@@ -324,7 +324,7 @@ Observed latency increases with input text length, as expected for transformer-b
 - **Runtime:** Node.js + transformers.js
 
 **Cloud Storage:**
-- **Bucket:** minimoonoir-vectors
+- **Bucket:** Nostr-BBS-vectors
 - **Region:** us-central1
 - **Public Access:** Enabled
 - **CDN:** Google Cloud CDN (global edge caching)
@@ -340,7 +340,7 @@ Observed latency increases with input text length, as expected for transformer-b
 
 ## Conclusion
 
-The Minimoonoir GCP deployment demonstrates **production-ready performance** with:
+The Nostr-BBS GCP deployment demonstrates **production-ready performance** with:
 
 - **Excellent reliability:** 100% success rate
 - **Acceptable latency:** P95 < 700ms for ML inference

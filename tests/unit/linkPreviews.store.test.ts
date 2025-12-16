@@ -279,7 +279,7 @@ describe('Link Previews Store', () => {
 			await fetchPreview(url);
 
 			// Check localStorage
-			const stored = localStorageMock.getItem('minimoonoir-link-previews');
+			const stored = localStorageMock.getItem('Nostr-BBS-link-previews');
 			expect(stored).not.toBeNull();
 
 			const parsed = JSON.parse(stored!);
@@ -302,7 +302,7 @@ describe('Link Previews Store', () => {
 			}
 
 			// Check that cache is limited
-			const stored = localStorageMock.getItem('minimoonoir-link-previews');
+			const stored = localStorageMock.getItem('Nostr-BBS-link-previews');
 			const parsed = JSON.parse(stored!);
 			const cacheSize = Object.keys(parsed).length;
 

@@ -199,9 +199,9 @@ function buildChannelFromEvents(
     return requestChannelId === groupId;
   });
 
-  // Extract section tag (default to fairfield-guests)
+  // Extract section tag (default to Nostr-BBS-guests)
   const sectionTag = metaEvent.tags.find(t => t[0] === 'section')?.[1];
-  const section = (sectionTag as ChannelSection) || 'fairfield-guests';
+  const section = (sectionTag as ChannelSection) || 'Nostr-BBS-guests';
 
   // Extract visibility setting (default to public)
   const visibilityTag = metaEvent.tags.find(t => t[0] === 'visibility')?.[1];
@@ -298,32 +298,32 @@ export function getChannelsBySection(section: ChannelSection): Channel[] {
 }
 
 // Lazy-initialized derived stores for section filtering
-let _fairfieldGuestChannels: ReturnType<typeof derived<typeof channelStore, Channel[]>> | null = null;
-let _minimoonoirChannels: ReturnType<typeof derived<typeof channelStore, Channel[]>> | null = null;
+let _Nostr-BBSGuestChannels: ReturnType<typeof derived<typeof channelStore, Channel[]>> | null = null;
+let _Nostr-BBSChannels: ReturnType<typeof derived<typeof channelStore, Channel[]>> | null = null;
 let _dreamlabChannels: ReturnType<typeof derived<typeof channelStore, Channel[]>> | null = null;
 
 /**
- * Get channels for fairfield-guests section (lazy initialization)
+ * Get channels for Nostr-BBS-guests section (lazy initialization)
  */
-export function getFairfieldGuestChannels() {
-  if (!_fairfieldGuestChannels) {
-    _fairfieldGuestChannels = derived(channelStore, $store =>
-      $store.channels.filter(c => c.section === 'fairfield-guests')
+export function getNostr-BBSGuestChannels() {
+  if (!_Nostr-BBSGuestChannels) {
+    _Nostr-BBSGuestChannels = derived(channelStore, $store =>
+      $store.channels.filter(c => c.section === 'Nostr-BBS-guests')
     );
   }
-  return _fairfieldGuestChannels;
+  return _Nostr-BBSGuestChannels;
 }
 
 /**
- * Get channels for minimoonoir-rooms section (lazy initialization)
+ * Get channels for Nostr-BBS-rooms section (lazy initialization)
  */
-export function getMinimoonoirChannels() {
-  if (!_minimoonoirChannels) {
-    _minimoonoirChannels = derived(channelStore, $store =>
-      $store.channels.filter(c => c.section === 'minimoonoir-rooms')
+export function getNostr-BBSChannels() {
+  if (!_Nostr-BBSChannels) {
+    _Nostr-BBSChannels = derived(channelStore, $store =>
+      $store.channels.filter(c => c.section === 'Nostr-BBS-rooms')
     );
   }
-  return _minimoonoirChannels;
+  return _Nostr-BBSChannels;
 }
 
 /**
@@ -339,12 +339,12 @@ export function getDreamlabChannels() {
 }
 
 // Backwards-compatible exports for section filtering
-export const fairfieldGuestChannels = {
-  subscribe: (fn: (value: Channel[]) => void) => getFairfieldGuestChannels().subscribe(fn)
+export const Nostr-BBSGuestChannels = {
+  subscribe: (fn: (value: Channel[]) => void) => getNostr-BBSGuestChannels().subscribe(fn)
 };
 
-export const minimoonoirChannels = {
-  subscribe: (fn: (value: Channel[]) => void) => getMinimoonoirChannels().subscribe(fn)
+export const Nostr-BBSChannels = {
+  subscribe: (fn: (value: Channel[]) => void) => getNostr-BBSChannels().subscribe(fn)
 };
 
 export const dreamlabChannels = {

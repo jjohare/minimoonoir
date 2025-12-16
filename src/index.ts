@@ -1,5 +1,5 @@
 /**
- * Minimoonoir - NIP-06 Key Management
+ * Nostr-BBS - NIP-06 Key Management
  */
 
 export * from './lib/nostr/index.js';

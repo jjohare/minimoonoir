@@ -2,7 +2,7 @@
 
 ## Overview
 
-Lucide Icons is now integrated into Fairfield Nostr. This guide shows how to use icons throughout the application.
+Lucide Icons is now integrated into Nostr-BBS Nostr. This guide shows how to use icons throughout the application.
 
 ## Installation
 

@@ -8,7 +8,7 @@ Comprehensive test suites for the semantic search module with 100+ test cases co
 
 ### 1. embeddings-sync.test.ts (585 lines, 35 test cases)
 
-**File**: `/home/devuser/workspace/fairfield-nostr/tests/semantic/embeddings-sync.test.ts`
+**File**: `/home/devuser/workspace/Nostr-BBS-nostr/tests/semantic/embeddings-sync.test.ts`
 
 **Coverage Areas**:
 
@@ -69,7 +69,7 @@ Comprehensive test suites for the semantic search module with 100+ test cases co
 
 ### 2. hnsw-search.test.ts (656 lines, 37 test cases)
 
-**File**: `/home/devuser/workspace/fairfield-nostr/tests/semantic/hnsw-search.test.ts`
+**File**: `/home/devuser/workspace/Nostr-BBS-nostr/tests/semantic/hnsw-search.test.ts`
 
 **Coverage Areas**:
 
@@ -135,7 +135,7 @@ Comprehensive test suites for the semantic search module with 100+ test cases co
 
 ### 3. db-v3.test.ts (518 lines, 32 test cases)
 
-**File**: `/home/devuser/workspace/fairfield-nostr/tests/semantic/db-v3.test.ts`
+**File**: `/home/devuser/workspace/Nostr-BBS-nostr/tests/semantic/db-v3.test.ts`
 
 **Coverage Areas**:
 

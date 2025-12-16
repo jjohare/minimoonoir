@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir Nostr - SPARC Refinement & Technology Selection
+# Nostr-BBS Nostr - SPARC Refinement & Technology Selection
 
 > **Phase:** Refinement (Technology Decisions + TDD Planning)
 > **Version:** 0.1.0-draft
@@ -170,7 +170,7 @@ graph TB
 
 ```json
 {
-  "name": "minimoonoir-nostr",
+  "name": "Nostr-BBS-nostr",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -213,7 +213,7 @@ graph TB
 ## 3. Project Structure
 
 ```
-minimoonoir-nostr/
+Nostr-BBS-nostr/
 ├── docs/
 │   └── sparc/                    # SPARC documentation
 │
@@ -383,9 +383,9 @@ flowchart TD
 
 ```json
 {
-  "name": "Minimoonoir Chat",
-  "short_name": "Minimoonoir",
-  "description": "Private community chat for Minimoonoir retreat",
+  "name": "Nostr-BBS Chat",
+  "short_name": "Nostr-BBS",
+  "description": "Private community chat for Nostr-BBS retreat",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",
@@ -419,8 +419,8 @@ export default {
       strategies: 'generateSW',
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Minimoonoir Chat',
-        short_name: 'Minimoonoir',
+        name: 'Nostr-BBS Chat',
+        short_name: 'Nostr-BBS',
         theme_color: '#16213e',
       },
       workbox: {
@@ -542,7 +542,7 @@ test.describe('User Signup', () => {
 
 ```mermaid
 gantt
-    title Minimoonoir Nostr Implementation
+    title Nostr-BBS Nostr Implementation
     dateFormat  YYYY-MM-DD
     section Phase 1: Foundation
     Project setup & tooling     :p1a, 2024-01-01, 3d
@@ -667,7 +667,7 @@ export class RelayState {
 
 ```toml
 # wrangler.toml
-name = "minimoonoir-relay"
+name = "Nostr-BBS-relay"
 main = "relay/workers/handler.ts"
 compatibility_date = "2024-12-13"
 
@@ -682,7 +682,7 @@ new_classes = ["RelayState"]
 
 [[r2_buckets]]
 binding = "RELAY_BACKUP"
-bucket_name = "minimoonoir-backups"
+bucket_name = "Nostr-BBS-backups"
 ```
 
 ---

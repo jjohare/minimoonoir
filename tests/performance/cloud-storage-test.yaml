@@ -19,7 +19,7 @@ scenarios:
     weight: 40
     flow:
       - get:
-          url: "/minimoonoir-vectors/manifest.json"
+          url: "/Nostr-BBS-vectors/manifest.json"
           expect:
             - statusCode: 200
             - contentType: json
@@ -33,7 +33,7 @@ scenarios:
     weight: 30
     flow:
       - head:
-          url: "/minimoonoir-vectors/index.bin"
+          url: "/Nostr-BBS-vectors/index.bin"
           expect:
             - statusCode:
                 - 200
@@ -43,7 +43,7 @@ scenarios:
     weight: 30
     flow:
       - get:
-          url: "/minimoonoir-vectors/manifest.json"
+          url: "/Nostr-BBS-vectors/manifest.json"
           expect:
             - statusCode: 200
       - think: 2

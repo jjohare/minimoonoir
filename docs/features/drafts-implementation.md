@@ -3,14 +3,14 @@
 # Message Drafts Auto-Save Implementation (Phase 3.2)
 
 ## Overview
-Complete implementation of auto-save drafts for both channel messages and direct messages in Minimoonoir Nostr.
+Complete implementation of auto-save drafts for both channel messages and direct messages in Nostr-BBS Nostr.
 
 ## Implementation Details
 
 ### 1. Draft Store (`/src/lib/stores/drafts.ts`)
 
 **Features:**
-- Persistent storage using localStorage (key: `minimoonoir-drafts`)
+- Persistent storage using localStorage (key: `Nostr-BBS-drafts`)
 - Draft management for both channels and DMs
 - Auto-save with debouncing
 - Draft preview generation
@@ -120,7 +120,7 @@ handleBlur()                   // Save on blur
 ### LocalStorage Structure
 ```json
 {
-  "minimoonoir-drafts": {
+  "Nostr-BBS-drafts": {
     "channel-id-1": {
       "channelId": "channel-id-1",
       "content": "Draft message content...",
@@ -138,7 +138,7 @@ handleBlur()                   // Save on blur
 ```
 
 ### Storage Key
-- **Key**: `minimoonoir-drafts`
+- **Key**: `Nostr-BBS-drafts`
 - **Scope**: Per browser/device
 - **Persistence**: Survives page refresh and app restart
 - **Cleanup**: Manual via `clearAllDrafts()` or automatic on send

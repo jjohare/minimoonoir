@@ -7,7 +7,7 @@ export interface AppSettings {
   federatedRelays: string[];
 }
 
-const STORAGE_KEY = 'minimoonoir-settings';
+const STORAGE_KEY = 'Nostr-BBS-settings';
 
 /**
  * Private relay URL from environment variable

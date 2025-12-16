@@ -1,4 +1,4 @@
-# Security Audit Report - Minimoonoir Nostr PWA
+# Security Audit Report - Nostr-BBS Nostr PWA
 
 **Audit Date**: 2025-12-14
 **Auditor**: Code Analyzer Agent
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This comprehensive security audit evaluated the Minimoonoir Nostr PWA across authentication, data security, web security, relay security, and dependencies. The application demonstrates strong cryptographic implementations using modern standards (NIP-44, NIP-06, AES-GCM) and proper key management practices. However, several critical and high-priority vulnerabilities require immediate attention.
+This comprehensive security audit evaluated the Nostr-BBS Nostr PWA across authentication, data security, web security, relay security, and dependencies. The application demonstrates strong cryptographic implementations using modern standards (NIP-44, NIP-06, AES-GCM) and proper key management practices. However, several critical and high-priority vulnerabilities require immediate attention.
 
 **Overall Security Score**: 6.5/10
 
@@ -24,7 +24,7 @@ This comprehensive security audit evaluated the Minimoonoir Nostr PWA across aut
 
 ### 🔴 CRITICAL: Admin Private Keys Exposed in .env File
 
-**File**: `/mnt/mldata/githubs/minimoonoir/.env`
+**File**: `/mnt/mldata/githubs/Nostr-BBS/.env`
 **Lines**: 1-3
 
 **Issue**:
@@ -385,9 +385,9 @@ export interface AuthState {
 
 **Issue**:
 ```typescript
-const STORAGE_KEY = 'minimoonoir_keys';
-const SESSION_KEY = 'minimoonoir_session';
-const CACHE_KEY = 'minimoonoir-link-previews';
+const STORAGE_KEY = 'Nostr-BBS_keys';
+const SESSION_KEY = 'Nostr-BBS_session';
+const CACHE_KEY = 'Nostr-BBS-link-previews';
 ```
 
 **Risk**: Potential conflicts with other applications on same domain.
@@ -863,7 +863,7 @@ Policy: https://yourdomain.com/security-policy
 
 ## Conclusion
 
-The Minimoonoir Nostr PWA demonstrates strong foundations in cryptographic implementation and modern web standards. However, the exposure of admin credentials in version control and reliance on client-side security checks represent critical risks that require immediate remediation.
+The Nostr-BBS Nostr PWA demonstrates strong foundations in cryptographic implementation and modern web standards. However, the exposure of admin credentials in version control and reliance on client-side security checks represent critical risks that require immediate remediation.
 
 The primary security concerns stem from:
 1. **Secrets Management**: Hardcoded admin keys in `.env`

@@ -23,7 +23,7 @@ interface PreviewCache {
 	};
 }
 
-const CACHE_KEY = 'minimoonoir-link-previews';
+const CACHE_KEY = 'Nostr-BBS-link-previews';
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
 const MAX_CACHE_SIZE = 100;
 

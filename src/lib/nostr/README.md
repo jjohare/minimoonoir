@@ -173,7 +173,7 @@ import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
 
 // Automatic cache initialization
 const cache = new NDKCacheAdapterDexie({
-  dbName: 'minimoonoir-cache',
+  dbName: 'Nostr-BBS-cache',
   expirationTime: 3600 * 24 * 7 // 7 days
 });
 ```
@@ -236,4 +236,4 @@ src/lib/
 
 ## License
 
-Part of Minimoonoir project - MIT License.
+Part of Nostr-BBS project - MIT License.

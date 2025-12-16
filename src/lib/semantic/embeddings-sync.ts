@@ -6,8 +6,8 @@
 import { db } from '$lib/db';
 
 // Google Cloud Storage public URL (configured via environment)
-// Embeddings stored in public GCS bucket: minimoonoir-vectors
-const GCS_BASE_URL = import.meta.env.VITE_GCS_EMBEDDINGS_URL || 'https://storage.googleapis.com/minimoonoir-vectors';
+// Embeddings stored in public GCS bucket: Nostr-BBS-vectors
+const GCS_BASE_URL = import.meta.env.VITE_GCS_EMBEDDINGS_URL || 'https://storage.googleapis.com/Nostr-BBS-vectors';
 
 export interface EmbeddingManifest {
   version: number;

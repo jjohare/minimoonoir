@@ -8,7 +8,7 @@ Migrated GitHub Actions workflows from Cloudflare Workers/R2 to Google Cloud Pla
 ### 1. generate-embeddings.yml
 **Changes:**
 - Replaced Cloudflare R2 with Google Cloud Storage (GCS)
-- Changed bucket: `minimoonoir-embeddings` → `minimoonoir-vectors`
+- Changed bucket: `Nostr-BBS-embeddings` → `Nostr-BBS-vectors`
 - Replaced `boto3` with `google-cloud-storage` Python library
 - Added GCP authentication using `google-github-actions/auth@v2`
 - Updated script call: `upload_to_r2.py` → `upload_to_gcs.py`
@@ -54,15 +54,15 @@ Migrated GitHub Actions workflows from Cloudflare Workers/R2 to Google Cloud Pla
   - 300s timeout
 - Sets environment variables:
   - `NODE_ENV=production`
-  - `GCS_BUCKET_NAME=minimoonoir-vectors`
+  - `GCS_BUCKET_NAME=Nostr-BBS-vectors`
 
 **Required Secrets:** Same as #1, plus service account: `embedding-api@{PROJECT_ID}.iam.gserviceaccount.com`
 
 ## New Files Created
 
-1. `/home/devuser/workspace/fairfield-nostr/.github/workflows/deploy-relay-gcp.yml`
-2. `/home/devuser/workspace/fairfield-nostr/.github/workflows/deploy-embedding-api.yml`
-3. `/home/devuser/workspace/fairfield-nostr/nosflare/Dockerfile`
+1. `/home/devuser/workspace/Nostr-BBS-nostr/.github/workflows/deploy-relay-gcp.yml`
+2. `/home/devuser/workspace/Nostr-BBS-nostr/.github/workflows/deploy-embedding-api.yml`
+3. `/home/devuser/workspace/Nostr-BBS-nostr/nosflare/Dockerfile`
 
 ## Required GitHub Repository Secrets
 
@@ -138,7 +138,7 @@ gcloud artifacts repositories create nosflare \
 
 ### 5. Create GCS Bucket
 ```bash
-gcloud storage buckets create gs://minimoonoir-vectors \
+gcloud storage buckets create gs://Nostr-BBS-vectors \
   --location=us-central1 \
   --uniform-bucket-level-access
 ```
@@ -156,7 +156,7 @@ cat github-actions-key.json
 
 The following Python scripts need to be created/updated:
 
-### `/home/devuser/workspace/fairfield-nostr/scripts/embeddings/upload_to_gcs.py`
+### `/home/devuser/workspace/Nostr-BBS-nostr/scripts/embeddings/upload_to_gcs.py`
 Replace boto3 with google-cloud-storage:
 
 ```python
@@ -166,7 +166,7 @@ import argparse
 def upload_to_gcs(bucket_name, files, prefix):
     client = storage.Client()
     bucket = client.bucket(bucket_name)
-    
+
     for file_path in files:
         blob = bucket.blob(f"{prefix}/{file_path}")
         blob.upload_from_filename(file_path)
@@ -178,11 +178,11 @@ if __name__ == "__main__":
     parser.add_argument("--files", nargs="+", required=True)
     parser.add_argument("--prefix", required=True)
     args = parser.parse_args()
-    
+
     upload_to_gcs(args.bucket, args.files, args.prefix)
 ```
 
-### `/home/devuser/workspace/fairfield-nostr/scripts/embeddings/download_manifest.py`
+### `/home/devuser/workspace/Nostr-BBS-nostr/scripts/embeddings/download_manifest.py`
 Update to use GCS instead of R2:
 
 ```python
@@ -190,19 +190,19 @@ from google.cloud import storage
 import json
 import os
 
-def download_manifest(bucket_name="minimoonoir-vectors"):
+def download_manifest(bucket_name="Nostr-BBS-vectors"):
     client = storage.Client()
     bucket = client.bucket(bucket_name)
-    
+
     # Find latest version manifest
     blobs = list(bucket.list_blobs(prefix="v"))
     if not blobs:
         return {"version": 0, "last_event_id": None}
-    
+
     # Get the latest manifest
     latest_blob = max(blobs, key=lambda b: b.name)
     manifest_content = latest_blob.download_as_string()
-    
+
     return json.loads(manifest_content)
 
 if __name__ == "__main__":

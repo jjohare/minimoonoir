@@ -3,7 +3,7 @@
 # Search Index Implementation Summary - Phase 2.3
 
 ## Overview
-Implemented comprehensive client-side full-text search using IndexedDB for the Minimoonoir Nostr application. The search system supports searching across all cached messages with real-time indexing, relevance scoring, and advanced query operators.
+Implemented comprehensive client-side full-text search using IndexedDB for the Nostr-BBS Nostr application. The search system supports searching across all cached messages with real-time indexing, relevance scoring, and advanced query operators.
 
 ## Implementation Details
 
@@ -391,6 +391,6 @@ npm run test -- tests/searchIndex.test.ts
 
 ## Conclusion
 
-The search implementation provides a production-ready, performant full-text search system for the Minimoonoir Nostr application. It scales to 1000+ messages with sub-second search times, provides rich filtering and ranking, and integrates seamlessly with the existing message flow.
+The search implementation provides a production-ready, performant full-text search system for the Nostr-BBS Nostr application. It scales to 1000+ messages with sub-second search times, provides rich filtering and ranking, and integrates seamlessly with the existing message flow.
 
 All code follows the existing project patterns, uses TypeScript for type safety, and includes comprehensive error handling. The implementation is optimized for both user experience (fast, responsive) and developer experience (well-documented, testable).

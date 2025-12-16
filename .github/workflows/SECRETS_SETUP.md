@@ -89,12 +89,12 @@ gcloud artifacts repositories create nosflare \
 
 ### 7. Create Storage Bucket
 ```bash
-gcloud storage buckets create gs://minimoonoir-vectors \
+gcloud storage buckets create gs://Nostr-BBS-vectors \
   --location=us-central1 \
   --uniform-bucket-level-access
 
 # Make bucket publicly readable (for frontend access)
-gcloud storage buckets add-iam-policy-binding gs://minimoonoir-vectors \
+gcloud storage buckets add-iam-policy-binding gs://Nostr-BBS-vectors \
   --member="allUsers" \
   --role="roles/storage.objectViewer"
 ```
@@ -144,7 +144,7 @@ gcloud projects get-iam-policy $PROJECT_ID \
   --filter="bindings.members:serviceAccount:github-actions@$PROJECT_ID.iam.gserviceaccount.com"
 
 # Check bucket exists
-gcloud storage buckets list | grep minimoonoir-vectors
+gcloud storage buckets list | grep Nostr-BBS-vectors
 
 # Check Artifact Registry
 gcloud artifacts repositories list --location=us-central1
@@ -198,7 +198,7 @@ gcloud iam service-accounts keys create github-actions-key-new.json \
 
 ### Storage bucket access issues
 - Verify bucket exists: `gcloud storage buckets list`
-- Check IAM permissions: `gcloud storage buckets get-iam-policy gs://minimoonoir-vectors`
+- Check IAM permissions: `gcloud storage buckets get-iam-policy gs://Nostr-BBS-vectors`
 - Ensure embedding-api SA has storage.objectViewer role
 
 ## Next Steps

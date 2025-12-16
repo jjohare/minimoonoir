@@ -3,7 +3,7 @@
 # Pinned Messages Implementation (Phase 1.5)
 
 ## Overview
-Implemented pinned messages support for Minimoonoir Nostr, allowing admins to pin up to 5 important messages per channel.
+Implemented pinned messages support for Nostr-BBS Nostr, allowing admins to pin up to 5 important messages per channel.
 
 ## Files Created
 
@@ -17,7 +17,7 @@ Features:
 - `isPinned(channelId, messageId)`: Check if message is pinned
 - `getPinnedMessages(channelId)`: Get all pinned message IDs for channel
 - `canPinMore(channelId)`: Check if more messages can be pinned (max 5)
-- Persists to localStorage with key 'minimoonoir-pinned-messages'
+- Persists to localStorage with key 'Nostr-BBS-pinned-messages'
 - Verifies admin status from `isAdmin` store before mutations
 
 ### 2. `/src/lib/components/chat/PinnedMessages.svelte`
@@ -84,7 +84,7 @@ Changes:
 - Encrypted message handling
 
 ### Data Persistence
-- LocalStorage key: 'minimoonoir-pinned-messages'
+- LocalStorage key: 'Nostr-BBS-pinned-messages'
 - Persists across sessions
 - Reactive updates via Svelte stores
 
@@ -150,7 +150,7 @@ interface PinnedMessagesState {
   - Collapse/expand behavior
 
 ## File Paths (Absolute)
-- `/home/devuser/workspace/minimoonoir-nostr/src/lib/stores/pinnedMessages.ts`
-- `/home/devuser/workspace/minimoonoir-nostr/src/lib/components/chat/PinnedMessages.svelte`
-- `/home/devuser/workspace/minimoonoir-nostr/src/lib/components/chat/MessageItem.svelte`
-- `/home/devuser/workspace/minimoonoir-nostr/src/routes/chat/[channelId]/+page.svelte`
+- `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/stores/pinnedMessages.ts`
+- `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/components/chat/PinnedMessages.svelte`
+- `/home/devuser/workspace/Nostr-BBS-nostr/src/lib/components/chat/MessageItem.svelte`
+- `/home/devuser/workspace/Nostr-BBS-nostr/src/routes/chat/[channelId]/+page.svelte`

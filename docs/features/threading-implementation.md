@@ -4,7 +4,7 @@
 
 ## Overview
 
-This document describes the quote/reply threading implementation for Minimoonoir Nostr (Phase 2.2).
+This document describes the quote/reply threading implementation for Nostr-BBS Nostr (Phase 2.2).
 
 ## Components Created
 

@@ -17,7 +17,7 @@ EMBEDDING_API_URL = "https://embedding-api-617806532906.us-central1.run.app"
 RELAY_URL = "wss://nostr-relay-617806532906.us-central1.run.app"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
-# Synthetic content themes for Fairfield community
+# Synthetic content themes for Nostr-BBS community
 THEMES = {
     "meditation": [
         "Just finished a wonderful 20-minute TM session. The silence was profound today.",
@@ -190,7 +190,7 @@ def generate_synthetic_data():
     # Also create some regular notes (kind 1)
     extra_notes = [
         "Beautiful sunrise over the dome this morning. Jai Guru Dev!",
-        "Just moved to Fairfield from California. Everyone is so welcoming!",
+        "Just moved to Nostr-BBS from California. Everyone is so welcoming!",
         "The annual town meeting was productive. Great community engagement.",
         "Finished reading 'Maharishi's Vedic University'. Profound knowledge.",
         "Cooking class at the Raj kitchen was amazing. Learned new recipes.",

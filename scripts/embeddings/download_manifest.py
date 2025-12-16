@@ -32,7 +32,7 @@ def download_manifest(bucket_name: str = None, output: str = 'manifest.json'):
 
     # Use environment variable or default
     if bucket_name is None:
-        bucket_name = os.environ.get('GCS_BUCKET_NAME', 'minimoonoir-vectors')
+        bucket_name = os.environ.get('GCS_BUCKET_NAME', 'Nostr-BBS-vectors')
 
     client = get_gcs_client()
     if not client:

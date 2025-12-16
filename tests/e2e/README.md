@@ -1,8 +1,8 @@
-# E2E Tests for Minimoonoir
+# E2E Tests for Nostr-BBS
 
 [Back to Main README](../../README.md)
 
-Comprehensive end-to-end tests using Playwright for testing the Minimoonoir chat application.
+Comprehensive end-to-end tests using Playwright for testing the Nostr-BBS chat application.
 
 ## Test Structure
 

@@ -17,12 +17,12 @@ const { chromium } = require('playwright');
   });
 
   console.log('=== GITHUB PAGES CHANNEL NAVIGATION TEST ===');
-  console.log('Testing: https://jjohare.github.io/minimoonoir-nostr/');
+  console.log('Testing: https://jjohare.github.io/Nostr-BBS-nostr/');
   console.log('');
 
   // Step 1: Login with test mnemonic
   console.log('STEP 1: Login with test mnemonic');
-  await page.goto('https://jjohare.github.io/minimoonoir-nostr/login', { waitUntil: 'networkidle', timeout: 30000 });
+  await page.goto('https://jjohare.github.io/Nostr-BBS-nostr/login', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(3000);
 
   const testMnemonic = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about';
@@ -45,7 +45,7 @@ const { chromium } = require('playwright');
   // Step 2: Navigate to channels page
   console.log('');
   console.log('STEP 2: Navigate to Channels page');
-  await page.goto('https://jjohare.github.io/minimoonoir-nostr/chat', { waitUntil: 'networkidle', timeout: 30000 });
+  await page.goto('https://jjohare.github.io/Nostr-BBS-nostr/chat', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(5000);
   await page.screenshot({ path: '/tmp/playwright-screenshots/ghpages-2-channels.png', fullPage: true });
 

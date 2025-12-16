@@ -4,8 +4,8 @@
  * Manages user access to channel sections (areas).
  *
  * Access Model:
- * - fairfield-guests: Auto-approved for all authenticated users
- * - minimoonoir-rooms: Requires admin approval
+ * - Nostr-BBS-guests: Auto-approved for all authenticated users
+ * - Nostr-BBS-rooms: Requires admin approval
  * - dreamlab: Requires admin approval
  *
  * Flow:
@@ -38,7 +38,7 @@ const KIND_SECTION_STATS = 30079;      // Section statistics (replaceable)
 /**
  * Storage key for caching section access
  */
-const STORAGE_KEY = 'minimoonoir-section-access';
+const STORAGE_KEY = 'Nostr-BBS-section-access';
 
 /**
  * Section access store state
@@ -53,8 +53,8 @@ interface SectionAccessState {
 
 const initialState: SectionAccessState = {
   access: [
-    // fairfield-guests is auto-approved for all authenticated users
-    { section: 'fairfield-guests', status: 'approved' }
+    // Nostr-BBS-guests is auto-approved for all authenticated users
+    { section: 'Nostr-BBS-guests', status: 'approved' }
   ],
   pendingRequests: [],
   stats: [],
@@ -72,13 +72,13 @@ function loadFromStorage(): SectionAccessState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
-      // Ensure fairfield-guests is always approved
+      // Ensure Nostr-BBS-guests is always approved
       const hasGuestsAccess = parsed.access?.some(
-        (a: UserSectionAccess) => a.section === 'fairfield-guests'
+        (a: UserSectionAccess) => a.section === 'Nostr-BBS-guests'
       );
       if (!hasGuestsAccess) {
         parsed.access = [
-          { section: 'fairfield-guests', status: 'approved' },
+          { section: 'Nostr-BBS-guests', status: 'approved' },
           ...(parsed.access || [])
         ];
       }
@@ -156,8 +156,8 @@ function createSectionStore() {
         return { success: false, error: 'Request already pending' };
       }
 
-      // For fairfield-guests, auto-approve
-      if (section === 'fairfield-guests') {
+      // For Nostr-BBS-guests, auto-approve
+      if (section === 'Nostr-BBS-guests') {
         update(state => ({
           ...state,
           access: [

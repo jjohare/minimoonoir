@@ -7,7 +7,7 @@ Fixed a critical SQL injection vulnerability in the Nostr relay's tag filtering 
 ## Vulnerability Details
 
 ### Location
-File: `/home/devuser/workspace/fairfield-nostr/services/nostr-relay/src/db.ts`
+File: `/home/devuser/workspace/Nostr-BBS-nostr/services/nostr-relay/src/db.ts`
 Lines: 152-183 (previously 152-162)
 
 ### Original Vulnerable Code
@@ -72,7 +72,7 @@ params.push(`%["${tagName}","${escapedValue}"%`);
 ## Security Test Suite
 
 ### Location
-`/home/devuser/workspace/fairfield-nostr/services/nostr-relay/src/__tests__/manual-security-test.ts`
+`/home/devuser/workspace/Nostr-BBS-nostr/services/nostr-relay/src/__tests__/manual-security-test.ts`
 
 ### Test Coverage
 
@@ -151,13 +151,13 @@ Test 6: Database integrity check - ✓ PASS
 
 ## Files Modified
 
-1. `/home/devuser/workspace/fairfield-nostr/services/nostr-relay/src/db.ts`
+1. `/home/devuser/workspace/Nostr-BBS-nostr/services/nostr-relay/src/db.ts`
    - Lines 152-183: Fixed tag filtering logic
 
-2. `/home/devuser/workspace/fairfield-nostr/services/nostr-relay/src/__tests__/manual-security-test.ts`
+2. `/home/devuser/workspace/Nostr-BBS-nostr/services/nostr-relay/src/__tests__/manual-security-test.ts`
    - New file: Comprehensive security test suite
 
-3. `/home/devuser/workspace/fairfield-nostr/services/nostr-relay/tsconfig.json`
+3. `/home/devuser/workspace/Nostr-BBS-nostr/services/nostr-relay/tsconfig.json`
    - Excluded `__tests__` directory from compilation
 
 ## Git Commit

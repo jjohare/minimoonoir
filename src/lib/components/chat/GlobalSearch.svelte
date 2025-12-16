@@ -54,9 +54,9 @@
     try {
       const channel = await db.channels.get(channelId);
       if (channel) {
-        // Extract section from tags or default to fairfield-guests
+        // Extract section from tags or default to Nostr-BBS-guests
         const sectionTag = channel.tags?.find((t: string[]) => t[0] === 'section')?.[1];
-        const section = (sectionTag || 'fairfield-guests') as ChannelSection;
+        const section = (sectionTag || 'Nostr-BBS-guests') as ChannelSection;
         channelSectionCache.set(channelId, section);
         return section;
       }

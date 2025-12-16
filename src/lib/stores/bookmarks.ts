@@ -15,7 +15,7 @@ interface BookmarksState {
   bookmarks: Record<string, Bookmark>;
 }
 
-const STORAGE_KEY = 'minimoonoir-bookmarks';
+const STORAGE_KEY = 'Nostr-BBS-bookmarks';
 
 // Load bookmarks from localStorage
 function loadBookmarks(): Record<string, Bookmark> {

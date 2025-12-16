@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir - Semantic Vector Search Specification
+# Nostr-BBS - Semantic Vector Search Specification
 
 > **Project:** Private Chatroom System - Semantic Search Enhancement
 > **Version:** 0.1.0-draft
@@ -12,7 +12,7 @@
 
 ## 1. Executive Summary
 
-Semantic Vector Search enhances the Minimoonoir chat system with intelligent similarity-based message discovery. This feature enables users to find relevant conversations using natural language queries rather than exact keyword matching.
+Semantic Vector Search enhances the Nostr-BBS chat system with intelligent similarity-based message discovery. This feature enables users to find relevant conversations using natural language queries rather than exact keyword matching.
 
 **Key Capabilities:**
 - **Semantic message search** across 100k+ historical messages
@@ -368,7 +368,7 @@ AND displays "⚠ Results may be outdated (index from Dec 10)"
   └─ [6] Upload to Cloudflare R2
         └─ Path: /semantic-search/2024-12-14T02-00-00Z/
         └─ Files: manifest.json, index.bin, vectors.bin
-        └─ Public URL: https://cdn.minimoonoir.com/semantic-search/latest/
+        └─ Public URL: https://cdn.Nostr-BBS.com/semantic-search/latest/
 ```
 
 ### 7.2 Client-Side Search Flow
@@ -488,7 +488,7 @@ jobs:
 ### 9.2 Cloudflare R2
 
 ```
-Bucket: minimoonoir-semantic-search
+Bucket: Nostr-BBS-semantic-search
   - Region: auto
   - Storage class: Standard
   - Public access: Enabled via custom domain

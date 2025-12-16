@@ -2,7 +2,7 @@
 
 ## Overview
 
-Minimoonoir implements a complete Progressive Web App with offline support, background sync, and installability.
+Nostr-BBS implements a complete Progressive Web App with offline support, background sync, and installability.
 
 [Back to Main README](../README.md)
 
@@ -152,7 +152,7 @@ import {
 
 PWA manifest configured with:
 
-- **Name**: "Minimoonoir"
+- **Name**: "Nostr-BBS"
 - **Display**: Standalone (fullscreen app experience)
 - **Theme Color**: #16213e
 - **Background Color**: #1a1a2e
@@ -200,7 +200,7 @@ Recommended: Use consistent branding with theme colors.
 <!-- Install prompt -->
 {#if $canInstall}
   <div class="install-banner">
-    <p>Install Minimoonoir for offline access</p>
+    <p>Install Nostr-BBS for offline access</p>
     <button on:click={triggerInstall}>Install</button>
   </div>
 {/if}

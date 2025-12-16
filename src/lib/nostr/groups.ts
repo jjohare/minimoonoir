@@ -1,5 +1,5 @@
 /**
- * NIP-29 Group Operations for Minimoonoir
+ * NIP-29 Group Operations for Nostr-BBS
  *
  * Implements group chat functionality including:
  * - Join requests and approvals

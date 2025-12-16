@@ -3,7 +3,7 @@
 # Channel Message Search Implementation - Phase 1.4
 
 ## Overview
-Implemented comprehensive search and filtering functionality for channel messages in the Minimoonoir Nostr application.
+Implemented comprehensive search and filtering functionality for channel messages in the Nostr-BBS Nostr application.
 
 ## Files Created
 

@@ -45,7 +45,7 @@
   let formVisibility: 'public' | 'cohort' | 'private' = 'public';
   let formCohorts = '';
   let formEncrypted = false;
-  let formSection: ChannelSection = 'fairfield-guests';
+  let formSection: ChannelSection = 'Nostr-BBS-guests';
 
   // Relay settings
   let isPrivateMode = $settingsStore.relayMode === 'private';
@@ -198,7 +198,7 @@
       formVisibility = 'public';
       formCohorts = '';
       formEncrypted = false;
-      formSection = 'fairfield-guests';
+      formSection = 'Nostr-BBS-guests';
       showCreateForm = false;
 
     } catch (e) {
@@ -259,7 +259,7 @@
 </script>
 
 <svelte:head>
-  <title>Admin Dashboard - Minimoonoir</title>
+  <title>Admin Dashboard - Nostr-BBS</title>
 </svelte:head>
 
 <div class="container mx-auto p-4 max-w-6xl">

@@ -80,7 +80,7 @@ test.describe('Admin - Create Chatrooms', () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('admin can create chatroom in Fairfield Guests', async ({ page }) => {
+  test('admin can create chatroom in Nostr-BBS Guests', async ({ page }) => {
     await loginAsAdmin(page);
 
     await page.goto('/admin');
@@ -91,17 +91,17 @@ test.describe('Admin - Create Chatrooms', () => {
 
     // Fill form
     const nameInput = page.getByPlaceholder(/channel name|name/i);
-    await nameInput.fill('Fairfield Welcome Chat');
+    await nameInput.fill('Nostr-BBS Welcome Chat');
 
     const descInput = page.getByPlaceholder(/description/i);
     if (await descInput.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await descInput.fill('Welcome channel for Fairfield guests');
+      await descInput.fill('Welcome channel for Nostr-BBS guests');
     }
 
-    // Select Fairfield Guests section (if dropdown exists)
+    // Select Nostr-BBS Guests section (if dropdown exists)
     const sectionSelect = page.locator('select').filter({ hasText: /section|area/i });
     if (await sectionSelect.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await sectionSelect.selectOption({ label: /fairfield/i });
+      await sectionSelect.selectOption({ label: /Nostr-BBS/i });
     }
 
     // Submit
@@ -115,7 +115,7 @@ test.describe('Admin - Create Chatrooms', () => {
     expect(hasSuccess).toBe(true);
   });
 
-  test('admin can create chatroom in MiniMooNoir', async ({ page }) => {
+  test('admin can create chatroom in Nostr-BBS', async ({ page }) => {
     await loginAsAdmin(page);
 
     await page.goto('/admin');
@@ -124,14 +124,14 @@ test.describe('Admin - Create Chatrooms', () => {
     await createButton.click();
 
     const nameInput = page.getByPlaceholder(/channel name|name/i);
-    await nameInput.fill('MiniMooNoir General');
+    await nameInput.fill('Nostr-BBS General');
 
     const descInput = page.getByPlaceholder(/description/i);
     if (await descInput.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await descInput.fill('General discussion for MiniMooNoir members');
+      await descInput.fill('General discussion for Nostr-BBS members');
     }
 
-    // Select MiniMooNoir section
+    // Select Nostr-BBS section
     const sectionSelect = page.locator('select').filter({ hasText: /section|area/i });
     if (await sectionSelect.isVisible({ timeout: 1000 }).catch(() => false)) {
       await sectionSelect.selectOption({ label: /minimoo|noir/i });
@@ -243,7 +243,7 @@ test.describe('Admin - Pending Access Requests', () => {
     await userPage.evaluate(() => localStorage.clear());
 
     await signupNewUser(userPage);
-    await requestSectionAccess(userPage, 'minimoonoir-rooms', 'Please let me join');
+    await requestSectionAccess(userPage, 'Nostr-BBS-rooms', 'Please let me join');
 
     await userPage.close();
 
@@ -260,7 +260,7 @@ test.describe('Admin - Pending Access Requests', () => {
       await page.waitForTimeout(1000);
 
       // Should see request list
-      const hasRequests = await page.getByText(/request|minimoonoir|dreamlab/i).count();
+      const hasRequests = await page.getByText(/request|Nostr-BBS|dreamlab/i).count();
       expect(hasRequests).toBeGreaterThanOrEqual(1);
     } else {
       // Requests might be shown on main admin page
@@ -278,7 +278,7 @@ test.describe('Admin - Pending Access Requests', () => {
     await signupNewUser(userPage);
     const userPubkey = await getCurrentUserPubkey(userPage);
 
-    await requestSectionAccess(userPage, 'minimoonoir-rooms');
+    await requestSectionAccess(userPage, 'Nostr-BBS-rooms');
 
     // Admin approves
     await loginAsAdmin(page);
@@ -303,7 +303,7 @@ test.describe('Admin - Pending Access Requests', () => {
     await userPage.waitForTimeout(1500);
 
     await userPage.goto('/chat');
-    const minimooCard = userPage.locator('text=/minimoonoir/i').locator('..');
+    const minimooCard = userPage.locator('text=/Nostr-BBS/i').locator('..');
     const hasAccess = await minimooCard.getByRole('button', { name: /enter/i }).isVisible({ timeout: 3000 }).catch(() => false);
 
     expect(hasAccess).toBe(true);
@@ -318,7 +318,7 @@ test.describe('Admin - Pending Access Requests', () => {
     await userPage.evaluate(() => localStorage.clear());
 
     await signupNewUser(userPage);
-    await requestSectionAccess(userPage, 'minimoonoir-rooms');
+    await requestSectionAccess(userPage, 'Nostr-BBS-rooms');
 
     await userPage.close();
 
@@ -354,7 +354,7 @@ test.describe('Admin - Pending Access Requests', () => {
     await userPage.evaluate(() => localStorage.clear());
 
     await signupNewUser(userPage);
-    await requestSectionAccess(userPage, 'minimoonoir-rooms', 'I would like to join the community');
+    await requestSectionAccess(userPage, 'Nostr-BBS-rooms', 'I would like to join the community');
 
     await userPage.close();
 
@@ -382,7 +382,7 @@ test.describe('Admin - Pending Access Requests', () => {
       await userPage.evaluate(() => localStorage.clear());
 
       await signupNewUser(userPage);
-      await requestSectionAccess(userPage, 'minimoonoir-rooms', `Request ${i + 1}`);
+      await requestSectionAccess(userPage, 'Nostr-BBS-rooms', `Request ${i + 1}`);
 
       await userPage.close();
     }
@@ -476,7 +476,7 @@ test.describe('Admin - Section Management', () => {
     await page.goto('/admin');
 
     // Should see stats for each section
-    const hasStats = await page.getByText(/fairfield|minimoonoir|dreamlab/i).count();
+    const hasStats = await page.getByText(/Nostr-BBS|Nostr-BBS|dreamlab/i).count();
     expect(hasStats).toBeGreaterThanOrEqual(1);
   });
 
@@ -496,7 +496,7 @@ test.describe('Admin - Section Management', () => {
     await page.goto('/chat');
 
     // Should be able to view all sections
-    const sections = ['fairfield-guests', 'minimoonoir-rooms', 'dreamlab'];
+    const sections = ['Nostr-BBS-guests', 'Nostr-BBS-rooms', 'dreamlab'];
 
     for (const section of sections) {
       const sectionCard = page.locator(`text=/${section.replace('-', '.*')}/i`).first();

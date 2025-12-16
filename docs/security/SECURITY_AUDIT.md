@@ -1,6 +1,6 @@
 [← Back to Main README](../README.md)
 
-# Security Audit Report - Minimoonoir
+# Security Audit Report - Nostr-BBS
 
 **Date:** 2025-12-13
 **Auditor:** Claude Code Security Analysis
@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-This security audit identifies **4 Critical**, **5 High**, **6 Medium**, and **4 Low** severity issues across the Minimoonoir Nostr-based PWA chat application. The most significant concerns involve private key storage in localStorage without encryption and the open relay write policy in development mode.
+This security audit identifies **4 Critical**, **5 High**, **6 Medium**, and **4 Low** severity issues across the Nostr-BBS Nostr-based PWA chat application. The most significant concerns involve private key storage in localStorage without encryption and the open relay write policy in development mode.
 
 ---
 
@@ -25,7 +25,7 @@ This security audit identifies **4 Critical**, **5 High**, **6 Medium**, and **4
 
 ```typescript
 // auth.ts:76-82
-localStorage.setItem('minimoonoir_keys', JSON.stringify({
+localStorage.setItem('Nostr-BBS_keys', JSON.stringify({
   publicKey,
   privateKey,  // CRITICAL: Plain text private key
   mnemonic: mnemonic || null,

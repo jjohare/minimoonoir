@@ -1,6 +1,6 @@
 # Google Cloud Platform Deployment Guide
 
-**Project**: Minimoonoir Embedding API
+**Project**: Nostr-BBS Embedding API
 **Service**: Cloud Run (containerized Node.js)
 **Cost**: $0/month (100% free tier)
 **Last Updated**: 2025-12-15

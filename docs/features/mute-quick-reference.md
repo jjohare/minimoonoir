@@ -136,7 +136,7 @@ interface MuteState {
 
 ## localStorage Structure
 
-**Key:** `minimoonoir-muted-users`
+**Key:** `Nostr-BBS-muted-users`
 
 **Value:** JSON array of MutedUser objects
 
@@ -283,7 +283,7 @@ console.assert(muteStore.isMuted('npub1abc...') === false);
 muteStore.muteUser('npub1abc...');
 
 // Reload page (simulated)
-localStorage.getItem('minimoonoir-muted-users'); // Should contain data
+localStorage.getItem('Nostr-BBS-muted-users'); // Should contain data
 
 // Check still muted after reload
 import { muteStore } from '$lib/stores/mute';

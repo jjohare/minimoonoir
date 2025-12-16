@@ -11,7 +11,7 @@ interface DraftState {
   drafts: Map<string, Draft>;
 }
 
-const STORAGE_KEY = 'minimoonoir-drafts';
+const STORAGE_KEY = 'Nostr-BBS-drafts';
 
 // Load drafts from localStorage
 function loadDrafts(): Map<string, Draft> {

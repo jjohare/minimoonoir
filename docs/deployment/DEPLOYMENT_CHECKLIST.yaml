@@ -1,10 +1,10 @@
 ---
-# Deployment Checklist - Minimoonoir Nostr Platform
+# Deployment Checklist - Nostr-BBS Nostr Platform
 # Generated: 2025-12-15
 # Agent: qe-deployment-readiness
 
 metadata:
-  project: minimoonoir-nostr
+  project: Nostr-BBS-nostr
   version: 0.1.0
   environment: production
   platform: google-cloud-platform
@@ -103,11 +103,11 @@ deployment:
       priority: 1
       steps:
         - name: Build Docker Image
-          command: "docker build -t $REGION-docker.pkg.dev/$PROJECT/minimoonoir/embedding-api:latest ."
+          command: "docker build -t $REGION-docker.pkg.dev/$PROJECT/Nostr-BBS/embedding-api:latest ."
           working_dir: services/embedding-api
 
         - name: Push to Artifact Registry
-          command: "docker push $REGION-docker.pkg.dev/$PROJECT/minimoonoir/embedding-api:latest"
+          command: "docker push $REGION-docker.pkg.dev/$PROJECT/Nostr-BBS/embedding-api:latest"
 
         - name: Deploy to Cloud Run
           command: "gcloud run deploy embedding-api --image ..."
@@ -123,11 +123,11 @@ deployment:
       priority: 2
       steps:
         - name: Build Docker Image
-          command: "docker build -t $REGION-docker.pkg.dev/$PROJECT/minimoonoir/nostr-relay:latest ."
+          command: "docker build -t $REGION-docker.pkg.dev/$PROJECT/Nostr-BBS/nostr-relay:latest ."
           working_dir: services/nostr-relay
 
         - name: Push to Artifact Registry
-          command: "docker push $REGION-docker.pkg.dev/$PROJECT/minimoonoir/nostr-relay:latest"
+          command: "docker push $REGION-docker.pkg.dev/$PROJECT/Nostr-BBS/nostr-relay:latest"
 
         - name: Deploy to Cloud Run
           command: "gcloud run deploy nostr-relay --image ..."
@@ -147,11 +147,11 @@ deployment:
           workflow: .github/workflows/deploy-pages.yml
 
         - name: Monitor Build
-          url: "https://github.com/jjohare/minimoonoir/actions"
+          url: "https://github.com/jjohare/Nostr-BBS/actions"
           expected_status: "Success"
 
         - name: Verify Deployment
-          url: "https://jjohare.github.io/minimoonoir"
+          url: "https://jjohare.github.io/Nostr-BBS"
           expected_status: 200
 
     - name: Embedding Generation
@@ -163,7 +163,7 @@ deployment:
           workflow: .github/workflows/generate-embeddings.yml
 
         - name: Verify GCS Bucket
-          command: "gsutil ls gs://minimoonoir-vectors/"
+          command: "gsutil ls gs://Nostr-BBS-vectors/"
           expected_output: "manifest.json, index.bin, embeddings.npz"
 
         - name: Test Search
@@ -186,7 +186,7 @@ post_deployment:
       timeout: 10s
 
     - name: Frontend Accessibility
-      url: "https://jjohare.github.io/minimoonoir"
+      url: "https://jjohare.github.io/Nostr-BBS"
       method: GET
       expected_status: 200
       timeout: 5s

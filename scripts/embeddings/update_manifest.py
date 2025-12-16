@@ -54,7 +54,7 @@ def update_manifest(
 
     # File URLs (will be set relative to GCS bucket)
     version = manifest["version"]
-    bucket_name = os.environ.get('GCS_BUCKET_NAME', 'minimoonoir-vectors')
+    bucket_name = os.environ.get('GCS_BUCKET_NAME', 'Nostr-BBS-vectors')
 
     manifest["files"] = {
         "index": f"v{version}/index.bin",

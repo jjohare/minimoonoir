@@ -153,7 +153,7 @@ async function main() {
     {
       seed: 'user-bob',
       section: 'business',
-      message: "I'm interested in local business networking opportunities in Fairfield.",
+      message: "I'm interested in local business networking opportunities in Nostr-BBS.",
     },
     {
       seed: 'user-carol',
@@ -168,7 +168,7 @@ async function main() {
     {
       seed: 'user-eve',
       section: 'moomaa-tribe',
-      message: 'Just moved to Fairfield for the program. Excited to meet fellow practitioners!',
+      message: 'Just moved to Nostr-BBS for the program. Excited to meet fellow practitioners!',
     },
   ];
 

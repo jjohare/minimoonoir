@@ -97,7 +97,7 @@ Create these files in `static/`:
 Optional additional sizes:
 - 72, 96, 128, 144, 152, 384 px
 
-Use Minimoonoir branding with colors:
+Use Nostr-BBS branding with colors:
 - Theme: #16213e
 - Background: #1a1a2e
 

@@ -9,11 +9,11 @@
  * - 'cohort' channels require explicit admin assignment (invisible until assigned)
  *
  * Sections:
- * - fairfield-guests: Open to all authenticated users, no approval needed
- * - minimoonoir-rooms: Observable stats, requires admin approval to enter
+ * - Nostr-BBS-guests: Open to all authenticated users, no approval needed
+ * - Nostr-BBS-rooms: Observable stats, requires admin approval to enter
  * - dreamlab: Observable stats, requires admin approval to enter (experimental/creative)
  */
-export type ChannelSection = 'fairfield-guests' | 'minimoonoir-rooms' | 'dreamlab';
+export type ChannelSection = 'Nostr-BBS-guests' | 'Nostr-BBS-rooms' | 'dreamlab';
 
 /**
  * Channel visibility within a section
@@ -49,16 +49,16 @@ export interface SectionConfig {
 }
 
 export const SECTION_CONFIG: Record<ChannelSection, SectionConfig> = {
-  'fairfield-guests': {
-    name: 'Fairfield Guests',
+  'Nostr-BBS-guests': {
+    name: 'Nostr-BBS Guests',
     description: 'Welcome area for visitors - open to all authenticated users',
     icon: '👋',
     requiresApproval: false,
     showStats: true,
     calendarAccess: 'full'  // Full calendar access for guests
   },
-  'minimoonoir-rooms': {
-    name: 'MiniMooNoir Rooms',
+  'Nostr-BBS-rooms': {
+    name: 'Nostr-BBS Rooms',
     description: 'Core community chatrooms - request access to join',
     icon: '🌙',
     requiresApproval: true,

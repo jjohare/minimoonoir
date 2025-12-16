@@ -35,7 +35,7 @@ export function getNDK(): NDK {
 			isConnected = false;
 		}
 
-		const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'minimoonoir-cache' });
+		const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'Nostr-BBS-cache' });
 
 		ndkInstance = new NDK({
 			explicitRelayUrls: relayUrls,

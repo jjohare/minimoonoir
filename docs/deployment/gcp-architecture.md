@@ -1,6 +1,6 @@
 # GCP Migration Architecture Specification
 
-**Project**: Minimoonoir Embedding API Migration
+**Project**: Nostr-BBS Embedding API Migration
 **From**: Cloudflare Workers + R2
 **To**: Google Cloud Platform
 **Date**: 2025-12-14
@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-This document outlines three architecture options for migrating the Minimoonoir embedding API from Cloudflare Workers to Google Cloud Platform, with emphasis on maximizing free tier usage and minimizing costs for a small private community application.
+This document outlines three architecture options for migrating the Nostr-BBS embedding API from Cloudflare Workers to Google Cloud Platform, with emphasis on maximizing free tier usage and minimizing costs for a small private community application.
 
 **Recommended**: **Option A - Cloud Run + Cloud Storage** (Self-hosted ONNX)
 
@@ -90,7 +90,7 @@ graph TD
    - Timeout: 60s
 
 2. **Cloud Storage**
-   - Bucket: `minimoonoir-embeddings-models` (Standard class, us-central1)
+   - Bucket: `Nostr-BBS-embeddings-models` (Standard class, us-central1)
    - Contains: ONNX model files (~22MB)
    - Access: Public read (for Cloud Run cold starts)
    - Lifecycle: No expiration
@@ -259,18 +259,18 @@ gcloud services enable artifactregistry.googleapis.com
 
 #### 1.2 Create Cloud Storage Bucket
 ```bash
-gcloud storage buckets create gs://minimoonoir-embeddings-models \
+gcloud storage buckets create gs://Nostr-BBS-embeddings-models \
   --location=us-central1 \
   --storage-class=STANDARD \
   --uniform-bucket-level-access
 
 # Upload ONNX model (optional - can bundle in container)
-gcloud storage cp onnx-models/* gs://minimoonoir-embeddings-models/
+gcloud storage cp onnx-models/* gs://Nostr-BBS-embeddings-models/
 ```
 
 #### 1.3 Create Artifact Registry Repository
 ```bash
-gcloud artifacts repositories create minimoonoir-embeddings \
+gcloud artifacts repositories create Nostr-BBS-embeddings \
   --repository-format=docker \
   --location=us-central1 \
   --description="Embedding API container images"
@@ -316,7 +316,7 @@ CMD ["node", "src/index.js"]
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: minimoonoir-embeddings
+  name: Nostr-BBS-embeddings
   namespace: default
 spec:
   template:
@@ -328,7 +328,7 @@ spec:
       containerConcurrency: 80
       timeoutSeconds: 60
       containers:
-      - image: us-central1-docker.pkg.dev/PROJECT_ID/minimoonoir-embeddings/api:latest
+      - image: us-central1-docker.pkg.dev/PROJECT_ID/Nostr-BBS-embeddings/api:latest
         ports:
         - name: http1
           containerPort: 8080
@@ -336,7 +336,7 @@ spec:
         - name: NODE_ENV
           value: production
         - name: MODEL_BUCKET
-          value: minimoonoir-embeddings-models
+          value: Nostr-BBS-embeddings-models
         resources:
           limits:
             cpu: "1000m"
@@ -455,11 +455,11 @@ export REGION="us-central1"
 
 # Build container
 gcloud builds submit \
-  --tag ${REGION}-docker.pkg.dev/${PROJECT_ID}/minimoonoir-embeddings/api:latest
+  --tag ${REGION}-docker.pkg.dev/${PROJECT_ID}/Nostr-BBS-embeddings/api:latest
 
 # Deploy to Cloud Run
-gcloud run deploy minimoonoir-embeddings \
-  --image ${REGION}-docker.pkg.dev/${PROJECT_ID}/minimoonoir-embeddings/api:latest \
+gcloud run deploy Nostr-BBS-embeddings \
+  --image ${REGION}-docker.pkg.dev/${PROJECT_ID}/Nostr-BBS-embeddings/api:latest \
   --platform managed \
   --region ${REGION} \
   --allow-unauthenticated \
@@ -473,7 +473,7 @@ gcloud run deploy minimoonoir-embeddings \
 
 #### 4.2 Get Service URL
 ```bash
-gcloud run services describe minimoonoir-embeddings \
+gcloud run services describe Nostr-BBS-embeddings \
   --region ${REGION} \
   --format 'value(status.url)'
 ```
@@ -484,7 +484,7 @@ gcloud run services describe minimoonoir-embeddings \
 ```javascript
 // src/config/api.js
 const EMBEDDING_API_URL = process.env.VITE_EMBEDDING_API_URL ||
-  'https://minimoonoir-embeddings-xxxxxxxx-uc.a.run.app';
+  'https://Nostr-BBS-embeddings-xxxxxxxx-uc.a.run.app';
 
 export const generateEmbedding = async (text: string) => {
   const response = await fetch(`${EMBEDDING_API_URL}/embed`, {
@@ -509,7 +509,7 @@ export const generateEmbedding = async (text: string) => {
 ### Cloud Run Service
 ```bash
 # Optional: Model storage bucket
-MODEL_BUCKET=minimoonoir-embeddings-models
+MODEL_BUCKET=Nostr-BBS-embeddings-models
 
 # Node environment
 NODE_ENV=production
@@ -521,7 +521,7 @@ PORT=8080
 ### PWA Application
 ```bash
 # Embedding API endpoint
-VITE_EMBEDDING_API_URL=https://minimoonoir-embeddings-xxxxxxxx-uc.a.run.app
+VITE_EMBEDDING_API_URL=https://Nostr-BBS-embeddings-xxxxxxxx-uc.a.run.app
 ```
 
 ---

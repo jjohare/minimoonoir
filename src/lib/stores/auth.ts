@@ -34,8 +34,8 @@ const initialState: AuthState = {
   isReady: false
 };
 
-const STORAGE_KEY = 'minimoonoir_keys';
-const SESSION_KEY = 'minimoonoir_session';
+const STORAGE_KEY = 'Nostr-BBS_keys';
+const SESSION_KEY = 'Nostr-BBS_session';
 
 /**
  * Admin Configuration

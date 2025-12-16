@@ -31,8 +31,8 @@ test.describe('Section Preview and Stats', () => {
     await page.goto('/');
 
     // Should see all three sections
-    await expect(page.getByText(/fairfield guests/i)).toBeVisible();
-    await expect(page.getByText(/minimoonoir|minimoo noir/i)).toBeVisible();
+    await expect(page.getByText(/Nostr-BBS guests/i)).toBeVisible();
+    await expect(page.getByText(/Nostr-BBS|minimoo noir/i)).toBeVisible();
     await expect(page.getByText(/dreamlab|dream lab/i)).toBeVisible();
   });
 
@@ -57,11 +57,11 @@ test.describe('Section Preview and Stats', () => {
 
     await page.goto('/chat');
 
-    // Fairfield Guests should show as accessible (no approval needed)
-    const fairfieldCard = page.locator('text=/fairfield guests/i').locator('..');
+    // Nostr-BBS Guests should show as accessible (no approval needed)
+    const Nostr-BBSCard = page.locator('text=/Nostr-BBS guests/i').locator('..');
 
-    // MiniMooNoir and DreamLab should show request access or pending
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    // Nostr-BBS and DreamLab should show request access or pending
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const dreamlabCard = page.locator('text=/dreamlab/i').locator('..');
 
     // Check for status indicators
@@ -70,31 +70,31 @@ test.describe('Section Preview and Stats', () => {
   });
 });
 
-test.describe('Fairfield Guests Section (Auto-Approved)', () => {
+test.describe('Nostr-BBS Guests Section (Auto-Approved)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('new user has immediate access to Fairfield Guests', async ({ page }) => {
+  test('new user has immediate access to Nostr-BBS Guests', async ({ page }) => {
     await signupNewUser(page);
 
     await page.goto('/chat');
 
-    // Should see "Enter Section" button for Fairfield Guests
-    const fairfieldCard = page.locator('text=/fairfield guests/i').locator('..');
-    const enterButton = fairfieldCard.getByRole('button', { name: /enter|view/i });
+    // Should see "Enter Section" button for Nostr-BBS Guests
+    const Nostr-BBSCard = page.locator('text=/Nostr-BBS guests/i').locator('..');
+    const enterButton = Nostr-BBSCard.getByRole('button', { name: /enter|view/i });
 
     await expect(enterButton).toBeVisible({ timeout: 3000 });
   });
 
-  test('user can enter Fairfield Guests without approval', async ({ page }) => {
+  test('user can enter Nostr-BBS Guests without approval', async ({ page }) => {
     await signupNewUser(page);
 
     await page.goto('/chat');
 
-    // Click on Fairfield Guests section
-    await navigateToSection(page, 'fairfield-guests');
+    // Click on Nostr-BBS Guests section
+    await navigateToSection(page, 'Nostr-BBS-guests');
 
     // Should see public channels
     await page.waitForTimeout(1000);
@@ -104,13 +104,13 @@ test.describe('Fairfield Guests Section (Auto-Approved)', () => {
     expect(needsApproval).toBe(false);
   });
 
-  test('Fairfield Guests channels are visible to all authenticated users', async ({ page }) => {
+  test('Nostr-BBS Guests channels are visible to all authenticated users', async ({ page }) => {
     await signupNewUser(page);
 
     await page.goto('/chat');
 
-    // Navigate to Fairfield Guests
-    await navigateToSection(page, 'fairfield-guests');
+    // Navigate to Nostr-BBS Guests
+    await navigateToSection(page, 'Nostr-BBS-guests');
 
     await page.waitForTimeout(1500);
 
@@ -122,31 +122,31 @@ test.describe('Fairfield Guests Section (Auto-Approved)', () => {
   });
 });
 
-test.describe('MiniMooNoir Section (Requires Approval)', () => {
+test.describe('Nostr-BBS Section (Requires Approval)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('new user cannot access MiniMooNoir without approval', async ({ page }) => {
+  test('new user cannot access Nostr-BBS without approval', async ({ page }) => {
     await signupNewUser(page);
 
     await page.goto('/chat');
 
-    // MiniMooNoir should show "Request Access" button
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    // Nostr-BBS should show "Request Access" button
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const requestButton = minimooCard.getByRole('button', { name: /request access/i });
 
     await expect(requestButton).toBeVisible({ timeout: 3000 });
   });
 
-  test('user can request access to MiniMooNoir', async ({ page }) => {
+  test('user can request access to Nostr-BBS', async ({ page }) => {
     await signupNewUser(page);
 
     await page.goto('/chat');
 
-    // Click request access on MiniMooNoir card
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    // Click request access on Nostr-BBS card
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const requestButton = minimooCard.getByRole('button', { name: /request access/i });
     await requestButton.click();
 
@@ -164,7 +164,7 @@ test.describe('MiniMooNoir Section (Requires Approval)', () => {
     await page.goto('/chat');
 
     // Request access
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Reload to refresh state
     await page.reload();
@@ -181,7 +181,7 @@ test.describe('MiniMooNoir Section (Requires Approval)', () => {
     await page.goto('/chat');
 
     // Request access first time
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Try to request again
     await page.reload();
@@ -263,12 +263,12 @@ test.describe('Section Access After Approval', () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('approved user can access MiniMooNoir channels', async ({ page, context }) => {
+  test('approved user can access Nostr-BBS channels', async ({ page, context }) => {
     // Create new user and request access
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Open admin in new tab
     const adminPage = await context.newPage();
@@ -287,7 +287,7 @@ test.describe('Section Access After Approval', () => {
     await page.waitForTimeout(1500);
 
     // Should now see "Enter Section" instead of "Request Access"
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const enterButton = minimooCard.getByRole('button', { name: /enter|view/i });
 
     await expect(enterButton).toBeVisible({ timeout: 3000 });
@@ -298,7 +298,7 @@ test.describe('Section Access After Approval', () => {
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Admin approves
     const adminPage = await context.newPage();
@@ -310,7 +310,7 @@ test.describe('Section Access After Approval', () => {
     await page.reload();
     await page.waitForTimeout(1500);
 
-    await navigateToSection(page, 'minimoonoir-rooms');
+    await navigateToSection(page, 'Nostr-BBS-rooms');
 
     await page.waitForTimeout(1000);
 
@@ -324,7 +324,7 @@ test.describe('Section Access After Approval', () => {
     const mnemonic = await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     // Admin approves
     const adminPage = await context.newPage();
@@ -342,7 +342,7 @@ test.describe('Section Access After Approval', () => {
     await page.waitForTimeout(1500);
 
     // Should still have access
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const hasAccess = await minimooCard.getByRole('button', { name: /enter|view/i }).isVisible({ timeout: 3000 }).catch(() => false);
 
     expect(hasAccess).toBe(true);
@@ -360,8 +360,8 @@ test.describe('Multi-Section Access', () => {
 
     await page.goto('/chat');
 
-    // Request MiniMooNoir
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    // Request Nostr-BBS
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
 
     await page.reload();
     await page.waitForTimeout(1000);
@@ -382,10 +382,10 @@ test.describe('Multi-Section Access', () => {
     await signupNewUser(page);
     const userPubkey = await getCurrentUserPubkey(page);
 
-    await requestSectionAccess(page, 'minimoonoir-rooms');
+    await requestSectionAccess(page, 'Nostr-BBS-rooms');
     await requestSectionAccess(page, 'dreamlab');
 
-    // Admin approves only MiniMooNoir
+    // Admin approves only Nostr-BBS
     const adminPage = await context.newPage();
     await loginAsAdmin(adminPage);
     await approvePendingRequest(adminPage, userPubkey!);
@@ -394,8 +394,8 @@ test.describe('Multi-Section Access', () => {
     await page.reload();
     await page.waitForTimeout(1500);
 
-    // MiniMooNoir should be accessible
-    const minimooCard = page.locator('text=/minimoonoir/i').locator('..');
+    // Nostr-BBS should be accessible
+    const minimooCard = page.locator('text=/Nostr-BBS/i').locator('..');
     const hasMinimooAccess = await minimooCard.getByRole('button', { name: /enter/i }).isVisible({ timeout: 2000 }).catch(() => false);
 
     // DreamLab should still be pending

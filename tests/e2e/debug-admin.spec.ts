@@ -67,7 +67,7 @@ test.describe('Debug Admin Login', () => {
     console.log('LocalStorage keys:', Object.keys(storedKeys));
 
     // Extract pubkey from stored data
-    const mainKey = storedKeys['minimoonoir_keys'];
+    const mainKey = storedKeys['Nostr-BBS_keys'];
     if (mainKey) {
       try {
         const parsed = JSON.parse(mainKey);
@@ -81,7 +81,7 @@ test.describe('Debug Admin Login', () => {
         console.log('Error parsing stored keys:', e);
       }
     } else {
-      console.log('No minimoonoir_keys found in localStorage');
+      console.log('No Nostr-BBS_keys found in localStorage');
       console.log('Full localStorage:', storedKeys);
     }
 

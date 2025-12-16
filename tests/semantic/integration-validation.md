@@ -141,7 +141,7 @@ env:
   PYTHON_VERSION: '3.11'
   EMBEDDING_MODEL: 'sentence-transformers/all-MiniLM-L6-v2'
   EMBEDDING_DIM: 384
-  R2_BUCKET: 'minimoonoir-embeddings'
+  R2_BUCKET: 'Nostr-BBS-embeddings'
 ```
 
 **Secret References**:

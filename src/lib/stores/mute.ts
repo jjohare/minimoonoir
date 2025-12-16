@@ -1,7 +1,7 @@
 import { writable, derived, get } from 'svelte/store';
 import { browser } from '$app/environment';
 
-const STORAGE_KEY = 'minimoonoir-muted-users';
+const STORAGE_KEY = 'Nostr-BBS-muted-users';
 
 /**
  * Muted user entry with metadata

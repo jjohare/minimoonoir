@@ -1,6 +1,6 @@
 [← Back to Main README](../README.md)
 
-# Deployment Guide - Minimoonoir
+# Deployment Guide - Nostr-BBS
 
 ## Architecture
 
@@ -66,8 +66,8 @@ flowchart TB
 ### 1. Fork and Clone Repository
 
 ```bash
-git clone https://github.com/your-username/minimoonoir-nostr.git
-cd minimoonoir-nostr
+git clone https://github.com/your-username/Nostr-BBS-nostr.git
+cd Nostr-BBS-nostr
 npm install
 ```
 
@@ -92,7 +92,7 @@ VITE_EMBEDDING_API_URL=https://your-service.us-central1.run.app
 VITE_ADMIN_PUBKEY=your-hex-pubkey-here
 
 # Application configuration
-VITE_APP_NAME=Minimoonoir
+VITE_APP_NAME=Nostr-BBS
 VITE_NDK_DEBUG=false
 
 # GCP credentials (for local development only)
@@ -151,10 +151,10 @@ curl http://localhost:8008 -H "Accept: application/nostr+json"
 Expected response:
 ```json
 {
-  "name": "Minimoonoir Relay",
+  "name": "Nostr-BBS Relay",
   "description": "Private community relay with whitelist access",
   "supported_nips": [1, 2, 9, 11, 17, 25, 28, 42, 44, 52, 59],
-  "software": "minimoonoir-relay",
+  "software": "Nostr-BBS-relay",
   "version": "1.0.0"
 }
 ```
@@ -265,7 +265,7 @@ env:
   NODE_VERSION: '20'
   VITE_RELAY_URL: ws://localhost:8008
   VITE_ADMIN_PUBKEY: ${{ vars.ADMIN_PUBKEY }}
-  VITE_APP_NAME: Minimoonoir
+  VITE_APP_NAME: Nostr-BBS
   VITE_NDK_DEBUG: false
 ```
 
@@ -286,7 +286,7 @@ GitHub Actions will:
 ### Step 4: Verify Deployment
 
 1. Check Actions tab for build status
-2. Once complete, visit: `https://your-username.github.io/minimoonoir-nostr/`
+2. Once complete, visit: `https://your-username.github.io/Nostr-BBS-nostr/`
 3. PWA should load and connect to your Docker relay
 
 ### Step 5: Configure Custom Domain (Optional)
@@ -351,7 +351,7 @@ npm run test:e2e
 | `VITE_RELAY_URL` | Yes | Internal Docker relay URL | `ws://localhost:8008` |
 | `VITE_EMBEDDING_API_URL` | Yes | GCP Cloud Run embedding API | `https://service.us-central1.run.app` |
 | `VITE_ADMIN_PUBKEY` | Yes | Admin public key (hex) | `49dfa09...` (64 chars) |
-| `VITE_APP_NAME` | No | Application name | `Minimoonoir` |
+| `VITE_APP_NAME` | No | Application name | `Nostr-BBS` |
 | `VITE_NDK_DEBUG` | No | Enable NDK debug logs | `false` |
 
 ### Docker Relay (.env in services/nostr-relay)
@@ -360,7 +360,7 @@ npm run test:e2e
 |----------|----------|-------------|---------|
 | `DATABASE_URL` | Yes | PostgreSQL connection | `postgresql://nostr:password@postgres:5432/nostr_relay` |
 | `RELAY_PORT` | No | WebSocket port | `8008` |
-| `RELAY_NAME` | No | Relay name (NIP-11) | `Minimoonoir Relay` |
+| `RELAY_NAME` | No | Relay name (NIP-11) | `Nostr-BBS Relay` |
 
 ### Build Variables (.github/workflows)
 
@@ -552,7 +552,7 @@ After successful deployment:
 
 ## Support
 
-- **Issues**: https://github.com/your-username/minimoonoir-nostr/issues
+- **Issues**: https://github.com/your-username/Nostr-BBS-nostr/issues
 - **Nostr Protocol**: https://nostr.com
 - **Docker**: https://docs.docker.com
 - **SvelteKit**: https://kit.svelte.dev

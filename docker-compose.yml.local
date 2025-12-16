@@ -1,5 +1,5 @@
 # =============================================================================
-# minimoonoir Nostr - Docker Compose Deployment
+# Nostr-BBS Nostr - Docker Compose Deployment
 # =============================================================================
 # Single container with website + relay, designed for cloudflared tunnel
 # =============================================================================
@@ -8,11 +8,11 @@ version: '3.8'
 
 services:
   # Main application: Website + Nostr Relay
-  minimoonoir:
+  Nostr-BBS:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: minimoonoir-nostr
+    container_name: Nostr-BBS-nostr
     ports:
       - "8080:80"  # Map to 8080 for cloudflared
     volumes:
@@ -28,28 +28,28 @@ services:
       start_period: 15s
     restart: unless-stopped
     networks:
-      - minimoonoir-network
+      - Nostr-BBS-network
 
   # Optional: Cloudflared tunnel (uncomment to use)
   # cloudflared:
   #   image: cloudflare/cloudflared:latest
-  #   container_name: minimoonoir-tunnel
+  #   container_name: Nostr-BBS-tunnel
   #   command: tunnel --no-autoupdate run
   #   environment:
   #     - TUNNEL_TOKEN=${CLOUDFLARED_TOKEN}
   #   depends_on:
-  #     minimoonoir:
+  #     Nostr-BBS:
   #       condition: service_healthy
   #   restart: unless-stopped
   #   networks:
-  #     - minimoonoir-network
+  #     - Nostr-BBS-network
 
 volumes:
   strfry-data:
     driver: local
 
 networks:
-  minimoonoir-network:
+  Nostr-BBS-network:
     driver: bridge
 
 # =============================================================================
@@ -67,13 +67,13 @@ networks:
 #    - Relay:   ws://localhost:8080/relay
 #
 # 4. For cloudflared tunnel:
-#    - Create tunnel: cloudflared tunnel create minimoonoir
-#    - Configure tunnel to point to http://minimoonoir:80
+#    - Create tunnel: cloudflared tunnel create Nostr-BBS
+#    - Configure tunnel to point to http://Nostr-BBS:80
 #    - Set CLOUDFLARED_TOKEN in .env
 #    - Uncomment cloudflared service above
 #
 # 5. Backup data:
-#    docker run --rm -v minimoonoir-nostr_strfry-data:/data \
+#    docker run --rm -v Nostr-BBS-nostr_strfry-data:/data \
 #      -v $(pwd)/backup:/backup alpine tar czf /backup/strfry-backup.tar.gz /data
 #
 # =============================================================================

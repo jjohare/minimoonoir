@@ -23,6 +23,9 @@ coordination/orchestration/*
 *.sqlite-wal
 claude-flow
 hive-mind-prompt-*.txt
+.claude/
+.agentic-qe/
+_github.archive.local
 
 # Agentic QE
 .agentic-qe/memory.db
@@ -39,6 +42,11 @@ node_modules
 .env
 .env.*
 !.env.example
+
+# Instance-specific configs (contain secrets)
+config/fairfield-sections.yaml
+config/*-sections.yaml
+!config/*-sections.example.yaml
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 *.log

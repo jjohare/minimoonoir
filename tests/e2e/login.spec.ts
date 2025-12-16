@@ -63,8 +63,8 @@ test.describe('User Login Flow', () => {
     // Check that keys are stored
     const storedKeys = await page.evaluate(() => {
       return {
-        pubkey: localStorage.getItem('minimoonoir_nostr_pubkey'),
-        encryptedPrivkey: localStorage.getItem('minimoonoir_nostr_encrypted_privkey')
+        pubkey: localStorage.getItem('Nostr-BBS_nostr_pubkey'),
+        encryptedPrivkey: localStorage.getItem('Nostr-BBS_nostr_encrypted_privkey')
       };
     });
 
@@ -93,7 +93,7 @@ test.describe('User Login Flow', () => {
 
     // Verify keys are NOT stored
     const hasKeys = await page.evaluate(() => {
-      return !!localStorage.getItem('minimoonoir_nostr_pubkey');
+      return !!localStorage.getItem('Nostr-BBS_nostr_pubkey');
     });
 
     expect(hasKeys).toBe(false);
@@ -175,7 +175,7 @@ test.describe('User Login Flow', () => {
     await page.waitForTimeout(1000);
 
     const hasKeys = await page.evaluate(() => {
-      return !!localStorage.getItem('minimoonoir_nostr_pubkey');
+      return !!localStorage.getItem('Nostr-BBS_nostr_pubkey');
     });
 
     expect(hasKeys).toBe(true);
@@ -201,7 +201,7 @@ test.describe('User Login Flow', () => {
     await page.waitForTimeout(1000);
 
     const hasKeys = await page.evaluate(() => {
-      return !!localStorage.getItem('minimoonoir_nostr_pubkey');
+      return !!localStorage.getItem('Nostr-BBS_nostr_pubkey');
     });
 
     expect(hasKeys).toBe(true);
@@ -225,7 +225,7 @@ test.describe('User Login Flow', () => {
 
     // Get stored pubkey
     const storedPubkey = await page.evaluate(() => {
-      return localStorage.getItem('minimoonoir_nostr_pubkey');
+      return localStorage.getItem('Nostr-BBS_nostr_pubkey');
     });
 
     // Verify it's a valid hex string (64 chars)

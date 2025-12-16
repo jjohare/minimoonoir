@@ -34,7 +34,7 @@ export interface NotificationState {
 /**
  * Storage key for persisting notifications
  */
-const STORAGE_KEY = 'minimoonoir-nostr-notifications';
+const STORAGE_KEY = 'Nostr-BBS-nostr-notifications';
 
 /**
  * Load notifications from localStorage
@@ -128,7 +128,7 @@ function createNotificationStore() {
       // Show browser notification if supported and permission granted
       if (browser && 'Notification' in window && Notification.permission === 'granted') {
         try {
-          new Notification('Minimoonoir', {
+          new Notification('Nostr-BBS', {
             body: message,
             icon: '/favicon.png',
             tag: notification.id

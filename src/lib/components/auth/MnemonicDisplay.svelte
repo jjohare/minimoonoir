@@ -63,7 +63,7 @@
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-error font-bold">•</span>
-                  <span>Fairfield University cannot recover lost recovery phrases</span>
+                  <span>Nostr-BBS University cannot recover lost recovery phrases</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-error font-bold">•</span>

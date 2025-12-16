@@ -1,5 +1,5 @@
 /**
- * Cryptographic utilities for Minimoonoir
+ * Cryptographic utilities for Nostr-BBS
  * Provides low-level crypto operations for key management
  */
 

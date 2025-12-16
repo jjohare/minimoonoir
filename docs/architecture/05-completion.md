@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir Nostr - SPARC Completion
+# Nostr-BBS Nostr - SPARC Completion
 
 > **Project:** Private Chatroom System for Residential Retreat & Course Booking
 > **Version:** 0.1.0-draft
@@ -11,7 +11,7 @@
 
 ## 1. Completion Overview
 
-This document defines the deployment, verification, and handoff criteria for Minimoonoir Nostr. It serves as the final SPARC phase checklist ensuring production readiness.
+This document defines the deployment, verification, and handoff criteria for Nostr-BBS Nostr. It serves as the final SPARC phase checklist ensuring production readiness.
 
 ```mermaid
 flowchart LR
@@ -142,8 +142,8 @@ flowchart TB
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/jjohare/minimoonoir-nostr.git
-cd minimoonoir-nostr
+git clone https://github.com/jjohare/Nostr-BBS-nostr.git
+cd Nostr-BBS-nostr
 
 # 2. Configure environment
 cp .env.example .env.production
@@ -158,12 +158,12 @@ cd relay
 npx wrangler deploy
 
 # 5. Verify services
-curl -I https://chat.minimoonoir.pages.dev
-curl -I https://relay.minimoonoir.workers.dev
+curl -I https://chat.Nostr-BBS.pages.dev
+curl -I https://relay.Nostr-BBS.workers.dev
 ```
 # 1. Clone repository
-git clone https://github.com/jjohare/minimoonoir-nostr.git
-cd minimoonoir-nostr
+git clone https://github.com/jjohare/Nostr-BBS-nostr.git
+cd Nostr-BBS-nostr
 
 # 2. Configure environment
 cp .env.example .env.production
@@ -174,7 +174,7 @@ npm install
 npm run build
 
 # 4. Deploy frontend to Cloudflare Pages
-npx wrangler pages deploy build --project-name=minimoonoir-chat
+npx wrangler pages deploy build --project-name=Nostr-BBS-chat
 
 # 5. Deploy relay to Cloudflare Workers
 cd relay
@@ -182,12 +182,12 @@ npm install
 npx wrangler deploy
 
 # 6. Configure Durable Objects (first time only)
-npx wrangler d1 create minimoonoir-relay-db
-npx wrangler d1 execute minimoonoir-relay-db --file=./schema.sql
+npx wrangler d1 create Nostr-BBS-relay-db
+npx wrangler d1 execute Nostr-BBS-relay-db --file=./schema.sql
 
 # 7. Verify deployments
-curl -I https://minimoonoir-chat.pages.dev
-curl https://relay.minimoonoir.workers.dev/health
+curl -I https://Nostr-BBS-chat.pages.dev
+curl https://relay.Nostr-BBS.workers.dev/health
 ```
 
 ### 3.4 Cloudflare Configuration
@@ -201,23 +201,23 @@ npm install -g wrangler
 wrangler login
 
 # Create Pages project
-wrangler pages create minimoonoir-chat
+wrangler pages create Nostr-BBS-chat
 
 # Create Workers project
 wrangler init relay
 
 # Create R2 bucket for backups
-wrangler r2 bucket create minimoonoir-backups
+wrangler r2 bucket create Nostr-BBS-backups
 
 # Configure environment variables
-wrangler pages secret put VITE_ADMIN_PUBKEY --project-name=minimoonoir-chat
+wrangler pages secret put VITE_ADMIN_PUBKEY --project-name=Nostr-BBS-chat
 wrangler secret put ADMIN_PUBKEY --name relay
 ```
 
 **wrangler.toml Configuration:**
 ```toml
 # relay/wrangler.toml
-name = "minimoonoir-relay"
+name = "Nostr-BBS-relay"
 main = "src/index.ts"
 compatibility_date = "2024-12-13"
 
@@ -228,16 +228,16 @@ bindings = [
 
 [[d1_databases]]
 binding = "DB"
-database_name = "minimoonoir-relay-db"
+database_name = "Nostr-BBS-relay-db"
 database_id = "<your-d1-database-id>"
 
 [[r2_buckets]]
 binding = "BACKUP_BUCKET"
-bucket_name = "minimoonoir-backups"
+bucket_name = "Nostr-BBS-backups"
 
 [vars]
-RELAY_NAME = "Minimoonoir Private Relay"
-RELAY_DESCRIPTION = "Private relay for Minimoonoir community"
+RELAY_NAME = "Nostr-BBS Private Relay"
+RELAY_DESCRIPTION = "Private relay for Nostr-BBS community"
 ```
 
 ---
@@ -251,21 +251,21 @@ RELAY_DESCRIPTION = "Private relay for Minimoonoir community"
 # ─────────────────────────────────────────────────────────
 
 # Relay Configuration
-RELAY_URL=wss://relay.minimoonoir.example
-RELAY_NAME="Minimoonoir Private Relay"
-RELAY_DESCRIPTION="Private relay for Minimoonoir community"
-RELAY_CONTACT=admin@minimoonoir.example
+RELAY_URL=wss://relay.Nostr-BBS.example
+RELAY_NAME="Nostr-BBS Private Relay"
+RELAY_DESCRIPTION="Private relay for Nostr-BBS community"
+RELAY_CONTACT=admin@Nostr-BBS.example
 
 # Admin Configuration
 ADMIN_PUBKEY=npub1...  # Hex or npub format
-ADMIN_DISPLAY_NAME="Minimoonoir Admin"
+ADMIN_DISPLAY_NAME="Nostr-BBS Admin"
 
 # PWA Configuration
-PUBLIC_APP_NAME="Minimoonoir Chat"
-PUBLIC_APP_URL=https://chat.minimoonoir.example
+PUBLIC_APP_NAME="Nostr-BBS Chat"
+PUBLIC_APP_URL=https://chat.Nostr-BBS.example
 
 # Backup Configuration (optional)
-BACKUP_S3_BUCKET=minimoonoir-backups
+BACKUP_S3_BUCKET=Nostr-BBS-backups
 BACKUP_S3_REGION=us-east-1
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
@@ -277,10 +277,10 @@ AWS_SECRET_ACCESS_KEY=...
 // relay/workers/config.ts
 export const relayConfig = {
   info: {
-    name: "Minimoonoir Private Relay",
+    name: "Nostr-BBS Private Relay",
     description: "Closed community relay - no federation",
     pubkey: process.env.ADMIN_PUBKEY,
-    contact: "admin@minimoonoir.example",
+    contact: "admin@Nostr-BBS.example",
   },
 
   // Restrict to authenticated users only
@@ -440,7 +440,7 @@ export async function performBackup(env: Env): Promise<void> {
 # Cleanup old local backups (keep 7 days)
 find "$BACKUP_DIR" -type f -mtime +7 -delete
 
-echo "Backup completed: minimoonoir-$DATE.tar.gz"
+echo "Backup completed: Nostr-BBS-$DATE.tar.gz"
 ```
 
 ### 6.3 Recovery Procedure
@@ -599,7 +599,7 @@ export default {
     }
 
     // Check relay health
-    const healthCheck = await fetch('https://relay.minimoonoir.workers.dev/health');
+    const healthCheck = await fetch('https://relay.Nostr-BBS.workers.dev/health');
     if (!healthCheck.ok) {
       await sendAlert('Relay health check failed', 'critical');
     }
@@ -650,11 +650,11 @@ async function sendAlert(message: string, severity: string) {
         X-Frame-Options "DENY"
         X-XSS-Protection "1; mode=block"
         Referrer-Policy "strict-origin-when-cross-origin"
-        Content-Security-Policy "default-src 'self'; connect-src 'self' wss://relay.minimoonoir.example; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+        Content-Security-Policy "default-src 'self'; connect-src 'self' wss://relay.Nostr-BBS.example; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
     }
 }
 
-chat.minimoonoir.example {
+chat.Nostr-BBS.example {
     import security_headers
     reverse_proxy pwa:3000
 }
@@ -667,7 +667,7 @@ chat.minimoonoir.example {
 ### 9.1 End-User Guide Outline
 
 ```markdown
-# Minimoonoir Chat - User Guide
+# Nostr-BBS Chat - User Guide
 
 ## Getting Started
 1. Creating Your Account
@@ -696,7 +696,7 @@ chat.minimoonoir.example {
 ### 9.2 Admin Guide Outline
 
 ```markdown
-# Minimoonoir Chat - Admin Guide
+# Nostr-BBS Chat - Admin Guide
 
 ## Daily Operations
 1. Reviewing Join Requests
@@ -830,7 +830,7 @@ gantt
 
 ```bash
 # Cloudflare Deployment
-wrangler pages deploy build --project-name=minimoonoir-chat  # Deploy frontend
+wrangler pages deploy build --project-name=Nostr-BBS-chat  # Deploy frontend
 wrangler deploy                                               # Deploy relay worker
 wrangler tail                                                 # Stream live logs
 
@@ -842,24 +842,24 @@ wrangler secret put ADMIN_PUBKEY                  # Set secret
 
 # D1 Database Management
 wrangler d1 list                                              # List databases
-wrangler d1 execute minimoonoir-relay-db --command="SELECT COUNT(*) FROM events"
-wrangler d1 execute minimoonoir-relay-db --file=query.sql     # Execute SQL file
-wrangler d1 export minimoonoir-relay-db --output=backup.sql   # Export database
+wrangler d1 execute Nostr-BBS-relay-db --command="SELECT COUNT(*) FROM events"
+wrangler d1 execute Nostr-BBS-relay-db --file=query.sql     # Execute SQL file
+wrangler d1 export Nostr-BBS-relay-db --output=backup.sql   # Export database
 
 # R2 Backup Management
 wrangler r2 bucket list                                       # List buckets
-wrangler r2 object list minimoonoir-backups                   # List backups
-wrangler r2 object get minimoonoir-backups backups/latest.json --file=backup.json
-wrangler r2 object put minimoonoir-backups backups/manual.json --file=backup.json
+wrangler r2 object list Nostr-BBS-backups                   # List backups
+wrangler r2 object get Nostr-BBS-backups backups/latest.json --file=backup.json
+wrangler r2 object put Nostr-BBS-backups backups/manual.json --file=backup.json
 
 # Pages Management
-wrangler pages deployment list --project-name=minimoonoir-chat
-wrangler pages deployment tail --project-name=minimoonoir-chat
-wrangler pages secret put VITE_ADMIN_PUBKEY --project-name=minimoonoir-chat
+wrangler pages deployment list --project-name=Nostr-BBS-chat
+wrangler pages deployment tail --project-name=Nostr-BBS-chat
+wrangler pages secret put VITE_ADMIN_PUBKEY --project-name=Nostr-BBS-chat
 
 # Health Checks
-curl https://minimoonoir-chat.pages.dev
-curl https://relay.minimoonoir.workers.dev/health
+curl https://Nostr-BBS-chat.pages.dev
+curl https://relay.Nostr-BBS.workers.dev/health
 
 # Monitoring & Logs
 wrangler tail --format=json | jq                  # JSON formatted logs
@@ -895,12 +895,12 @@ new_classes = ["RelayState"]
 
 # Error: "D1 database binding not found"
 # Fix: Create database and update wrangler.toml
-wrangler d1 create minimoonoir-relay-db
+wrangler d1 create Nostr-BBS-relay-db
 # Copy database_id to wrangler.toml
 
 # Error: "R2 bucket not found"
 # Fix: Create bucket
-wrangler r2 bucket create minimoonoir-backups
+wrangler r2 bucket create Nostr-BBS-backups
 
 # Error: "Exceeded CPU time limit"
 # Fix: Optimize queries or split into multiple requests

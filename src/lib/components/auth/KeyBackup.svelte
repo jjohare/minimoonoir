@@ -241,7 +241,7 @@
             </li>
             <li class="flex items-start gap-2">
               <span class="text-success">✓</span>
-              <span>Never share it with anyone - including Fairfield staff</span>
+              <span>Never share it with anyone - including Nostr-BBS staff</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-success">✓</span>

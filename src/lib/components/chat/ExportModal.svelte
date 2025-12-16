@@ -136,17 +136,17 @@
       switch (format) {
         case 'json':
           content = exportToJSON(enrichedMessages, options);
-          filename = generateTimestampedFilename('minimoonoir-export', 'json');
+          filename = generateTimestampedFilename('Nostr-BBS-export', 'json');
           mimeType = 'application/json';
           break;
         case 'csv':
           content = exportToCSV(enrichedMessages, options);
-          filename = generateTimestampedFilename('minimoonoir-export', 'csv');
+          filename = generateTimestampedFilename('Nostr-BBS-export', 'csv');
           mimeType = 'text/csv';
           break;
         case 'text':
           content = exportToText(enrichedMessages, options);
-          filename = generateTimestampedFilename('minimoonoir-export', 'txt');
+          filename = generateTimestampedFilename('Nostr-BBS-export', 'txt');
           mimeType = 'text/plain';
           break;
       }

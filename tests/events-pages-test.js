@@ -21,7 +21,7 @@ import { chromium } from 'playwright';
 
   // Test 1: Homepage
   console.log('TEST 1: Homepage');
-  await page.goto('http://localhost:4950/minimoonoir-nostr/', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:4950/Nostr-BBS-nostr/', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2000);
   const homeContent = await page.content();
   const homeOk = !homeContent.includes('500') && !homeContent.includes('Internal Error');
@@ -31,7 +31,7 @@ import { chromium } from 'playwright';
   // Test 2: Events page (public)
   console.log('');
   console.log('TEST 2: Events Page (public)');
-  await page.goto('http://localhost:4950/minimoonoir-nostr/events', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:4950/Nostr-BBS-nostr/events', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2000);
   const eventsContent = await page.content();
   const eventsOk = !eventsContent.includes('500') && !eventsContent.includes('Internal Error');
@@ -54,7 +54,7 @@ import { chromium } from 'playwright';
   // Test 3: Admin Calendar page
   console.log('');
   console.log('TEST 3: Admin Calendar Page');
-  await page.goto('http://localhost:4950/minimoonoir-nostr/admin/calendar', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:4950/Nostr-BBS-nostr/admin/calendar', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2000);
   const adminCalContent = await page.content();
   const adminCalOk = !adminCalContent.includes('500') && !adminCalContent.includes('Internal Error');
@@ -73,7 +73,7 @@ import { chromium } from 'playwright';
   // Test 4: Admin page
   console.log('');
   console.log('TEST 4: Admin Dashboard');
-  await page.goto('http://localhost:4950/minimoonoir-nostr/admin', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:4950/Nostr-BBS-nostr/admin', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2000);
   const adminContent = await page.content();
   const adminOk = !adminContent.includes('500') && !adminContent.includes('Internal Error');
@@ -83,7 +83,7 @@ import { chromium } from 'playwright';
   // Test 5: Chat page
   console.log('');
   console.log('TEST 5: Chat Page');
-  await page.goto('http://localhost:4950/minimoonoir-nostr/chat', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:4950/Nostr-BBS-nostr/chat', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2000);
   const chatContent = await page.content();
   const chatOk = !chatContent.includes('500') && !chatContent.includes('Internal Error');

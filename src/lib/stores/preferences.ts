@@ -21,7 +21,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
 	soundEnabled: true,
 };
 
-const STORAGE_KEY = 'minimoonoir-user-preferences';
+const STORAGE_KEY = 'Nostr-BBS-user-preferences';
 
 /**
  * Load preferences from localStorage

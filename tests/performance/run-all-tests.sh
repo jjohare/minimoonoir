@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ###############################################################################
-# Comprehensive Performance Test Suite for Minimoonoir GCP Deployment
+# Comprehensive Performance Test Suite for Nostr-BBS GCP Deployment
 #
 # Tests:
 # 1. Embedding API load testing (cold start, warm latency, sustained load)
-# 2. Cloud Storage access performance (gs://minimoonoir-vectors)
+# 2. Cloud Storage access performance (gs://Nostr-BBS-vectors)
 # 3. Nostr Relay WebSocket performance (connection, throughput, concurrency)
 #
 # Outputs:
@@ -31,7 +31,7 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 mkdir -p "${RESULTS_DIR}"
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}Minimoonoir Performance Test Suite${NC}"
+echo -e "${BLUE}Nostr-BBS Performance Test Suite${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo -e "Timestamp: ${TIMESTAMP}"
@@ -70,7 +70,7 @@ echo ""
 ###############################################################################
 
 echo -e "${YELLOW}[2/3] Running Cloud Storage Access Tests...${NC}"
-echo -e "Target: https://storage.googleapis.com/minimoonoir-vectors"
+echo -e "Target: https://storage.googleapis.com/Nostr-BBS-vectors"
 echo ""
 
 artillery run \

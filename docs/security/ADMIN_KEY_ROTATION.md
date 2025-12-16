@@ -46,7 +46,7 @@ nsec1vrdz2fmjuk3xczlq5pxmwrqphygh7k7z06jxc9ktt834djvxmtrq48utex
 - `admin-provkey` (version 2): NSEC private key
 
 **Access Control**:
-- Service Account: `fairfield-applications@cumbriadreamlab.iam.gserviceaccount.com`
+- Service Account: `Nostr-BBS-applications@cumbriadreamlab.iam.gserviceaccount.com`
 - Role: `roles/secretmanager.secretAccessor`
 - IAM Audit Logging: Enabled
 
@@ -73,7 +73,7 @@ VITE_ADMIN_PUBKEY=11ed64225dd5e2c5e18f61ad43d5ad9272d08739d3a20dd25886197b073866
 
 **Variable Name**: `ADMIN_PUBKEY`
 **Value**: `11ed64225dd5e2c5e18f61ad43d5ad9272d08739d3a20dd25886197b0738663c`
-**Location**: https://github.com/jjohare/minimoonoir/settings/variables/actions
+**Location**: https://github.com/jjohare/Nostr-BBS/settings/variables/actions
 
 **Steps to Update**:
 1. Navigate to repository settings
@@ -119,7 +119,7 @@ VITE_ADMIN_PUBKEY=11ed64225dd5e2c5e18f61ad43d5ad9272d08739d3a20dd25886197b073866
 ## Testing
 
 ### Admin Login Test
-1. Navigate to https://jjohare.github.io/minimoonoir/login
+1. Navigate to https://jjohare.github.io/Nostr-BBS/login
 2. Click "Paste Phrase" or "Enter Words"
 3. Enter mnemonic: `glimpse marble confirm army sleep imitate lake balance home panic view brand`
 4. Click "Restore Account"

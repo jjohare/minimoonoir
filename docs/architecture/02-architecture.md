@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir - SPARC Architecture
+# Nostr-BBS - SPARC Architecture
 
 > **Phase:** Architecture Design
 > **Version:** 0.1.0-draft
@@ -175,8 +175,8 @@ graph TB
 // relay/workers/config.ts
 export const relayConfig = {
   info: {
-    name: "Minimoonoir Private Relay",
-    description: "Private relay for Minimoonoir community",
+    name: "Nostr-BBS Private Relay",
+    description: "Private relay for Nostr-BBS community",
     supported_nips: [1, 2, 9, 11, 29, 42, 44, 59],
   },
 
@@ -251,7 +251,7 @@ interface VisibilityTag {
 ### 3.3 IndexedDB Schema (Client-side Cache)
 
 ```typescript
-interface MinimoonoirDB {
+interface Nostr-BBSDB {
   // Cached messages for offline access
   messages: {
     id: string;           // Event ID
@@ -455,13 +455,13 @@ flowchart LR
 
 *Problem: No guarantee other relays honor deletion*
 
-**Minimoonoir (Closed Relay)**
+**Nostr-BBS (Closed Relay)**
 
 ```mermaid
 flowchart TB
-    User -->|msg| MinimoonoirRelay["Minimoonoir Relay (ONLY)"]
-    User -->|delete| MinimoonoirRelay
-    MinimoonoirRelay -->|"Event removed"| LMDB[(LMDB)]
+    User -->|msg| Nostr-BBSRelay["Nostr-BBS Relay (ONLY)"]
+    User -->|delete| Nostr-BBSRelay
+    Nostr-BBSRelay -->|"Event removed"| LMDB[(LMDB)]
 ```
 
 *Guarantee: We control the only relay, deletion is real*

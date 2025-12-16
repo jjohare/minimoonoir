@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir Nostr - SPARC Pseudocode & Flows
+# Nostr-BBS Nostr - SPARC Pseudocode & Flows
 
 > **Phase:** Pseudocode Design
 > **Version:** 0.1.0-draft
@@ -12,7 +12,7 @@
 
 | Area | Decision |
 |------|----------|
-| DM Routing | External Nostr clients connect to Minimoonoir relay only |
+| DM Routing | External Nostr clients connect to Nostr-BBS relay only |
 | Cohort UX | Single unified interface - all cohort channels visible together |
 | Admin Model | Single super-admin user |
 | Channel Discovery | Name + description + member count shown |

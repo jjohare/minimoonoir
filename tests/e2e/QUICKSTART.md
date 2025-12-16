@@ -99,7 +99,7 @@ npm run test:e2e:webkit
 ## Files Created
 
 ```
-/home/devuser/workspace/minimoonoir-nostr/
+/home/devuser/workspace/Nostr-BBS-nostr/
 ├── playwright.config.ts              # Playwright configuration
 ├── package.json                      # Updated with E2E scripts
 └── tests/e2e/

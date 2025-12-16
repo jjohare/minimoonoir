@@ -1,6 +1,6 @@
 [← Back to Main README](../../README.md)
 
-# Minimoonoir - Semantic Vector Search Architecture
+# Nostr-BBS - Semantic Vector Search Architecture
 
 > **Phase:** Architecture Design - Semantic Search
 > **Version:** 0.1.0-draft
@@ -109,7 +109,7 @@ env:
   PYTHON_VERSION: '3.11'
   MODEL_NAME: 'sentence-transformers/all-MiniLM-L6-v2'
   EMBEDDING_DIM: 384
-  R2_BUCKET: 'minimoonoir-embeddings'
+  R2_BUCKET: 'Nostr-BBS-embeddings'
   R2_PREFIX: 'embeddings'
 
 jobs:
@@ -235,7 +235,7 @@ interface HNSWConfig {
 interface R2EmbeddingStore {
   // Directory structure
   structure: {
-    bucket: "minimoonoir-embeddings";
+    bucket: "Nostr-BBS-embeddings";
     paths: {
       manifest: "embeddings/manifest.json";
       index: "embeddings/index-v{version}.bin";
@@ -354,7 +354,7 @@ async function canSync(config: SyncConfig): Promise<boolean> {
  * Fetch and cache manifest from R2
  */
 async function fetchManifest(): Promise<R2Manifest> {
-  const url = 'https://embeddings.minimoonoir.com/embeddings/manifest.json';
+  const url = 'https://embeddings.Nostr-BBS.com/embeddings/manifest.json';
   const response = await fetch(url, { cache: 'no-store' });
 
   if (!response.ok) {
@@ -1003,7 +1003,7 @@ sequenceDiagram
 
 ```typescript
 // Extension to existing db.ts
-interface MinimoonoirDB {
+interface Nostr-BBSDB {
   // ... existing tables ...
 
   // Vector embeddings storage
@@ -1058,7 +1058,7 @@ interface MinimoonoirDB {
 ### 5.2 R2 Bucket Structure
 
 ```
-minimoonoir-embeddings/
+Nostr-BBS-embeddings/
 ├── embeddings/
 │   ├── manifest.json                  # Current version pointer
 │   ├── index-v1702512000.bin         # HNSW index (v1)
@@ -1077,7 +1077,7 @@ minimoonoir-embeddings/
 ### 6.1 R2 Manifest API
 
 ```typescript
-// GET https://embeddings.minimoonoir.com/embeddings/manifest.json
+// GET https://embeddings.Nostr-BBS.com/embeddings/manifest.json
 interface ManifestResponse {
   version: number;                      // 1702512000 (Unix timestamp)
   last_updated: string;                 // "2024-12-14T03:00:00Z"
@@ -1088,7 +1088,7 @@ interface ManifestResponse {
 
   files: {
     index: {
-      url: string;                      // "https://embeddings.minimoonoir.com/embeddings/index-v1702512000.bin"
+      url: string;                      // "https://embeddings.Nostr-BBS.com/embeddings/index-v1702512000.bin"
       size_bytes: number;               // 12845760 (~12MB)
       checksum_sha256: string;          // "a3f2..."
     };

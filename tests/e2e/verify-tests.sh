@@ -2,7 +2,7 @@
 # E2E Test Verification Script
 
 echo "========================================="
-echo "minimoonoir Nostr E2E Test Verification"
+echo "Nostr-BBS Nostr E2E Test Verification"
 echo "========================================="
 echo ""
 
@@ -26,8 +26,8 @@ test_files=(
 )
 
 for file in "${test_files[@]}"; do
-    if [ -f "/home/devuser/workspace/minimoonoir-nostr/tests/e2e/$file" ]; then
-        lines=$(wc -l < "/home/devuser/workspace/minimoonoir-nostr/tests/e2e/$file")
+    if [ -f "/home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/$file" ]; then
+        lines=$(wc -l < "/home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/$file")
         echo "   ✓ $file ($lines lines)"
     else
         echo "   ✗ $file not found"
@@ -37,8 +37,8 @@ done
 # Check fixtures
 echo ""
 echo "3. Checking fixtures..."
-if [ -f "/home/devuser/workspace/minimoonoir-nostr/tests/e2e/fixtures/mock-relay.ts" ]; then
-    lines=$(wc -l < "/home/devuser/workspace/minimoonoir-nostr/tests/e2e/fixtures/mock-relay.ts")
+if [ -f "/home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/fixtures/mock-relay.ts" ]; then
+    lines=$(wc -l < "/home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/fixtures/mock-relay.ts")
     echo "   ✓ mock-relay.ts ($lines lines)"
 else
     echo "   ✗ mock-relay.ts not found"
@@ -47,7 +47,7 @@ fi
 # Check configuration
 echo ""
 echo "4. Checking configuration..."
-if [ -f "/home/devuser/workspace/minimoonoir-nostr/playwright.config.ts" ]; then
+if [ -f "/home/devuser/workspace/Nostr-BBS-nostr/playwright.config.ts" ]; then
     echo "   ✓ playwright.config.ts exists"
 else
     echo "   ✗ playwright.config.ts not found"
@@ -62,7 +62,7 @@ docs=(
 )
 
 for doc in "${docs[@]}"; do
-    if [ -f "/home/devuser/workspace/minimoonoir-nostr/tests/e2e/$doc" ]; then
+    if [ -f "/home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/$doc" ]; then
         echo "   ✓ $doc"
     else
         echo "   ✗ $doc not found"
@@ -72,7 +72,7 @@ done
 # Check npm scripts
 echo ""
 echo "6. Checking npm scripts..."
-if grep -q '"test:e2e"' /home/devuser/workspace/minimoonoir-nostr/package.json; then
+if grep -q '"test:e2e"' /home/devuser/workspace/Nostr-BBS-nostr/package.json; then
     echo "   ✓ test:e2e script configured"
 else
     echo "   ✗ test:e2e script not found"
@@ -81,7 +81,7 @@ fi
 # Count total tests
 echo ""
 echo "7. Counting test cases..."
-total_tests=$(grep -r "test(" /home/devuser/workspace/minimoonoir-nostr/tests/e2e/*.spec.ts | wc -l)
+total_tests=$(grep -r "test(" /home/devuser/workspace/Nostr-BBS-nostr/tests/e2e/*.spec.ts | wc -l)
 echo "   ✓ Found $total_tests test cases"
 
 # Summary

@@ -4,7 +4,7 @@
 
 ## Overview
 
-Comprehensive link preview and media embed system for Minimoonoir Nostr, featuring automatic URL detection, OpenGraph metadata fetching, rich media embeds, and user preferences.
+Comprehensive link preview and media embed system for Nostr-BBS Nostr, featuring automatic URL detection, OpenGraph metadata fetching, rich media embeds, and user preferences.
 
 ## Components
 

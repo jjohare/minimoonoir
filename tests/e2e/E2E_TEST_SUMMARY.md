@@ -1,6 +1,6 @@
-# Fairfield Nostr E2E Test Suite
+# Nostr-BBS Nostr E2E Test Suite
 
-Comprehensive Playwright end-to-end tests for the Fairfield Nostr application covering authentication, section access control, calendar visibility, and admin workflows.
+Comprehensive Playwright end-to-end tests for the Nostr-BBS Nostr application covering authentication, section access control, calendar visibility, and admin workflows.
 
 ## Test Files
 
@@ -39,12 +39,12 @@ Tests the section (area) access control system:
 - Section statistics visibility
 - Approval status badges
 
-**Fairfield Guests (Auto-Approved):**
+**Nostr-BBS Guests (Auto-Approved):**
 - Immediate access for new users
 - No approval required
 - Public channel visibility
 
-**MiniMooNoir (Requires Approval):**
+**Nostr-BBS (Requires Approval):**
 - Request access workflow
 - Pending status tracking
 - Cannot request multiple times
@@ -66,15 +66,15 @@ Tests the section (area) access control system:
 ### 3. `calendar.spec.ts` - Calendar Access Control
 Tests calendar visibility based on section membership:
 
-**Fairfield Guests:**
+**Nostr-BBS Guests:**
 - Full calendar access
 - Can see all event details (title, description, location)
 - No masking or restrictions
 
-**MiniMooNoir Members:**
+**Nostr-BBS Members:**
 - Full calendar access after approval
 - Can see all event details
-- Same access level as Fairfield Guests
+- Same access level as Nostr-BBS Guests
 
 **DreamLab Members (Availability Only):**
 - Can view calendar but with limited details
@@ -103,8 +103,8 @@ Tests admin-specific functionality:
 - Quick action buttons
 
 **Create Chatrooms:**
-- Create channels in Fairfield Guests section
-- Create channels in MiniMooNoir section
+- Create channels in Nostr-BBS Guests section
+- Create channels in Nostr-BBS section
 - Create channels in DreamLab section
 - Validation (name required)
 - Channels appear in list after creation
@@ -228,7 +228,7 @@ npm run dev
 
 ✅ **Admin Journey:**
 1. Login as admin with credentials from .env
-2. Create chatrooms in each section (Fairfield Guests, MiniMooNoir, DreamLab)
+2. Create chatrooms in each section (Nostr-BBS Guests, Nostr-BBS, DreamLab)
 3. View pending access requests
 4. Approve user access requests
 5. View and manage calendar events
@@ -236,14 +236,14 @@ npm run dev
 ✅ **Regular User Journey:**
 1. Register/login as regular user
 2. View section previews and stats
-3. Request access to MiniMooNoir section
+3. Request access to Nostr-BBS section
 4. Request access to DreamLab section
 5. After approval, join public channels
 6. View calendar (check masking works)
 
 ✅ **Calendar Access Tests:**
-1. Fairfield Guests: Can see all calendar details
-2. MiniMooNoir members: Can see all calendar details
+1. Nostr-BBS Guests: Can see all calendar details
+2. Nostr-BBS members: Can see all calendar details
 3. DreamLab members: Can only see availability, not details
 4. DreamLab with cohort match: Can see event details for their cohort
 

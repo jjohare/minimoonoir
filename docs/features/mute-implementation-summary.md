@@ -3,7 +3,7 @@
 # User Mute/Ignore List Implementation Summary
 
 ## Overview
-Implemented a comprehensive user mute/ignore system for Minimoonoir Nostr (Phase 2.5) that allows users to hide content from specific users across the application.
+Implemented a comprehensive user mute/ignore system for Nostr-BBS Nostr (Phase 2.5) that allows users to hide content from specific users across the application.
 
 ## Implementation Status: COMPLETE
 
@@ -12,7 +12,7 @@ Implemented a comprehensive user mute/ignore system for Minimoonoir Nostr (Phase
 1. **Mute Store** - `/src/lib/stores/mute.ts`
    - Core mute functionality with localStorage persistence
    - Methods: `muteUser()`, `unmuteUser()`, `isMuted()`, `getMutedUsers()`, `clearAllMutes()`
-   - Storage key: `minimoonoir-muted-users`
+   - Storage key: `Nostr-BBS-muted-users`
    - Includes mute reason and timestamp metadata
    - Derived stores for reactive updates
 
@@ -116,7 +116,7 @@ interface MutedUser {
 ```
 
 ### Storage
-- localStorage key: `minimoonoir-muted-users`
+- localStorage key: `Nostr-BBS-muted-users`
 - Array of MutedUser objects serialized as JSON
 - Automatically loaded on page load
 - Saved immediately on mute/unmute
