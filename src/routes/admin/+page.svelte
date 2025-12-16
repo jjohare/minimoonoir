@@ -35,6 +35,7 @@
   let channels: CreatedChannel[] = [];
   let isLoading = false;
   let error: string | null = null;
+  let successMessage: string | null = null;
   let showCreateForm = false;
   let relayStatus = 'disconnected';
 
@@ -118,10 +119,19 @@
   async function handleApproveRequest(request: SectionAccessRequest) {
     try {
       isLoading = true;
+      error = null;
+      successMessage = null;
       const result = await approveSectionAccess(request);
       if (result.success) {
         // Remove from pending list
         pendingRequests = pendingRequests.filter(r => r.id !== request.id);
+        // Show success message
+        const sectionName = SECTION_CONFIG[request.section]?.name || request.section;
+        successMessage = `Approved access to ${sectionName}. User has been notified.`;
+        // Auto-clear success message after 5 seconds
+        setTimeout(() => {
+          successMessage = null;
+        }, 5000);
       } else {
         error = result.error || 'Failed to approve request';
       }
@@ -272,6 +282,17 @@
       </svg>
       <span>{error}</span>
       <button class="btn btn-ghost btn-sm" on:click={() => error = null}>Dismiss</button>
+    </div>
+  {/if}
+
+  <!-- Success Display -->
+  {#if successMessage}
+    <div class="alert alert-success mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{successMessage}</span>
+      <button class="btn btn-ghost btn-sm" on:click={() => successMessage = null}>Dismiss</button>
     </div>
   {/if}
 
