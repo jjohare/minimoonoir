@@ -10,6 +10,7 @@ import type { SectionsConfig } from '$lib/config/types';
 
 const SETUP_KEY = 'minimoonoir-setup-complete';
 const CONFIG_KEY = 'minimoonoir-custom-config';
+const DEPLOYMENT_KEY = 'minimoonoir-deployment-config';
 
 export type SetupStep =
 	| 'welcome'
@@ -273,6 +274,16 @@ function createSetupStore() {
 			if (browser) {
 				localStorage.setItem(SETUP_KEY, 'true');
 				localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config));
+
+				// Save deployment config separately for runtime access
+				if (state.config.deployment || state.config.superuser) {
+					const deploymentConfig = {
+						...state.config.deployment,
+						adminPubkey: state.config.superuser?.pubkey,
+						relayUrl: state.config.deployment?.relayUrl || state.config.superuser?.relayUrl
+					};
+					localStorage.setItem(DEPLOYMENT_KEY, JSON.stringify(deploymentConfig));
+				}
 			}
 
 			update((s) => ({
@@ -297,6 +308,7 @@ function createSetupStore() {
 			if (browser) {
 				localStorage.removeItem(SETUP_KEY);
 				localStorage.removeItem(CONFIG_KEY);
+				localStorage.removeItem(DEPLOYMENT_KEY);
 			}
 			set(initialState);
 		},
@@ -338,3 +350,26 @@ export const setupErrors = derived(setupStore, ($store) => $store.errors);
  * Derived: Working config
  */
 export const workingConfig = derived(setupStore, ($store) => $store.config);
+
+/**
+ * Get deployment configuration from localStorage (set during setup)
+ */
+export function getDeploymentConfig(): {
+	relayUrl?: string;
+	embeddingApiUrl?: string;
+	gcsEmbeddingsUrl?: string;
+	frontendUrl?: string;
+	adminPubkey?: string;
+} | null {
+	if (!browser) return null;
+
+	try {
+		const stored = localStorage.getItem(DEPLOYMENT_KEY);
+		if (stored) {
+			return JSON.parse(stored);
+		}
+	} catch {
+		// Invalid stored config
+	}
+	return null;
+}

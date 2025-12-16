@@ -88,9 +88,17 @@ export interface SuperuserConfig {
 	relayUrl?: string;
 }
 
+export interface DeploymentConfig {
+	relayUrl?: string;
+	embeddingApiUrl?: string;
+	gcsEmbeddingsUrl?: string;
+	frontendUrl?: string;
+}
+
 export interface SectionsConfig {
 	app: AppConfig;
 	superuser?: SuperuserConfig;
+	deployment?: DeploymentConfig;
 	roles: RoleConfig[];
 	cohorts: CohortConfig[];
 	sections: SectionConfig[];
