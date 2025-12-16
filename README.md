@@ -9,11 +9,13 @@ A decentralized community bulletin board system built on the Nostr protocol. Fea
 
 ## Screenshots
 
-| Homepage | Chat | Calendar Events |
-|:--------:|:----:|:---------------:|
-| ![Homepage](docs/screenshots/homepage.png) | ![Chat](docs/screenshots/chat.png) | ![Events](docs/screenshots/events.png) |
+| Homepage | Messages | Calendar |
+|:--------:|:--------:|:--------:|
+| ![Homepage](docs/screenshots/homepage.png) | ![Messages](docs/screenshots/messages.png) | ![Calendar](docs/screenshots/calendar-compact.png) |
 | **Login** | **Signup** | **Mobile View** |
 | ![Login](docs/screenshots/login.png) | ![Signup](docs/screenshots/signup.png) | ![Mobile](docs/screenshots/homepage-mobile.png) |
+| **Profile** | **Semantic Search** | **Admin Dashboard** |
+| ![Profile](docs/screenshots/profile.png) | ![Semantic Search](docs/screenshots/semantic-search.png) | ![Admin Dashboard](docs/screenshots/admin-dashboard.png) |
 
 ## Features
 
