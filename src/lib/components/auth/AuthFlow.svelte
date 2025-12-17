@@ -12,6 +12,8 @@
    * for the private server. This high-friction design ensures users properly backup
    * their recovery phrase. For public deployments, consider consolidating to one step.
    */
+  import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
   import { authStore } from '$lib/stores/auth';
   import { saveKeysToStorage } from '$lib/nostr/keys';
   import Signup from './Signup.svelte';
@@ -75,6 +77,12 @@
       currentStep = 'pending-approval';
     }
   }
+
+  async function handleApproved() {
+    // User has been approved by admin - update state and navigate to app
+    authStore.setPending(false);
+    await goto(`${base}/chat`);
+  }
 </script>
 
 {#if currentStep === 'signup'}
@@ -93,5 +101,5 @@
     on:continue={handleKeyBackupContinue}
   />
 {:else if currentStep === 'pending-approval' && tempKeys}
-  <PendingApproval publicKey={tempKeys.publicKey} />
+  <PendingApproval publicKey={tempKeys.publicKey} on:approved={handleApproved} />
 {/if}
