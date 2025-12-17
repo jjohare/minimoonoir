@@ -1,11 +1,14 @@
 <script lang="ts">
   import { tick, onMount, onDestroy } from 'svelte';
+  import { NDKEvent } from '@nostr-dev-kit/ndk';
   import { channelStore, selectedChannel, userMemberStatus } from '$lib/stores/channelStore';
   import { authStore } from '$lib/stores/auth';
   import { draftStore } from '$lib/stores/drafts';
   import { notificationStore } from '$lib/stores/notifications';
   import { createMentionTags, extractMentionedPubkeys, formatPubkey } from '$lib/utils/mentions';
   import { toast } from '$lib/stores/toast';
+  import { ndk, publishEvent, isConnected } from '$lib/nostr/relay';
+  import { KIND_GROUP_CHAT_MESSAGE } from '$lib/nostr/groups';
   import MentionAutocomplete from './MentionAutocomplete.svelte';
   import type { Message } from '$lib/types/channel';
   import type { UserProfile } from '$lib/stores/user';
@@ -195,11 +198,38 @@
         textareaElement.style.height = 'auto';
       }
 
-      // Extract mentioned users
-      const mentionedPubkeys = extractMentionedPubkeys(content);
+      // Check relay connection
+      if (!isConnected()) {
+        throw new Error('Not connected to relay');
+      }
 
+      const ndkInstance = ndk();
+      if (!ndkInstance) {
+        throw new Error('NDK not initialized');
+      }
+
+      // Extract mentioned users and create mention tags
+      const mentionedPubkeys = extractMentionedPubkeys(content);
+      const mentionTags = createMentionTags(mentionedPubkeys);
+
+      // Create and publish message event (kind 9 - NIP-29 group message)
+      const messageEvent = new NDKEvent(ndkInstance);
+      messageEvent.kind = KIND_GROUP_CHAT_MESSAGE;
+      messageEvent.content = content;
+      messageEvent.tags = [
+        ['h', channelId],
+        ...mentionTags
+      ];
+
+      const published = await publishEvent(messageEvent);
+
+      if (!published) {
+        throw new Error('Failed to publish message to relay');
+      }
+
+      // Create local message object for optimistic UI update
       const message: Message = {
-        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: messageEvent.id || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         channelId: channelId,
         authorPubkey: $authStore.publicKey,
         content: content,

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { NDKEvent } from '@nostr-dev-kit/ndk';
   import { authStore } from '$lib/stores/auth';
   import { channelStore, userMemberStatus } from '$lib/stores/channelStore';
   import { getAvatarUrl } from '$lib/utils/identicon';
@@ -7,6 +8,8 @@
   import { bookmarkStore, isBookmarked } from '$lib/stores/bookmarks';
   import { pinnedStore, isPinnedMessage } from '$lib/stores/pinnedMessages';
   import { toast } from '$lib/stores/toast';
+  import { ndk, publishEvent, isConnected } from '$lib/nostr/relay';
+  import { KIND_DELETE_EVENT } from '$lib/nostr/groups';
   import type { Message } from '$lib/types/channel';
   import { extractUrls, getMediaType } from '$lib/utils/linkPreview';
   import LinkPreview from './LinkPreview.svelte';
@@ -82,6 +85,32 @@
     if (!confirm('Are you sure you want to delete this message?')) return;
 
     try {
+      // Check relay connection
+      if (!isConnected()) {
+        throw new Error('Not connected to relay');
+      }
+
+      const ndkInstance = ndk();
+      if (!ndkInstance) {
+        throw new Error('NDK not initialized');
+      }
+
+      // Create and publish deletion event (kind 9005 - NIP-29 group delete)
+      const deleteEvent = new NDKEvent(ndkInstance);
+      deleteEvent.kind = KIND_DELETE_EVENT;
+      deleteEvent.content = 'Deleted by user';
+      deleteEvent.tags = [
+        ['h', message.channelId],
+        ['e', message.id]
+      ];
+
+      const published = await publishEvent(deleteEvent);
+
+      if (!published) {
+        throw new Error('Failed to publish deletion to relay');
+      }
+
+      // Update local state after successful relay publish
       channelStore.deleteMessage(message.channelId, message.id);
       dispatch('deleted', { messageId: message.id });
       toast.success('Message deleted');
