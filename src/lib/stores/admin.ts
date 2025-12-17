@@ -187,14 +187,14 @@ export async function fetchPendingRequests(relay: NDKRelay): Promise<void> {
     }]);
 
     const requests: PendingRequest[] = events.map(event => {
-      const channelIdTag = event.tags.find(t => t[0] === 'e');
-      const channelNameTag = event.tags.find(t => t[0] === 'name');
+      // Join requests use 'h' tag for channel ID (NIP-29 style)
+      const channelIdTag = event.tags.find(t => t[0] === 'h');
 
       return {
         id: event.id,
         pubkey: event.pubkey,
         channelId: channelIdTag?.[1] || '',
-        channelName: channelNameTag?.[1] || 'Unknown Channel',
+        channelName: '', // Will be populated by the UI from channel data
         timestamp: event.created_at,
         event,
       };
