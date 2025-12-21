@@ -97,7 +97,7 @@
         class="h-4 w-4 text-success flex-shrink-0"
         viewBox="0 0 20 20"
         fill="currentColor"
-        title="Verified"
+        aria-label="Verified"
       >
         <path
           fill-rule="evenodd"

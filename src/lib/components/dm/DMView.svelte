@@ -111,7 +111,18 @@
       // Convert hex private key to Uint8Array
       const userPrivkey = new Uint8Array(privateKey.match(/.{1,2}/g)?.map(byte => parseInt(byte, 16)) || []);
 
-      await dmStore.sendDM(content, relay, userPrivkey);
+      // Create a Relay-compatible adapter from NDKRelay
+      const relayAdapter = relay ? {
+        publish: async (event: import('nostr-tools').Event) => {
+          const { NDKEvent } = await import('@nostr-dev-kit/ndk');
+          const { getNDK } = await import('$lib/nostr/ndk');
+          const ndk = getNDK();
+          const ndkEvent = new NDKEvent(ndk, event);
+          await ndkEvent.publish();
+        }
+      } : { publish: async () => {} };
+
+      await dmStore.sendDM(content, relayAdapter, userPrivkey);
 
       // Clear draft after successful send
       if (recipientPubkey) {

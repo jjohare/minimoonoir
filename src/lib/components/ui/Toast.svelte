@@ -125,14 +125,15 @@
           </span>
 
           {#if toastItem.action}
+            {@const action = toastItem.action}
             <button
               class="btn btn-xs btn-outline border-current text-current hover:bg-current hover:text-base-100 self-start"
               on:click={() => {
                 triggerHaptic();
-                handleAction(toastItem.id, toastItem.action.callback);
+                handleAction(toastItem.id, action.callback);
               }}
             >
-              {toastItem.action.label}
+              {action.label}
             </button>
           {/if}
         </div>

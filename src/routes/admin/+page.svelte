@@ -266,7 +266,7 @@
 
       // Fetch kind 9024 (user registration) events
       const filter: NDKFilter = {
-        kinds: [KIND_USER_REGISTRATION],
+        kinds: [KIND_USER_REGISTRATION as number],
         limit: 100
       };
 
@@ -322,7 +322,7 @@
       if (!ndk) return null;
 
       const filter: NDKFilter = {
-        kinds: [KIND_USER_REGISTRATION],
+        kinds: [KIND_USER_REGISTRATION as number],
         since: Math.floor(Date.now() / 1000)
       };
 

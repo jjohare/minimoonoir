@@ -34,7 +34,7 @@ export interface FilteredCalendarEvent extends CalendarEvent {
  * Get the calendar access level for a section from configuration
  */
 export function getCalendarAccessLevel(section: ChannelSection): CalendarAccessLevel {
-  return SECTION_CONFIG[section].calendarAccess;
+  return SECTION_CONFIG[section]?.features?.calendar?.access || 'none';
 }
 
 /**

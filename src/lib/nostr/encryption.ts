@@ -138,7 +138,7 @@ export async function encryptChannelMessage(
       // Generate conversation key using NIP-44
       const conversationKey = nip44.v2.utils.getConversationKey(
         hexToBytes(senderPrivkey),
-        hexToBytes(memberPubkey)
+        memberPubkey
       );
 
       // Encrypt content for this member
@@ -278,7 +278,7 @@ export function decryptChannelMessage(
   try {
     const conversationKey = nip44.v2.utils.getConversationKey(
       hexToBytes(recipientPrivkey),
-      hexToBytes(event.pubkey)
+      event.pubkey
     );
 
     const decryptedContent = nip44.v2.decrypt(myPayload, conversationKey);

@@ -100,7 +100,7 @@ function createProfileCache() {
       if (!profile?.displayName && !profile?.name && !localNickname) {
         try {
           const registrationEvents = await ndk.fetchEvents({
-            kinds: [KIND_USER_REGISTRATION],
+            kinds: [KIND_USER_REGISTRATION as number],
             authors: [pubkey],
             limit: 1
           });

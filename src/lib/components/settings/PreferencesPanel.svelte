@@ -132,7 +132,12 @@
 				<select
 					class="select select-bordered select-sm"
 					value={$preferencesStore.theme}
-					on:change={(e) => preferencesStore.setTheme(e.currentTarget.value as 'light' | 'dark' | 'auto')}
+					on:change={(e) => {
+					const value = e.currentTarget.value;
+					if (value === 'light' || value === 'dark' || value === 'auto') {
+						preferencesStore.setTheme(value);
+					}
+				}}
 				>
 					<option value="auto">Auto</option>
 					<option value="light">Light</option>

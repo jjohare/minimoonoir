@@ -207,7 +207,7 @@ export async function queueMessage(
       }
     };
 
-    registration.active.postMessage(
+    registration.active!.postMessage(
       { type: 'QUEUE_MESSAGE', payload: message },
       [messageChannel.port2]
     );
@@ -236,7 +236,7 @@ export async function getQueuedMessages(): Promise<QueuedMessage[]> {
       }
     };
 
-    registration.active.postMessage(
+    registration.active!.postMessage(
       { type: 'GET_QUEUE' },
       [messageChannel.port2]
     );
@@ -265,7 +265,7 @@ export async function clearMessageQueue(): Promise<void> {
       }
     };
 
-    registration.active.postMessage(
+    registration.active!.postMessage(
       { type: 'CLEAR_QUEUE' },
       [messageChannel.port2]
     );
@@ -284,16 +284,13 @@ export async function triggerBackgroundSync(): Promise<void> {
   }
 
   try {
-    interface SyncManager {
-      register(tag: string): Promise<void>;
+    // Background Sync API types are not in standard TypeScript lib
+    // Cast to any to access the sync property
+    const syncManager = (registration as { sync?: { register: (tag: string) => Promise<void> } }).sync;
+    if (syncManager) {
+      await syncManager.register('sync-messages');
+      console.log('[PWA] Background sync registered');
     }
-
-    interface ServiceWorkerRegistrationWithSync extends ServiceWorkerRegistration {
-      sync: SyncManager;
-    }
-
-    await (registration as ServiceWorkerRegistrationWithSync).sync.register('sync-messages');
-    console.log('[PWA] Background sync registered');
   } catch (error) {
     console.error('[PWA] Background sync failed:', error);
   }

@@ -24,6 +24,7 @@
   export let channelName: string | undefined = undefined;
   export let messageElement: HTMLDivElement | undefined = undefined;
   export let relayUrl: string = '';
+  export let searchQuery: string = '';
 
   const dispatch = createEventDispatcher<{
     deleted: { messageId: string };

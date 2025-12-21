@@ -9,8 +9,8 @@
   $: config = SECTION_CONFIG[section];
   $: isApproved = accessStatus === 'approved';
   $: isPending = accessStatus === 'pending';
-  $: needsApproval = config.requiresApproval && !isApproved && !isPending;
-  $: hasCalendarAccess = section === 'public-lobby' || (isApproved && config.calendarAccess !== 'none');
+  $: needsApproval = config?.access?.requiresApproval && !isApproved && !isPending;
+  $: hasCalendarAccess = section === 'public-lobby' || (isApproved && config?.features?.calendar?.access !== 'none');
 
   function formatLastActivity(timestamp: number): string {
     const now = Date.now();
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Section Stats -->
-    {#if config.showStats && stats}
+    {#if config?.features?.showStats && stats}
       <div class="grid grid-cols-3 gap-4 p-4 bg-base-200 rounded-lg mb-4">
         <div class="text-center">
           <div class="text-2xl font-bold text-primary">{stats.channelCount}</div>
@@ -88,7 +88,7 @@
     {/if}
 
     <!-- Access Info -->
-    {#if config.requiresApproval && !isApproved}
+    {#if config?.access?.requiresApproval && !isApproved}
       <div class="alert alert-info shadow-sm mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -137,7 +137,7 @@
           </svg>
           Enter Section
         </button>
-      {:else if !config.requiresApproval}
+      {:else if !config?.access?.requiresApproval}
         <button
           class="btn btn-sm btn-primary"
           on:click={handleEnterSection}

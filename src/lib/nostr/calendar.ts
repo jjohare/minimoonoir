@@ -160,7 +160,7 @@ export async function fetchChannelEvents(channelId: string): Promise<CalendarEve
 
   try {
     const filter: NDKFilter = {
-      kinds: [CALENDAR_EVENT_KIND],
+      kinds: [CALENDAR_EVENT_KIND as number],
       '#e': [channelId],
     };
 
@@ -185,7 +185,7 @@ export async function fetchAllEvents(): Promise<CalendarEvent[]> {
 
   try {
     const filter: NDKFilter = {
-      kinds: [CALENDAR_EVENT_KIND],
+      kinds: [CALENDAR_EVENT_KIND as number],
       limit: 500,
     };
 
@@ -216,7 +216,7 @@ export async function fetchUpcomingEvents(days: number = 7): Promise<CalendarEve
 
   try {
     const filter: NDKFilter = {
-      kinds: [CALENDAR_EVENT_KIND],
+      kinds: [CALENDAR_EVENT_KIND as number],
       since: now - 86400, // Include events from yesterday (might still be ongoing)
       limit: 100,
     };
@@ -278,7 +278,7 @@ export async function fetchEventRSVPs(eventId: string): Promise<EventRSVP[]> {
 
   try {
     const filter: NDKFilter = {
-      kinds: [RSVP_KIND],
+      kinds: [RSVP_KIND as number],
       '#e': [eventId],
     };
 

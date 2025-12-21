@@ -31,7 +31,7 @@
 	let showInstallBanner = false;
 	let showUpdateBanner = false;
 	let showProfileModal = false;
-	let sessionCleanup: (() => void) | null = null;
+	let sessionCleanup: (() => void) | undefined = undefined;
 
 	$: showNav = $page.url.pathname !== `${base}/` && $page.url.pathname !== base && $page.url.pathname !== `${base}/signup` && $page.url.pathname !== `${base}/login` && $page.url.pathname !== `${base}/pending`;
 
@@ -43,7 +43,7 @@
 		});
 	} else if (browser && !$isAuthenticated && sessionCleanup) {
 		sessionCleanup();
-		sessionCleanup = null;
+		sessionCleanup = undefined;
 		sessionStore.stop();
 	}
 
@@ -59,9 +59,9 @@
 		mounted = true;
 
 		if (browser) {
-			const savedTheme = localStorage.getItem('theme') || 'dark';
-			themePreference = savedTheme;
-			document.documentElement.setAttribute('data-theme', savedTheme);
+			const savedTheme = localStorage.getItem('theme');
+			themePreference = savedTheme === 'light' ? 'light' : 'dark';
+			document.documentElement.setAttribute('data-theme', themePreference);
 
 			// Initialize PWA
 			initializePWA();
@@ -82,7 +82,7 @@
 	onDestroy(() => {
 		if (sessionCleanup) {
 			sessionCleanup();
-			sessionCleanup = null;
+			sessionCleanup = undefined;
 		}
 	});
 

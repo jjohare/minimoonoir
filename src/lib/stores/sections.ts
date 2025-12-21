@@ -260,8 +260,10 @@ function createSectionStore() {
             const dmEvent = new NDKEvent(ndk);
             dmEvent.kind = 4; // NIP-04 encrypted DM
             dmEvent.tags = [['p', request.requesterPubkey]];
+            // Create NDKUser for encryption
+            const recipientUser = ndk.getUser({ pubkey: request.requesterPubkey });
             dmEvent.content = await signer.encrypt(
-              { pubkey: request.requesterPubkey } as NDKUser,
+              recipientUser,
               `Your access request for ${request.section} has been denied. Reason: ${reason}`
             );
             await dmEvent.sign(signer);

@@ -322,7 +322,7 @@
 </script>
 
 {#if isOpen}
-  <Modal {onClose} title="Search Messages" size="large">
+  <Modal bind:open={isOpen} title="Search Messages" size="lg">
     <div class="search-container">
       <!-- Search Mode Tabs -->
       <div class="search-tabs">
@@ -362,7 +362,7 @@
         />
         {#if loading || syncingEmbeddings}
           <div class="search-loading">
-            <Loading size="small" />
+            <Loading size="sm" />
           </div>
         {/if}
       </div>

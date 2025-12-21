@@ -18,8 +18,9 @@
   $: pinnedMessages = messages.filter(msg => $pinnedMessageIds.includes(msg.id));
   $: hasPinnedMessages = pinnedMessages.length > 0;
 
-  function handleUnpin(messageId: string) {
-    if (pinnedStore.unpinMessage(channelId, messageId)) {
+  async function handleUnpin(messageId: string) {
+    const success = await pinnedStore.unpinMessage(channelId, messageId);
+    if (success) {
       dispatch('unpin', { messageId });
     }
   }

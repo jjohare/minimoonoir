@@ -5,7 +5,9 @@
 
 /// <reference lib="webworker" />
 
-declare const self: ServiceWorkerGlobalScope;
+declare const self: ServiceWorkerGlobalScope & {
+  __WB_MANIFEST: Array<{ url: string; revision: string | null }>;
+};
 
 // Workbox manifest injection point - DO NOT REMOVE
 const manifest = self.__WB_MANIFEST;

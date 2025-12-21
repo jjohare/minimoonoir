@@ -1,7 +1,8 @@
 import { writable, derived } from 'svelte/store';
 import type { Event as NostrEvent } from 'nostr-tools';
-import type { NDKRelay } from '@nostr-dev-kit/ndk';
+import type { NDKRelay, NDKFilter } from '@nostr-dev-kit/ndk';
 import type { ChannelSection } from '$lib/types/channel';
+import { getNDK, connectNDK } from '$lib/nostr/ndk';
 
 export interface PendingRequest {
   id: string;
@@ -175,28 +176,43 @@ export const usersByCohort = derived(
 /**
  * Fetch pending join requests from relay
  */
-export async function fetchPendingRequests(relay: NDKRelay): Promise<void> {
+export async function fetchPendingRequests(_relay: NDKRelay): Promise<void> {
   adminStore.setLoading('requests', true);
   adminStore.setError(null);
 
   try {
-    // Subscribe to kind 9021 (join request) events
-    const events = await relay.querySync([{
-      kinds: [9021],
-      limit: 100,
-    }]);
+    await connectNDK();
+    const ndk = getNDK();
 
-    const requests: PendingRequest[] = events.map(event => {
+    // Subscribe to kind 9021 (join request) events
+    const filter: NDKFilter = {
+      kinds: [9021 as number],
+      limit: 100,
+    };
+
+    const ndkEvents = await ndk.fetchEvents(filter);
+
+    const requests: PendingRequest[] = Array.from(ndkEvents).map((event) => {
       // Join requests use 'h' tag for channel ID (NIP-29 style)
-      const channelIdTag = event.tags.find(t => t[0] === 'h');
+      const channelIdTag = event.tags.find((t: string[]) => t[0] === 'h');
+
+      const nostrEvent: NostrEvent = {
+        id: event.id,
+        kind: event.kind!,
+        pubkey: event.pubkey,
+        created_at: event.created_at!,
+        tags: event.tags,
+        content: event.content,
+        sig: event.sig!
+      };
 
       return {
         id: event.id,
         pubkey: event.pubkey,
         channelId: channelIdTag?.[1] || '',
         channelName: '', // Will be populated by the UI from channel data
-        timestamp: event.created_at,
-        event,
+        timestamp: event.created_at!,
+        event: nostrEvent,
       };
     });
 
@@ -214,21 +230,27 @@ export async function fetchPendingRequests(relay: NDKRelay): Promise<void> {
 /**
  * Fetch all users from relay
  */
-export async function fetchAllUsers(relay: NDKRelay): Promise<void> {
+export async function fetchAllUsers(_relay: NDKRelay): Promise<void> {
   adminStore.setLoading('users', true);
   adminStore.setError(null);
 
   try {
+    await connectNDK();
+    const ndk = getNDK();
+
     // Fetch user metadata (kind 0) and membership events (kind 9022)
-    const [metadataEvents, membershipEvents] = await Promise.all([
-      relay.querySync([{ kinds: [0], limit: 500 }]),
-      relay.querySync([{ kinds: [9022], limit: 1000 }]),
+    const [metadataEventsSet, membershipEventsSet] = await Promise.all([
+      ndk.fetchEvents({ kinds: [0 as number], limit: 500 }),
+      ndk.fetchEvents({ kinds: [9022 as number], limit: 1000 }),
     ]);
+
+    const metadataEvents = Array.from(metadataEventsSet);
+    const membershipEvents = Array.from(membershipEventsSet);
 
     // Build user map from metadata
     const userMap = new Map<string, User>();
 
-    metadataEvents.forEach(event => {
+    metadataEvents.forEach((event) => {
       try {
         const metadata = JSON.parse(event.content);
         userMap.set(event.pubkey, {
@@ -236,8 +258,8 @@ export async function fetchAllUsers(relay: NDKRelay): Promise<void> {
           name: metadata.name || metadata.display_name,
           cohorts: [],
           channels: [],
-          joinedAt: event.created_at,
-          lastSeen: event.created_at,
+          joinedAt: event.created_at!,
+          lastSeen: event.created_at!,
         });
       } catch (e) {
         console.error('Failed to parse metadata:', e);
@@ -245,11 +267,11 @@ export async function fetchAllUsers(relay: NDKRelay): Promise<void> {
     });
 
     // Add membership data
-    membershipEvents.forEach(event => {
+    membershipEvents.forEach((event) => {
       const user = userMap.get(event.pubkey);
       if (user) {
-        const channelTag = event.tags.find(t => t[0] === 'e');
-        const cohortTag = event.tags.find(t => t[0] === 'cohort');
+        const channelTag = event.tags.find((t: string[]) => t[0] === 'e');
+        const cohortTag = event.tags.find((t: string[]) => t[0] === 'cohort');
 
         if (channelTag?.[1]) {
           user.channels.push(channelTag[1]);
@@ -257,7 +279,7 @@ export async function fetchAllUsers(relay: NDKRelay): Promise<void> {
         if (cohortTag?.[1] && !user.cohorts.includes(cohortTag[1])) {
           user.cohorts.push(cohortTag[1]);
         }
-        user.lastSeen = Math.max(user.lastSeen || 0, event.created_at);
+        user.lastSeen = Math.max(user.lastSeen || 0, event.created_at!);
       }
     });
 
@@ -275,28 +297,35 @@ export async function fetchAllUsers(relay: NDKRelay): Promise<void> {
 /**
  * Fetch all channels from relay
  */
-export async function fetchAllChannels(relay: NDKRelay): Promise<void> {
+export async function fetchAllChannels(_relay: NDKRelay): Promise<void> {
   adminStore.setLoading('channels', true);
   adminStore.setError(null);
 
   try {
+    await connectNDK();
+    const ndk = getNDK();
+
     // Fetch channel creation events (kind 40) and metadata (kind 41)
-    const [creationEvents, metadataEvents, memberEvents] = await Promise.all([
-      relay.querySync([{ kinds: [40], limit: 100 }]),
-      relay.querySync([{ kinds: [41], limit: 100 }]),
-      relay.querySync([{ kinds: [9022], limit: 1000 }]),
+    const [creationEventsSet, metadataEventsSet, memberEventsSet] = await Promise.all([
+      ndk.fetchEvents({ kinds: [40 as number], limit: 100 }),
+      ndk.fetchEvents({ kinds: [41 as number], limit: 100 }),
+      ndk.fetchEvents({ kinds: [9022 as number], limit: 1000 }),
     ]);
+
+    const creationEvents = Array.from(creationEventsSet);
+    const metadataEvents = Array.from(metadataEventsSet);
+    const memberEvents = Array.from(memberEventsSet);
 
     // Build channel map
     const channelMap = new Map<string, Channel>();
 
-    creationEvents.forEach(event => {
+    creationEvents.forEach((event) => {
       try {
         const metadata = JSON.parse(event.content);
-        const cohortTag = event.tags.find(t => t[0] === 'cohort');
-        const visibilityTag = event.tags.find(t => t[0] === 'visibility');
-        const encryptedTag = event.tags.find(t => t[0] === 'encrypted');
-        const sectionTag = event.tags.find(t => t[0] === 'section');
+        const cohortTag = event.tags.find((t: string[]) => t[0] === 'cohort');
+        const visibilityTag = event.tags.find((t: string[]) => t[0] === 'visibility');
+        const encryptedTag = event.tags.find((t: string[]) => t[0] === 'encrypted');
+        const sectionTag = event.tags.find((t: string[]) => t[0] === 'section');
 
         const visibility = visibilityTag?.[1] === 'cohort' || visibilityTag?.[1] === 'private'
           ? visibilityTag[1] as 'cohort' | 'private'
@@ -310,7 +339,7 @@ export async function fetchAllChannels(relay: NDKRelay): Promise<void> {
           visibility,
           encrypted: encryptedTag?.[1] === 'true',
           section: (sectionTag?.[1] as ChannelSection) || 'public-lobby',
-          createdAt: event.created_at,
+          createdAt: event.created_at!,
           memberCount: 0,
           creatorPubkey: event.pubkey,
         });
@@ -320,8 +349,8 @@ export async function fetchAllChannels(relay: NDKRelay): Promise<void> {
     });
 
     // Update with metadata events
-    metadataEvents.forEach(event => {
-      const channelIdTag = event.tags.find(t => t[0] === 'e');
+    metadataEvents.forEach((event) => {
+      const channelIdTag = event.tags.find((t: string[]) => t[0] === 'e');
       if (channelIdTag?.[1]) {
         const channel = channelMap.get(channelIdTag[1]);
         if (channel) {
@@ -338,8 +367,8 @@ export async function fetchAllChannels(relay: NDKRelay): Promise<void> {
 
     // Count members
     const memberCounts = new Map<string, Set<string>>();
-    memberEvents.forEach(event => {
-      const channelTag = event.tags.find(t => t[0] === 'e');
+    memberEvents.forEach((event) => {
+      const channelTag = event.tags.find((t: string[]) => t[0] === 'e');
       if (channelTag?.[1]) {
         const members = memberCounts.get(channelTag[1]) || new Set();
         members.add(event.pubkey);

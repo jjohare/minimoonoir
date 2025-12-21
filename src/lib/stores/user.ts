@@ -74,7 +74,7 @@ function createDefaultProfile(pubkey: string): UserProfile {
  */
 export const userStore: Readable<UserState> = derived(
   authStore,
-  ($auth, set) => {
+  ($auth, set: (value: UserState) => void) => {
     // If not authenticated, clear user
     if ($auth.state !== 'authenticated' || !$auth.pubkey) {
       set({
@@ -90,7 +90,7 @@ export const userStore: Readable<UserState> = derived(
 
     set({
       profile: initialProfile,
-      isLoading: true as any,
+      isLoading: true,
       error: null
     });
 
@@ -142,7 +142,7 @@ export const userStore: Readable<UserState> = derived(
 
           set({
             profile: verifiedProfile,
-            isLoading: false as any,
+            isLoading: false,
             error: null
           });
 
@@ -158,7 +158,7 @@ export const userStore: Readable<UserState> = derived(
         } else {
           set({
             profile: initialProfile,
-            isLoading: false as any,
+            isLoading: false,
             error: null
           });
         }
@@ -166,8 +166,8 @@ export const userStore: Readable<UserState> = derived(
         console.warn('[User] Failed to load profile:', error);
         set({
           profile: initialProfile,
-          isLoading: false as any,
-          error: (error instanceof Error ? error.message : 'Failed to load profile') as any
+          isLoading: false,
+          error: error instanceof Error ? error.message : 'Failed to load profile'
         });
       }
     };

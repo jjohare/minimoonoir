@@ -236,7 +236,7 @@ export async function fetchPendingRequests(): Promise<SectionAccessRequest[]> {
     if (adminPubkeys.length === 0) return [];
 
     const filter: NDKFilter = {
-      kinds: [KIND_SECTION_REQUEST],
+      kinds: [KIND_SECTION_REQUEST as number],
       '#p': adminPubkeys,
       limit: 100
     };
@@ -246,7 +246,7 @@ export async function fetchPendingRequests(): Promise<SectionAccessRequest[]> {
 
     // Also fetch approvals to filter out already-approved requests
     const approvalFilter: NDKFilter = {
-      kinds: [KIND_SECTION_APPROVAL],
+      kinds: [KIND_SECTION_APPROVAL as number],
       limit: 500
     };
     const approvalEvents = await ndk.fetchEvents(approvalFilter);
@@ -294,7 +294,7 @@ export async function fetchUserAccess(
 
     // Fetch approval events for this user
     const filter: NDKFilter = {
-      kinds: [KIND_SECTION_APPROVAL],
+      kinds: [KIND_SECTION_APPROVAL as number],
       '#p': [userPubkey],
       limit: 50
     };
@@ -324,7 +324,7 @@ export async function fetchUserAccess(
 
     // Also check for pending requests
     const requestFilter: NDKFilter = {
-      kinds: [KIND_SECTION_REQUEST],
+      kinds: [KIND_SECTION_REQUEST as number],
       authors: [userPubkey],
       limit: 10
     };
@@ -362,7 +362,7 @@ export async function fetchSectionStats(): Promise<SectionStats[]> {
     const ndk = getNDK();
 
     const filter: NDKFilter = {
-      kinds: [KIND_SECTION_STATS],
+      kinds: [KIND_SECTION_STATS as number],
       limit: 10
     };
 
@@ -408,7 +408,7 @@ export function subscribeSectionEvents(
     const ndk = getNDK();
 
     const filter: NDKFilter = {
-      kinds: [KIND_SECTION_APPROVAL],
+      kinds: [KIND_SECTION_APPROVAL as number],
       '#p': [userPubkey],
       since: Math.floor(Date.now() / 1000)
     };
@@ -459,7 +459,7 @@ export function subscribeAccessRequests(
     if (adminPubkeys.length === 0) return null;
 
     const filter: NDKFilter = {
-      kinds: [KIND_SECTION_REQUEST],
+      kinds: [KIND_SECTION_REQUEST as number],
       '#p': adminPubkeys,
       since: Math.floor(Date.now() / 1000)
     };

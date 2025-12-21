@@ -104,6 +104,22 @@ export const channelStore = {
     return 'non-member';
   },
 
+  approveMember: (channelId: string, memberPubkey: string) => {
+    store.update(state => ({
+      ...state,
+      channels: state.channels.map(channel => {
+        if (channel.id !== channelId) return channel;
+        return {
+          ...channel,
+          members: channel.members.includes(memberPubkey)
+            ? channel.members
+            : [...channel.members, memberPubkey],
+          pendingRequests: channel.pendingRequests.filter(pk => pk !== memberPubkey)
+        };
+      })
+    }));
+  },
+
   setLoading: (isLoading: boolean) => {
     store.update(state => ({ ...state, isLoading }));
   }

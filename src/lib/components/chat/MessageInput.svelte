@@ -109,6 +109,7 @@
       lud16: null,
       website: null,
       banner: null,
+      birthday: null,
       createdAt: null,
       updatedAt: null
     }));
@@ -216,7 +217,7 @@
 
       // Extract mentioned users and create mention tags
       const mentionedPubkeys = extractMentionedPubkeys(content);
-      const mentionTags = createMentionTags(mentionedPubkeys);
+      const mentionTags = createMentionTags(content);
 
       // Create and publish message event (kind 9 - NIP-29 group message)
       const messageEvent = new NDKEvent(ndkInstance);
@@ -269,9 +270,8 @@
       // Send notifications to mentioned users
       for (const mentionedPubkey of mentionedPubkeys) {
         if (mentionedPubkey !== $authStore.publicKey) {
-          // Get sender name
-          const senderName = $authStore.profile?.displayName ||
-                            $authStore.profile?.name ||
+          // Get sender name from nickname or format pubkey
+          const senderName = $authStore.nickname ||
                             formatPubkey($authStore.publicKey);
 
           // Create preview (first 50 chars)

@@ -9,6 +9,7 @@ import NDK, {
   NDKRelay,
   NDKSubscription,
   type NDKFilter,
+  type NDKCacheAdapter,
   NDKUser
 } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
@@ -101,7 +102,7 @@ class RelayManager {
     const ndk = new NDK({
       explicitRelayUrls: [relayUrl],
       signer: this._signer,
-      cacheAdapter: this._cacheAdapter ?? undefined,
+      cacheAdapter: (this._cacheAdapter ?? undefined) as NDKCacheAdapter | undefined,
       enableOutboxModel: false
     });
 

@@ -3,6 +3,11 @@
   import { createEventDispatcher } from 'svelte';
   import UserDisplay from '$lib/components/user/UserDisplay.svelte';
 
+  function truncatePubkey(pubkey: string): string {
+    if (!pubkey) return '';
+    return pubkey.slice(0, 8) + '...' + pubkey.slice(-4);
+  }
+
   const dispatch = createEventDispatcher<{
     viewProfile: { user: User };
     kickFromChannel: { user: User; channelId: string };
