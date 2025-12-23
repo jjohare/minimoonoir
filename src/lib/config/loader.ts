@@ -78,7 +78,7 @@ sections:
   - id: "fairfield-guests"
     name: "Fairfield Guests"
     description: "Welcome area for visitors - open to all authenticated users"
-    icon: "wave"
+    icon: "👋"
     order: 1
     access:
       requiresApproval: false
@@ -96,7 +96,7 @@ sections:
   - id: "minimoonoir-rooms"
     name: "MiniMooNoir"
     description: "Core community chatrooms - request access to join"
-    icon: "moon"
+    icon: "🌙"
     order: 2
     access:
       requiresApproval: true
@@ -114,7 +114,7 @@ sections:
   - id: "dreamlab"
     name: "DreamLab"
     description: "Creative and experimental projects - request access to join"
-    icon: "lightbulb"
+    icon: "✨"
     order: 3
     access:
       requiresApproval: true
