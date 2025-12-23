@@ -2525,7 +2525,7 @@ The Semantic Vector Search feature is **TECHNICALLY FEASIBLE** but carries **MOD
 
 ### Deployment & Operations
 - [GCP Architecture](../deployment/gcp-architecture.md) - Cloud Run deployment for embedding service
-- [GCP Deployment Guide](../deployment/GCP_DEPLOYMENT.md) - Step-by-step deployment instructions
+- [GCP Deployment Guide](../deployment/gcp-deployment.md) - Step-by-step deployment instructions
 
 ---
 

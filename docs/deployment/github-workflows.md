@@ -378,7 +378,7 @@ curl https://storage.googleapis.com/Nostr-BBS-vectors/latest/manifest.json
 
 ### Deployment Guides
 - [General Deployment Guide](DEPLOYMENT.md) - Complete deployment overview
-- [GCP Deployment](GCP_DEPLOYMENT.md) - Cloud Run deployment steps
+- [GCP Deployment](gcp-deployment.md) - Cloud Run deployment steps
 - [GCP Architecture](gcp-architecture.md) - Cloud infrastructure design
 
 ### Development Workflow

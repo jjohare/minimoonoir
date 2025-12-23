@@ -81,7 +81,7 @@ This specification defines a comprehensive bidirectional link infrastructure for
 17 inbound ← README.md (project root)
 15 inbound ← docs/README.md (missing - critical)
  4 inbound ← docs/deployment/gcp-architecture.md
- 3 inbound ← docs/deployment/GCP_DEPLOYMENT.md
+ 3 inbound ← docs/deployment/gcp-deployment.md
  2 inbound ← docs/deployment/DEPLOYMENT.md
 ```
 

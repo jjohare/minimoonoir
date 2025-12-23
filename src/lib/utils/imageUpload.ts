@@ -4,7 +4,8 @@
  */
 
 // Configuration from environment
-const IMAGE_API_URL = import.meta.env.VITE_IMAGE_API_URL || 'https://image-api-617806532906.us-central1.run.app';
+const IMAGE_API_URL = import.meta.env.VITE_IMAGE_API_URL || '';
+const IMAGE_BUCKET = import.meta.env.VITE_IMAGE_BUCKET || '';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB original limit
 const MAX_DIMENSION = 1920; // Max width/height
 const JPEG_QUALITY = 0.85;
@@ -149,6 +150,14 @@ export async function uploadImage(
   userPubkey: string,
   category: 'avatar' | 'message' | 'channel' = 'message'
 ): Promise<ImageUploadResult> {
+  // Check if image API URL is configured
+  if (!IMAGE_API_URL) {
+    return {
+      success: false,
+      error: 'Image upload not configured. Please set VITE_IMAGE_API_URL environment variable.'
+    };
+  }
+
   // Validate file size
   if (file.size > MAX_FILE_SIZE) {
     return {
@@ -248,9 +257,12 @@ export async function uploadBase64Image(
  * Get image URL for a stored image
  */
 export function getImageUrl(imageId: string, size: 'full' | 'thumb' = 'full'): string {
-  const bucket = 'minimoonoir-images';
+  if (!IMAGE_BUCKET) {
+    console.warn('VITE_IMAGE_BUCKET not configured');
+    return '';
+  }
   const suffix = size === 'thumb' ? '_thumb' : '';
-  return `https://storage.googleapis.com/${bucket}/${imageId}${suffix}.jpg`;
+  return `https://storage.googleapis.com/${IMAGE_BUCKET}/${imageId}${suffix}.jpg`;
 }
 
 /**
@@ -283,7 +295,8 @@ export function parseKeybaseImageId(id: string): {
  * Check if a URL is a local image upload URL
  */
 export function isLocalImageUrl(url: string): boolean {
-  return url.includes('minimoonoir-images') || url.includes('storage.googleapis.com/minimoonoir');
+  if (!IMAGE_BUCKET) return false;
+  return url.includes(IMAGE_BUCKET) || url.includes(`storage.googleapis.com/${IMAGE_BUCKET}`);
 }
 
 /**

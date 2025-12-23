@@ -1030,7 +1030,7 @@ If issues arise, rollback to Cloudflare Workers:
 ## Related Documentation
 
 ### Deployment Guides
-- [GCP Deployment Guide](GCP_DEPLOYMENT.md) - Step-by-step Cloud Run deployment
+- [GCP Deployment Guide](gcp-deployment.md) - Step-by-step Cloud Run deployment
 - [General Deployment Guide](DEPLOYMENT.md) - Complete deployment overview
 - [GitHub Workflows](github-workflows.md) - CI/CD pipeline configuration
 

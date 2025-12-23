@@ -719,7 +719,7 @@ ndk.pool.on('auth', async (relay, challenge) => {
 - **Private groups:** Verify membership before message delivery
 - **Rate limiting:** Per-user instead of per-IP
 
-**Code:** NDK integration in `/src/lib/nostr/ndk.ts`
+**Code:** RelayManager in `/src/lib/nostr/relay.ts`
 
 ---
 

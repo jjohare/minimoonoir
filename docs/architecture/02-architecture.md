@@ -188,8 +188,7 @@ graph TB
                 keys["keys.ts - NIP-06 key generation"]
                 encryption["encryption.ts - NIP-44 E2E"]
                 events["events.ts - Event creation/signing"]
-                relay["relay.ts - NDK connection"]
-                ndk["ndk.ts - NDK singleton"]
+                relay["relay.ts - RelayManager with NIP-42 AUTH"]
                 dm["dm.ts - NIP-17/59 DM handling"]
                 channels["channels.ts - Channel operations"]
                 groups["groups.ts - NIP-29 groups"]
@@ -636,27 +635,44 @@ flowchart TB
 
 ```mermaid
 graph TB
-    subgraph Cloudflare["Cloudflare Edge"]
-        subgraph Pages["Cloudflare Pages"]
-            PWA["PWA (static SPA)<br/>Global CDN"]
+    subgraph GitHub["GitHub"]
+        subgraph Pages["GitHub Pages"]
+            PWA["PWA (static SPA)<br/>Static site hosting"]
         end
-
-        subgraph Workers["Cloudflare Workers"]
-            Relay["Relay Worker<br/>WebSocket endpoint"]
-        end
-
-        subgraph DO["Durable Objects"]
-            State["Relay State<br/>Event storage"]
-        end
-
-        subgraph Storage["R2 Storage"]
-            Backup["Event Backups<br/>Snapshots"]
-        end
-
-        PWA -->|"WSS"| Relay
-        Relay --> State
-        State -->|"periodic"| Backup
+        Repo["Source Repository<br/>CI/CD via Actions"]
     end
+
+    subgraph Docker["Docker Containers"]
+        DevEnv["Development Environment<br/>Local testing"]
+    end
+
+    subgraph GCP["Google Cloud Platform"]
+        subgraph CloudRun["Cloud Run"]
+            Relay["Relay API<br/>WebSocket endpoint"]
+            EmbedAPI["Embedding API<br/>Vector generation"]
+            ImageAPI["Image API<br/>Image processing"]
+        end
+
+        subgraph Database["Cloud SQL"]
+            PostgreSQL["PostgreSQL<br/>Relational data<br/>pgvector extension"]
+        end
+
+        subgraph Storage["Cloud Storage"]
+            Vectors["Vector Storage<br/>Embeddings"]
+            Images["Image Storage<br/>Media files"]
+        end
+
+        Relay --> PostgreSQL
+        EmbedAPI --> Vectors
+        ImageAPI --> Images
+        Relay --> Vectors
+    end
+
+    PWA -->|"WSS/HTTPS"| Relay
+    PWA -->|"HTTPS"| EmbedAPI
+    PWA -->|"HTTPS"| ImageAPI
+    Repo -->|"Deploy"| Pages
+    Docker -->|"Test/Build"| Repo
 ```
 
 ---

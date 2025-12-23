@@ -189,8 +189,8 @@ docs/
 | `architecture/08-semantic-search-pseudocode.md` | `05-sparc/semantic-search/08-pseudocode.md` | SPARC semantic search |
 | `architecture/09-semantic-search-risks.md` | `05-sparc/semantic-search/09-risks.md` | SPARC semantic search |
 | **Deployment (5 files)** | | |
-| `deployment/DEPLOYMENT.md` | `02-how-to-guides/deployment/deploy-overview.md` | How-to guide |
-| `deployment/GCP_DEPLOYMENT.md` | `02-how-to-guides/deployment/deploy-cloud-run.md` | How-to guide |
+| `deployment/deployment-guide.md` | `02-how-to-guides/deployment/deploy-overview.md` | How-to guide |
+| `deployment/gcp-deployment.md` | `02-how-to-guides/deployment/deploy-cloud-run.md` | How-to guide |
 | `deployment/gcp-architecture.md` | `04-explanation/architecture/gcp-architecture.md` | Conceptual explanation |
 | `deployment/github-workflows.md` | `03-reference/configuration/github-workflows.md` | Reference |
 | `deployment/DEPLOYMENT_CHECKLIST.yaml` | `02-how-to-guides/deployment/checklist.yaml` | How-to artifact |
@@ -228,7 +228,7 @@ docs/
 | `.github/workflows/SECRETS_SETUP.md` | `02-how-to-guides/deployment/setup-github-secrets.md` | How-to guide |
 | `services/embedding-api/README.md` | `03-reference/api/embedding-service.md` | API reference |
 | `services/nostr-relay/README.md` | `03-reference/api/relay-setup.md` | API reference |
-| `services/nostr-relay/docs/CLOUD_RUN_DEPLOYMENT.md` | `02-how-to-guides/deployment/relay-cloud-run.md` | How-to guide |
+| `services/nostr-relay/docs/CLOUD_RUN_deployment-guide.md` | `02-how-to-guides/deployment/relay-cloud-run.md` | How-to guide |
 | `services/nostr-relay/docs/MIGRATION_SUMMARY.md` | `08-maintenance/migration-guides/relay-migration.md` | Migration guide |
 | `src/docs/toast-*.md` (5 files) | `03-reference/components/toast-system/` | Component reference |
 | `src/lib/components/auth/README.md` | `03-reference/components/auth-components.md` | Component reference |

@@ -51,8 +51,8 @@ docs/
 │   ├── encryption-flows.md ✅
 │   └── nip-interactions.md ✅
 ├── deployment/ (4 files)
-│   ├── DEPLOYMENT.md ✅
-│   ├── GCP_DEPLOYMENT.md ❓
+│   ├── deployment-guide.md ✅
+│   ├── gcp-deployment.md ❓
 │   ├── gcp-architecture.md ❓
 │   └── github-workflows.md ❓
 ├── development/ (1 file)
@@ -107,7 +107,7 @@ docs/
 **Priority files:**
 1. `CONTRIBUTION.md` - High traffic
 2. `MAINTENANCE.md` - High traffic
-3. `deployment/GCP_DEPLOYMENT.md` - Critical for DevOps
+3. `deployment/gcp-deployment.md` - Critical for DevOps
 4. `features/dm-implementation.md` - Core feature
 5. `features/pwa-implementation.md` - Core feature
 6. `features/search-usage-guide.md` - User-facing
@@ -139,7 +139,7 @@ docs/
 **Navigation:** [🏠 Home](../../README.md) › [📚 Docs](../INDEX.md) › [Section] › Document Title
 ```
 
-**Example for `deployment/DEPLOYMENT.md`:**
+**Example for `deployment/deployment-guide.md`:**
 
 ```markdown
 ## Related Documentation
@@ -149,7 +149,7 @@ docs/
 - [Configuration Reference](../reference/configuration-reference.md) - Environment variables
 
 ### Next Steps
-- [GCP Deployment](GCP_DEPLOYMENT.md) - Deploy Cloud Run services
+- [GCP Deployment](gcp-deployment.md) - Deploy Cloud Run services
 - [Monitoring Setup](../guides/devops/monitoring.md) - Setup observability
 - [Backup Configuration](../guides/devops/backup.md) - Disaster recovery
 
@@ -252,8 +252,8 @@ graph TB
     ARCH --> |SPARC| GUIDE5[01-05 Core Design]
     ARCH --> |Search| GUIDE6[06-09 Semantic Search]
 
-    OPS --> |Deploy| GUIDE7[DEPLOYMENT.md]
-    OPS --> |Cloud| GUIDE8[GCP_DEPLOYMENT.md]
+    OPS --> |Deploy| GUIDE7[deployment-guide.md]
+    OPS --> |Cloud| GUIDE8[gcp-deployment.md]
 
     REF --> |APIs| GUIDE9[api-reference.md]
     REF --> |Config| GUIDE10[configuration-reference.md]
@@ -281,7 +281,7 @@ Insert before "Quick Start Paths":
 | Install the app on my phone | 5 min | [PWA Quick Start](features/pwa-quick-start.md) |
 | Send my first message | 10 min | [User Guide](guides/user/README.md) |
 | Setup local development | 30 min | [Developer Setup](guides/developer/setup.md) |
-| Deploy to production | 90 min | [Deployment Guide](deployment/DEPLOYMENT.md) |
+| Deploy to production | 90 min | [Deployment Guide](deployment/deployment-guide.md) |
 | Understand the architecture | 2 hrs | [SPARC Series](architecture/01-specification.md) |
 | Add a new feature | 3 hrs | [Feature Workflow](guides/developer/contributing.md) |
 | Search messages by meaning | 2 min | [Search Guide](features/search-usage-guide.md) |
@@ -520,7 +520,7 @@ Insert before "Quick Start Paths":
 - CONTRIBUTION.md, MAINTENANCE.md, QUALITY_REPORT.md
 - link-validation-report.md
 - architecture/09-semantic-search-risks.md
-- deployment/GCP_DEPLOYMENT.md, gcp-architecture.md, github-workflows.md
+- deployment/gcp-deployment.md, gcp-architecture.md, github-workflows.md
 - development/mentions-patch.md
 - features/accessibility-improvements.md, channel-stats-usage.md
 - features/dm-implementation.md, icon-integration-guide.md
