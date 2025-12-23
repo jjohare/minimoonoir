@@ -6,12 +6,13 @@ name: Deploy Embedding API to GCP Cloud Run
 # - GCP_REGION: GCP region (default: us-central1)
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'services/embedding-api/**'
-      - '.github/workflows/deploy-embedding-api.yml'
+  # Disabled: Cloud Build has infrastructure issues
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'services/embedding-api/**'
+  #     - '.github/workflows/deploy-embedding-api.yml'
   workflow_dispatch:
     inputs:
       environment:
