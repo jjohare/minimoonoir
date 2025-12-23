@@ -250,7 +250,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
  */
 app.post('/upload-batch', upload.array('images', 10), async (req, res) => {
   try {
-    const files = req.files;
+    const files = req.files as Express.Multer.File[] | undefined;
     if (!files || files.length === 0) {
       return res.status(400).json({ error: 'No image files provided' });
     }
