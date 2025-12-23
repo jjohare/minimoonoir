@@ -103,7 +103,8 @@ jobs:
             --platform managed \
             --region ${{ env.GCP_REGION }} \
             --allow-unauthenticated \
-            --set-env-vars "ALLOWED_ORIGINS=https://jjohare.github.io,http://localhost:5173" \
+            --service-account fairfield-applications@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
+            --set-env-vars "ALLOWED_ORIGINS=https://dreamlab-ai.github.io,https://jjohare.github.io,http://localhost:5173" \
             --memory 2Gi \
             --cpu 1 \
             --min-instances 0 \

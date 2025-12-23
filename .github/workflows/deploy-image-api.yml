@@ -63,6 +63,7 @@ jobs:
             --region ${{ env.GCP_REGION }} \
             --platform managed \
             --allow-unauthenticated \
+            --service-account fairfield-applications@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
             --memory 512Mi \
             --cpu 1 \
             --max-instances 10 \
