@@ -209,7 +209,7 @@
   .drop-zone {
     @apply relative cursor-pointer rounded-lg border-2 border-dashed border-base-300
            transition-all duration-200 overflow-hidden;
-    @apply hover:border-primary hover:bg-base-200/50;
+    @apply hover:border-blue-500 hover:bg-base-200/50;
     width: 100%;
     min-height: 150px;
     display: flex;
@@ -225,7 +225,7 @@
   }
 
   .drag-over {
-    @apply border-primary bg-primary/10;
+    @apply border-blue-500 bg-blue-500/10;
   }
 
   .has-image {
