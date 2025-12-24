@@ -14,6 +14,13 @@ superuser:
   name: 'Instance Owner'
   relayUrl: '' # Optional: your relay URL (wss://...)
 
+# Deployment URLs (optional - set for your GCP deployment)
+deployment:
+  relayUrl: '' # wss://your-relay.run.app
+  embeddingApiUrl: '' # https://your-embedding-api.run.app
+  gcsEmbeddingsUrl: '' # https://storage.googleapis.com/your-bucket
+  frontendUrl: '' # https://your-domain.github.io/fairfield
+
 # Role definitions (hierarchical from lowest to highest)
 roles:
   - id: 'guest'

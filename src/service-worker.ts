@@ -1,6 +1,12 @@
 /**
  * Nostr BBS PWA Service Worker
- * Implements caching strategies, offline support, and background sync
+ * Implements aggressive caching strategies, offline support, and background sync
+ *
+ * PWA-FIRST DESIGN:
+ * - Maximum local caching for instant startup
+ * - Offline-first for all static assets
+ * - Stale-while-revalidate for dynamic content
+ * - Never logs out users
  */
 
 /// <reference lib="webworker" />
@@ -12,10 +18,21 @@ declare const self: ServiceWorkerGlobalScope & {
 // Workbox manifest injection point - DO NOT REMOVE
 const manifest = self.__WB_MANIFEST;
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2'; // Bumped for PWA enhancements
 const STATIC_CACHE = `nostr-bbs-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nostr-bbs-dynamic-${CACHE_VERSION}`;
 const PROFILE_CACHE = `nostr-bbs-profiles-${CACHE_VERSION}`;
+const FONT_CACHE = `nostr-bbs-fonts-${CACHE_VERSION}`;
+const API_CACHE = `nostr-bbs-api-${CACHE_VERSION}`;
+
+// Maximum cache sizes (number of entries)
+const MAX_DYNAMIC_CACHE_SIZE = 100;
+const MAX_PROFILE_CACHE_SIZE = 200;
+const MAX_API_CACHE_SIZE = 50;
+
+// Cache expiry times (milliseconds)
+const PROFILE_CACHE_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
+const API_CACHE_MAX_AGE = 5 * 60 * 1000; // 5 minutes
 
 // Use manifest for precaching, or fallback to static list
 const STATIC_ASSETS = manifest?.length > 0
@@ -26,6 +43,12 @@ const STATIC_ASSETS = manifest?.length > 0
       '/manifest.json',
       '/favicon.ico'
     ];
+
+// External resources to cache (fonts, CDN assets)
+const EXTERNAL_CACHE_URLS = [
+  'https://fonts.googleapis.com',
+  'https://fonts.gstatic.com'
+];
 
 const QUEUE_DB_NAME = 'nostr-bbs-queue';
 const QUEUE_STORE_NAME = 'outgoing-messages';
@@ -154,6 +177,15 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activating service worker...');
 
+  // Current valid cache names
+  const validCaches = [
+    STATIC_CACHE,
+    DYNAMIC_CACHE,
+    PROFILE_CACHE,
+    FONT_CACHE,
+    API_CACHE
+  ];
+
   event.waitUntil(
     (async () => {
       const cacheNames = await caches.keys();
@@ -161,27 +193,46 @@ self.addEventListener('activate', (event) => {
         cacheNames
           .filter(name =>
             name.startsWith('nostr-bbs-') &&
-            !name.includes(CACHE_VERSION)
+            !validCaches.includes(name)
           )
-          .map(name => caches.delete(name))
+          .map(name => {
+            console.log('[SW] Deleting old cache:', name);
+            return caches.delete(name);
+          })
       );
+      // Take control of all clients immediately
       await self.clients.claim();
+      console.log('[SW] Service worker activated and claimed all clients');
     })()
   );
 });
 
 /**
  * Determine caching strategy based on request
+ * PWA-optimized: Aggressive caching for maximum offline support
  */
-function getCachingStrategy(url: URL): 'cache-first' | 'network-first' | 'stale-while-revalidate' | 'network-only' {
+function getCachingStrategy(url: URL): 'cache-first' | 'network-first' | 'stale-while-revalidate' | 'network-only' | 'cache-only' {
   const pathname = url.pathname;
+  const hostname = url.hostname;
 
   // Network only for WebSocket connections
   if (url.protocol === 'wss:' || url.protocol === 'ws:') {
     return 'network-only';
   }
 
-  // Cache first for static assets
+  // Cache-only for fonts (they rarely change)
+  if (
+    hostname.includes('fonts.googleapis.com') ||
+    hostname.includes('fonts.gstatic.com') ||
+    pathname.endsWith('.woff2') ||
+    pathname.endsWith('.woff') ||
+    pathname.endsWith('.ttf') ||
+    pathname.endsWith('.otf')
+  ) {
+    return 'cache-first';
+  }
+
+  // Cache first for all static assets (aggressive for PWA)
   if (
     pathname.endsWith('.js') ||
     pathname.endsWith('.css') ||
@@ -189,24 +240,45 @@ function getCachingStrategy(url: URL): 'cache-first' | 'network-first' | 'stale-
     pathname.endsWith('.ico') ||
     pathname.endsWith('.png') ||
     pathname.endsWith('.jpg') ||
+    pathname.endsWith('.jpeg') ||
+    pathname.endsWith('.gif') ||
+    pathname.endsWith('.webp') ||
     pathname.endsWith('.svg') ||
-    pathname.endsWith('.woff2') ||
-    pathname.endsWith('.woff') ||
-    pathname.endsWith('.ttf')
+    pathname.endsWith('.json') ||
+    pathname.endsWith('.webmanifest')
   ) {
     return 'cache-first';
+  }
+
+  // Cache first for app shell routes (SvelteKit pages)
+  if (
+    pathname === '/' ||
+    pathname.startsWith('/chat') ||
+    pathname.startsWith('/dm') ||
+    pathname.startsWith('/settings') ||
+    pathname.startsWith('/events') ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/signup')
+  ) {
+    return 'stale-while-revalidate';
   }
 
   // Stale while revalidate for profiles and avatars
   if (
     pathname.includes('/avatar') ||
     pathname.includes('/profile') ||
-    pathname.includes('/metadata')
+    pathname.includes('/metadata') ||
+    pathname.includes('/user')
   ) {
     return 'stale-while-revalidate';
   }
 
-  // Network first for API calls and dynamic content
+  // Stale while revalidate for API endpoints (fast response, background update)
+  if (pathname.startsWith('/api')) {
+    return 'stale-while-revalidate';
+  }
+
+  // Network first for everything else
   return 'network-first';
 }
 
@@ -283,30 +355,112 @@ async function staleWhileRevalidate(request: Request, cacheName: string): Promis
 }
 
 /**
+ * Get appropriate cache name for request
+ */
+function getCacheNameForRequest(url: URL): string {
+  const hostname = url.hostname;
+  const pathname = url.pathname;
+
+  // Fonts get their own cache
+  if (
+    hostname.includes('fonts.googleapis.com') ||
+    hostname.includes('fonts.gstatic.com') ||
+    pathname.endsWith('.woff2') ||
+    pathname.endsWith('.woff')
+  ) {
+    return FONT_CACHE;
+  }
+
+  // Profiles and avatars
+  if (
+    pathname.includes('/avatar') ||
+    pathname.includes('/profile') ||
+    pathname.includes('/metadata')
+  ) {
+    return PROFILE_CACHE;
+  }
+
+  // API responses
+  if (pathname.startsWith('/api')) {
+    return API_CACHE;
+  }
+
+  // Static assets
+  if (
+    pathname.endsWith('.js') ||
+    pathname.endsWith('.css') ||
+    pathname.endsWith('.html') ||
+    pathname.endsWith('.png') ||
+    pathname.endsWith('.jpg') ||
+    pathname.endsWith('.svg')
+  ) {
+    return STATIC_CACHE;
+  }
+
+  return DYNAMIC_CACHE;
+}
+
+/**
+ * Limit cache size by removing oldest entries
+ */
+async function limitCacheSize(cacheName: string, maxSize: number): Promise<void> {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+
+  if (keys.length > maxSize) {
+    // Remove oldest entries (first in the array)
+    const toDelete = keys.slice(0, keys.length - maxSize);
+    await Promise.all(toDelete.map(key => cache.delete(key)));
+  }
+}
+
+/**
  * Fetch event - implement caching strategies
+ * PWA-optimized: Maximum caching, instant loads
  */
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   const strategy = getCachingStrategy(url);
 
   if (strategy === 'network-only') {
     return;
   }
 
+  const cacheName = getCacheNameForRequest(url);
+
   event.respondWith(
     (async () => {
       switch (strategy) {
         case 'cache-first':
-          return cacheFirst(event.request, STATIC_CACHE);
+          return cacheFirst(event.request, cacheName);
 
         case 'network-first':
-          return networkFirst(event.request, DYNAMIC_CACHE);
+          return networkFirst(event.request, cacheName);
 
         case 'stale-while-revalidate':
-          return staleWhileRevalidate(event.request, PROFILE_CACHE);
+          return staleWhileRevalidate(event.request, cacheName);
 
         default:
           return fetch(event.request);
+      }
+    })()
+  );
+
+  // Clean up caches in background (non-blocking)
+  event.waitUntil(
+    (async () => {
+      if (cacheName === DYNAMIC_CACHE) {
+        await limitCacheSize(DYNAMIC_CACHE, MAX_DYNAMIC_CACHE_SIZE);
+      } else if (cacheName === PROFILE_CACHE) {
+        await limitCacheSize(PROFILE_CACHE, MAX_PROFILE_CACHE_SIZE);
+      } else if (cacheName === API_CACHE) {
+        await limitCacheSize(API_CACHE, MAX_API_CACHE_SIZE);
       }
     })()
   );

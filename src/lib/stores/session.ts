@@ -3,10 +3,14 @@
  *
  * Implements automatic session timeout for security.
  * Tracks user activity and auto-logouts after inactivity period.
+ *
+ * NOTE: Session timeout is DISABLED for PWA users to provide
+ * a frictionless native app experience.
  */
 
 import { writable, get } from 'svelte/store';
 import { browser } from '$app/environment';
+import { isPWAInstalled, checkIfPWA } from '$lib/stores/pwa';
 
 // Session timeout configuration (milliseconds)
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes of inactivity
@@ -98,10 +102,32 @@ function createSessionStore() {
   }
 
   /**
+   * Check if running as installed PWA
+   */
+  function isRunningAsPWA(): boolean {
+    if (!browser) return false;
+    return get(isPWAInstalled) || checkIfPWA() || localStorage.getItem('nostr_bbs_pwa_mode') === 'true';
+  }
+
+  /**
    * Start session monitoring
+   * NOTE: Session timeout is DISABLED for PWA users
    */
   function start(onTimeout: () => void) {
     if (!browser) return;
+
+    // PWA users never get logged out due to inactivity
+    if (isRunningAsPWA()) {
+      console.log('[Session] PWA mode detected - session timeout disabled');
+      update(state => ({
+        ...state,
+        isActive: true,
+        showWarning: false,
+        remainingMs: SESSION_TIMEOUT_MS
+      }));
+      // Return no-op cleanup function
+      return () => {};
+    }
 
     onTimeoutCallback = onTimeout;
 

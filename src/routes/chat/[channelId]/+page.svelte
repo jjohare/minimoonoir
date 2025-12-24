@@ -265,7 +265,7 @@
 </script>
 
 <svelte:head>
-  <title>{channel?.name || 'Channel'} - Nostr BBS</title>
+  <title>{channel?.name || 'Channel'} - Fairfield</title>
 </svelte:head>
 
 {#if loading}

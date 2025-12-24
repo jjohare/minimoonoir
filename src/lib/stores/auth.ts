@@ -1,8 +1,9 @@
-import { writable, derived } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import { base } from '$app/paths';
 import { encryptPrivateKey, decryptPrivateKey, isEncryptionAvailable } from '$lib/utils/key-encryption';
+import { isPWAInstalled, checkIfPWA } from '$lib/stores/pwa';
 
 export interface AuthState {
   state: 'unauthenticated' | 'authenticating' | 'authenticated';
@@ -40,6 +41,16 @@ const STORAGE_KEY = 'nostr_bbs_keys';
 const SESSION_KEY = 'nostr_bbs_session';
 const COOKIE_KEY = 'nostr_bbs_auth';
 const KEEP_SIGNED_IN_KEY = 'nostr_bbs_keep_signed_in';
+const PWA_AUTH_KEY = 'nostr_bbs_pwa_auth';
+
+/**
+ * Check if running as installed PWA
+ */
+function isRunningAsPWA(): boolean {
+  if (!browser) return false;
+  // Check current state or stored PWA mode
+  return get(isPWAInstalled) || checkIfPWA() || localStorage.getItem('nostr_bbs_pwa_mode') === 'true';
+}
 
 /**
  * Cookie utilities for persistent auth
@@ -113,6 +124,33 @@ function createAuthStore() {
       return;
     }
 
+    // Check for PWA persistent auth first (no session expiry)
+    const pwaAuth = localStorage.getItem(PWA_AUTH_KEY);
+    if (pwaAuth && isRunningAsPWA()) {
+      try {
+        const pwaData = JSON.parse(pwaAuth);
+        if (pwaData.publicKey && pwaData.privateKey) {
+          console.log('[Auth] Restoring PWA persistent session');
+          update(state => ({
+            ...state,
+            ...syncStateFields({
+              publicKey: pwaData.publicKey,
+              privateKey: pwaData.privateKey,
+              nickname: pwaData.nickname || null,
+              avatar: pwaData.avatar || null,
+              isAuthenticated: true,
+              isEncrypted: false,
+              mnemonicBackedUp: pwaData.mnemonicBackedUp || false,
+              isReady: true
+            })
+          }));
+          return;
+        }
+      } catch {
+        // Invalid PWA auth data, continue with normal flow
+      }
+    }
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
       update(state => ({ ...state, ...syncStateFields({ isReady: true }) }));
@@ -142,18 +180,35 @@ function createAuthStore() {
           }));
         } catch {
           // Session key changed (new session) - need to re-authenticate
-          update(state => ({
-            ...state,
-            ...syncStateFields({
-              publicKey: parsed.publicKey,
-              nickname: parsed.nickname || null,
-              avatar: parsed.avatar || null,
-              isAuthenticated: false,
-              isEncrypted: true,
-              error: 'Session expired. Please enter your password to unlock.',
-              isReady: true
-            })
-          }));
+          // But if we're in PWA mode, try to use the stored keys directly
+          if (isRunningAsPWA() && parsed.publicKey) {
+            // For PWA, prompt user to re-enter password once to migrate
+            update(state => ({
+              ...state,
+              ...syncStateFields({
+                publicKey: parsed.publicKey,
+                nickname: parsed.nickname || null,
+                avatar: parsed.avatar || null,
+                isAuthenticated: false,
+                isEncrypted: true,
+                error: 'Please unlock to enable persistent PWA login.',
+                isReady: true
+              })
+            }));
+          } else {
+            update(state => ({
+              ...state,
+              ...syncStateFields({
+                publicKey: parsed.publicKey,
+                nickname: parsed.nickname || null,
+                avatar: parsed.avatar || null,
+                isAuthenticated: false,
+                isEncrypted: true,
+                error: 'Session expired. Please enter your password to unlock.',
+                isReady: true
+              })
+            }));
+          }
         }
       } else if (parsed.privateKey) {
         // Legacy unencrypted data - migrate on next save
@@ -240,6 +295,19 @@ function createAuthStore() {
         if (shouldKeepSignedIn()) {
           setCookie(COOKIE_KEY, publicKey, 30); // 30 day cookie
         }
+
+        // For PWA mode: store persistent auth that survives session changes
+        if (isRunningAsPWA()) {
+          const pwaAuthData = {
+            publicKey,
+            privateKey,
+            nickname: existingData.nickname || null,
+            avatar: existingData.avatar || null,
+            mnemonicBackedUp: existingData.mnemonicBackedUp || false
+          };
+          localStorage.setItem(PWA_AUTH_KEY, JSON.stringify(pwaAuthData));
+          console.log('[Auth] PWA persistent auth stored');
+        }
       }
 
       update(state => ({ ...state, ...syncStateFields(authData) }));
@@ -289,6 +357,19 @@ function createAuthStore() {
         parsed.encryptedPrivateKey = newEncrypted;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
 
+        // For PWA mode: store persistent auth that survives session changes
+        if (isRunningAsPWA()) {
+          const pwaAuthData = {
+            publicKey: parsed.publicKey,
+            privateKey,
+            nickname: parsed.nickname || null,
+            avatar: parsed.avatar || null,
+            mnemonicBackedUp: parsed.mnemonicBackedUp || false
+          };
+          localStorage.setItem(PWA_AUTH_KEY, JSON.stringify(pwaAuthData));
+          console.log('[Auth] PWA persistent auth stored after unlock');
+        }
+
         update(state => ({
           ...state,
           ...syncStateFields({
@@ -337,6 +418,7 @@ function createAuthStore() {
       set(initialState);
       if (browser) {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(PWA_AUTH_KEY);
         sessionStorage.removeItem(SESSION_KEY);
         deleteCookie(COOKIE_KEY);
         const { goto } = await import('$app/navigation');

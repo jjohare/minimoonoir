@@ -19,9 +19,150 @@ import type {
 import { parse as parseYaml } from 'yaml';
 import { browser } from '$app/environment';
 
-// Import default YAML config at build time using Vite's raw import
-// This eliminates duplication with config/sections.yaml
-import defaultConfigYaml from '../../../config/sections.yaml?raw';
+// Default YAML config embedded at build time
+// FAIRFIELD FORK: Hardcoded Fairfield/DreamLab/Cumbria configuration
+const defaultConfigYaml = `
+app:
+  name: "Fairfield - DreamLab - Cumbria"
+  version: "1.0.0"
+  defaultSection: "fairfield-guests"
+
+superuser:
+  pubkey: ""
+  name: "Instance Owner"
+  relayUrl: ""
+
+roles:
+  - id: "guest"
+    name: "Guest"
+    level: 0
+    description: "Basic authenticated user"
+  - id: "member"
+    name: "Member"
+    level: 1
+    description: "Approved section member"
+  - id: "moderator"
+    name: "Moderator"
+    level: 2
+    description: "Can manage channels and moderate"
+    capabilities: ["channel.create", "channel.delete", "message.pin", "message.delete"]
+  - id: "section-admin"
+    name: "Section Admin"
+    level: 3
+    description: "Section administrator"
+    capabilities: ["section.manage", "member.approve", "member.remove", "channel.create", "channel.delete", "message.pin", "message.delete"]
+  - id: "admin"
+    name: "Admin"
+    level: 4
+    description: "Global administrator"
+    capabilities: ["admin.global", "section.create", "section.delete", "section.manage", "member.approve", "member.remove", "channel.create", "channel.delete", "message.pin", "message.delete", "user.whitelist"]
+
+cohorts:
+  - id: "admin"
+    name: "Administrators"
+    description: "Global system administrators"
+  - id: "approved"
+    name: "Approved Users"
+    description: "Manually approved by admin"
+  - id: "business"
+    name: "Business Partners"
+    description: "Business collaborators"
+  - id: "moomaa-tribe"
+    name: "Moomaa Tribe"
+    description: "Core community members"
+  - id: "fairfield-residents"
+    name: "Fairfield Residents"
+    description: "Local community members"
+
+sections:
+  - id: "fairfield-guests"
+    name: "Fairfield Guests"
+    description: "Welcome area for visitors - open to all authenticated users"
+    icon: "👋"
+    order: 1
+    access:
+      requiresApproval: false
+      defaultRole: "guest"
+      autoApprove: true
+    features:
+      showStats: true
+      allowChannelCreation: false
+      calendar:
+        access: "full"
+        canCreate: false
+    ui:
+      color: "#6366f1"
+
+  - id: "minimoonoir-rooms"
+    name: "MiniMooNoir"
+    description: "Core community chatrooms - request access to join"
+    icon: "🌙"
+    order: 2
+    access:
+      requiresApproval: true
+      defaultRole: "member"
+      autoApprove: false
+    features:
+      showStats: true
+      allowChannelCreation: true
+      calendar:
+        access: "full"
+        canCreate: true
+    ui:
+      color: "#8b5cf6"
+
+  - id: "dreamlab"
+    name: "DreamLab"
+    description: "Creative and experimental projects - request access to join"
+    icon: "✨"
+    order: 3
+    access:
+      requiresApproval: true
+      defaultRole: "member"
+      autoApprove: false
+    features:
+      showStats: true
+      allowChannelCreation: true
+      calendar:
+        access: "availability"
+        canCreate: true
+        cohortRestricted: true
+    ui:
+      color: "#ec4899"
+
+calendarAccessLevels:
+  - id: "full"
+    name: "Full Access"
+    description: "All details visible"
+    canView: true
+    canViewDetails: true
+  - id: "availability"
+    name: "Availability Only"
+    description: "Dates only"
+    canView: true
+    canViewDetails: false
+  - id: "cohort"
+    name: "Cohort Restricted"
+    description: "Cohort match required"
+    canView: true
+    canViewDetails: "cohort-match"
+  - id: "none"
+    name: "No Access"
+    description: "Hidden"
+    canView: false
+    canViewDetails: false
+
+channelVisibility:
+  - id: "public"
+    name: "Public"
+    description: "All section members"
+  - id: "cohort"
+    name: "Cohort Only"
+    description: "Assigned cohorts"
+  - id: "invite"
+    name: "Invite Only"
+    description: "Explicit invites"
+`;
 
 const STORAGE_KEY = 'nostr_bbs_custom_config';
 
@@ -112,13 +253,14 @@ function validateConfig(config: SectionsConfig): void {
 
 /**
  * Get default configuration (fallback)
+ * FAIRFIELD FORK: Hardcoded Fairfield/DreamLab/Cumbria configuration
  */
 function getDefaultConfig(): SectionsConfig {
 	return {
 		app: {
-			name: 'Nostr BBS',
+			name: 'Fairfield - DreamLab - Cumbria',
 			version: '1.0.0',
-			defaultSection: 'public-lobby'
+			defaultSection: 'fairfield-guests'
 		},
 		roles: [
 			{ id: 'guest', name: 'Guest', level: 0, description: 'Basic authenticated user' },
@@ -128,34 +270,35 @@ function getDefaultConfig(): SectionsConfig {
 				name: 'Moderator',
 				level: 2,
 				description: 'Can manage channels and moderate',
-				capabilities: ['channel.create', 'message.delete']
+				capabilities: ['channel.create', 'channel.delete', 'message.pin', 'message.delete']
 			},
 			{
 				id: 'section-admin',
 				name: 'Section Admin',
 				level: 3,
 				description: 'Section administrator',
-				capabilities: ['section.manage', 'member.approve']
+				capabilities: ['section.manage', 'member.approve', 'member.remove', 'channel.create', 'channel.delete', 'message.pin', 'message.delete']
 			},
 			{
 				id: 'admin',
 				name: 'Admin',
 				level: 4,
 				description: 'Global administrator',
-				capabilities: ['admin.global']
+				capabilities: ['admin.global', 'section.create', 'section.delete', 'section.manage', 'member.approve', 'member.remove', 'channel.create', 'channel.delete', 'message.pin', 'message.delete', 'user.whitelist']
 			}
 		],
 		cohorts: [
-			{ id: 'admin', name: 'Administrators', description: 'Global administrators' },
-			{ id: 'approved', name: 'Approved Users', description: 'Manually approved' },
+			{ id: 'admin', name: 'Administrators', description: 'Global system administrators' },
+			{ id: 'approved', name: 'Approved Users', description: 'Manually approved by admin' },
 			{ id: 'business', name: 'Business Partners', description: 'Business collaborators' },
-			{ id: 'moomaa-tribe', name: 'Moomaa Tribe', description: 'Core community' }
+			{ id: 'moomaa-tribe', name: 'Moomaa Tribe', description: 'Core community members' },
+			{ id: 'fairfield-residents', name: 'Fairfield Residents', description: 'Local community members' }
 		],
 		sections: [
 			{
-				id: 'public-lobby',
-				name: 'Public Lobby',
-				description: 'Welcome area for visitors',
+				id: 'fairfield-guests',
+				name: 'Fairfield Guests',
+				description: 'Welcome area for visitors - open to all authenticated users',
 				icon: '👋',
 				order: 1,
 				access: { requiresApproval: false, defaultRole: 'guest', autoApprove: true },
@@ -167,9 +310,9 @@ function getDefaultConfig(): SectionsConfig {
 				ui: { color: '#6366f1' }
 			},
 			{
-				id: 'community-rooms',
-				name: 'Community Rooms',
-				description: 'Core community chatrooms',
+				id: 'minimoonoir-rooms',
+				name: 'MiniMooNoir',
+				description: 'Core community chatrooms - request access to join',
 				icon: '🌙',
 				order: 2,
 				access: { requiresApproval: true, defaultRole: 'member', autoApprove: false },
@@ -183,8 +326,8 @@ function getDefaultConfig(): SectionsConfig {
 			{
 				id: 'dreamlab',
 				name: 'DreamLab',
-				description: 'Creative and experimental projects',
-				icon: '✨',
+				description: 'Creative and experimental projects - request access to join',
+				icon: '💡',
 				order: 3,
 				access: { requiresApproval: true, defaultRole: 'member', autoApprove: false },
 				features: {
